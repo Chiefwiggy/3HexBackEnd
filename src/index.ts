@@ -1,4 +1,4 @@
-import express from 'express'
+import express, {Router} from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import mongoose from 'mongoose'
@@ -22,20 +22,20 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-app.use("/characters", CharacterRouter);
-app.use('/cards', CardRouter);
-app.use('/auth', AuthRouter);
-app.use("/equipment", EquipmentRouter);
-app.use("/abilities", AbilityRouter);
-app.use("/users", UserRouter);
-app.use("/classes", ClassRouter);
+const router = Router();
+
+router.use("/characters", CharacterRouter);
+router.use('/cards', CardRouter);
+router.use('/auth', AuthRouter);
+router.use("/equipment", EquipmentRouter);
+router.use("/abilities", AbilityRouter);
+router.use("/users", UserRouter);
+router.use("/classes", ClassRouter);
+
+app.use('/api', router);
 
 mongoose.connect(process.env.MONGO_URL ?? "").catch((err) => {
     console.error("Error: could not connect to mongodb")
 })
-
-// const server = app.listen(PORT, () => {
-//     console.log(`Server is up on port ${PORT}`)
-// })
 
 export const handler = serverless(app);

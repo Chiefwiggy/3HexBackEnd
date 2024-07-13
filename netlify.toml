@@ -1,9 +1,8 @@
 [build]
-  functions = "dist"
-  publish = "public"
   command = "npm run build"
+  functions = "build/serverless"
 
 [[redirects]]
   from = "/*"
-  to = "/.netlify/functions/handler"
+  to = "/.netlify/functions/server"
   status = 200
