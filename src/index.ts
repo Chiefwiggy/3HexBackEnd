@@ -22,25 +22,20 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-// mongoose.connect(process.env.MONGO_URL ?? "").catch((err) => {
-//     console.error("Error: could not connect to mongodb")
-// })
+mongoose.connect(process.env.MONGO_URL ?? "").catch((err) => {
+    console.error("Error: could not connect to mongodb")
+})
 
 const router = Router();
 
-// router.use("/characters", CharacterRouter);
-// router.use('/cards', CardRouter);
-// router.use('/auth', AuthRouter);
-// router.use("/equipment", EquipmentRouter);
-// router.use("/abilities", AbilityRouter);
-// router.use("/users", UserRouter);
-// router.use("/classes", ClassRouter);
+router.use("/characters", CharacterRouter);
+router.use('/cards', CardRouter);
+router.use('/auth', AuthRouter);
+router.use("/equipment", EquipmentRouter);
+router.use("/abilities", AbilityRouter);
+router.use("/users", UserRouter);
+router.use("/classes", ClassRouter);
 
-router.get("/", (req, res) => {
-  res.json({
-    hello: "hi!"
-  });
-});
 
 app.use('/.netlify/functions/index', router);
 
