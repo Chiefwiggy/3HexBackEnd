@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "npx tsc -w",
-    "build": "node dist/index.js",
+    "build": "netlify deploy --prod",
     "start": "netlify dev"
   },
   "keywords": [],
