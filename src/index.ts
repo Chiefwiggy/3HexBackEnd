@@ -10,6 +10,8 @@ import AbilityRouter from "./Routers/AbilityRouter";
 import UserRouter from "./Routers/UserRouter";
 import ClassRouter from "./Routers/ClassRouter";
 
+import serverless from 'serverless-http';
+
 const PORT: number = Number(process.env.PORT) || 3001;
 
 const app = express();
@@ -32,6 +34,8 @@ mongoose.connect(process.env.MONGO_URL ?? "").catch((err) => {
     console.error("Error: could not connect to mongodb")
 })
 
-const server = app.listen(PORT, () => {
-    console.log(`Server is up on port ${PORT}`)
-})
+// const server = app.listen(PORT, () => {
+//     console.log(`Server is up on port ${PORT}`)
+// })
+
+export const handler = serverless(app);
