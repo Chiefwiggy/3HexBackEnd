@@ -1,6 +1,6 @@
 [build]
   command = "npm run build"
-  functions = "build/serverless"
+  functions = "/dist/index.js"
 
 [[redirects]]
   from = "/*"
