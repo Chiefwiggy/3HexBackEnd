@@ -31,9 +31,8 @@ router.use("/equipment", EquipmentRouter);
 router.use("/abilities", AbilityRouter);
 router.use("/users", UserRouter);
 router.use("/classes", ClassRouter);
-router.get("/", (req, res) => {res.status(200).send("GOOD TO GO")})
 
-app.use('/.netlify/index/api', router);
+app.use('/api/', router);
 
 mongoose.connect(process.env.MONGO_URL ?? "").catch((err) => {
     console.error("Error: could not connect to mongodb")
