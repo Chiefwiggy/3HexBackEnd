@@ -1,0 +1,347 @@
+import {Request, Response} from "express";
+import BaseSpellCardModel, {_IBaseSpellCardData} from "../Models/Cards/BaseSpellCardModel";
+import TargetSpellCardModel, {_ITargetSpellCardData} from "../Models/Cards/TargetSpellCardModel";
+import ModifierSpellCardModel from "../Models/Cards/ModifierSpellCardModel";
+import mongoose from "mongoose";
+import BaseWeaponCardModel from "../Models/Cards/BaseWeaponCardModel";
+import FormWeaponCardModel from "../Models/Cards/FormWeaponCardModel";
+import SkillWeaponCardModel from "../Models/Cards/SkillWeaponCardModel";
+import ValidQueryBuilder from "../Utils/ValidQueryBuilder";
+import {_IUserModel} from "../Models/UserModel";
+import CharacterModel, {_IAffinities, _IAttributes, _ICharacterData} from "../Models/CharacterModel";
+import {_ISpellCardData} from "../Models/Cards/AbstractSpellCardSchema";
+import {_IAbstractCardData} from "../Models/Generics/AbstractCardSchema";
+import CommanderCardModel from "../Models/Cards/CommanderCardModel";
+import {_UPrerequisiteType} from "../Enums/CardEnums";
+
+export const GetAllSpellBases = async(req: Request, res: Response) => {
+    return _GetCardsOfType(req, res, BaseSpellCardModel);
+}
+
+export const GetAllSpellTargets = async(req: Request, res: Response) => {
+    return _GetCardsOfType(req, res, TargetSpellCardModel)
+}
+
+export const GetAllSpellModifiers = async(req: Request, res: Response) => {
+    return _GetCardsOfType(req, res, ModifierSpellCardModel)
+}
+
+export const GetAllWeaponBases = async(req: Request, res: Response) => {
+    return _GetCardsOfType(req, res, BaseWeaponCardModel);
+}
+
+export const GetAllWeaponForms = async(req :Request, res: Response) => {
+    return _GetCardsOfType(req, res, FormWeaponCardModel)
+}
+
+export const GetAllWeaponSkills = async(req: Request, res: Response) => {
+    return _GetCardsOfType(req, res, SkillWeaponCardModel);
+}
+
+const _GetCardsOfType = async(req: Request, res: Response, model: mongoose.Model<any>)  => {
+    try {
+        const result = await model.find({})
+        res.status(200).json(result);
+    } catch (err) {
+        res.status(404).send("Could not find anything...");
+    }
+}
+
+export const GetAllSpells = async(req: Request, res: Response) => {
+    try {
+        res.status(200).json(_GetAllSpellsHelper());
+    } catch (err) {
+        res.status(404).send("Couldn't find anything...");
+    }
+}
+
+const _GetAllSpellsHelper = async() => {
+    const bases: (_IBaseSpellCardData & mongoose.Document)[] | null = await BaseSpellCardModel.find({});
+    const targets: (_ITargetSpellCardData & mongoose.Document)[] | null = await TargetSpellCardModel.find({});
+    const modifiers: (_ISpellCardData & mongoose.Document)[] | null = await ModifierSpellCardModel.find({});
+    return {
+        bases,
+        targets,
+        modifiers
+    }
+}
+
+export const GetAllWeaponCards = async(req: Request, res: Response) => {
+    try {
+        res.status(200).json(_GetAllWeaponsHelper());
+    } catch (err) {
+        res.status(404).send("Couldn't find anything");
+    }
+}
+
+const _GetAllWeaponsHelper = async() => {
+    const bases = await BaseWeaponCardModel.find({});
+    const forms = await FormWeaponCardModel.find({});
+    const skills = await SkillWeaponCardModel.find({});
+    return {
+        bases,
+        forms,
+        skills
+    }
+}
+
+export const GetAllSpellsPossibleForUser = new ValidQueryBuilder()
+    .addPerm('registered')
+    .success(async(req: Request, res: Response, user: _IUserModel) => {
+        res.status(200).json(await _GetAllSpellsPossibleForUser(user, req.params["characterId"]));
+    })
+    .exec();
+
+export const GetAllWeaponsPossibleForUser = new ValidQueryBuilder()
+    .addPerm('registered')
+    .success(async(req: Request, res: Response, user: _IUserModel) => {
+        res.status(200).json(await _GetAllWeaponsPossibleForUser(user, req.params["characterId"]));
+    })
+    .exec();
+
+export const GetAllCardsPossibleForUser = new ValidQueryBuilder()
+    .addPerm('registered')
+    .success(async(req: Request, res: Response, user: _IUserModel) => {
+        res.status(200).json(await _GetAllCardsPossibleForUser(user, req.params["characterId"]));
+    })
+    .exec();
+
+export const GetAllCardsForClass = async(req: Request, res: Response) => {
+    try {
+        const allSpells = await _GetAllSpellsHelper();
+        const allWeapons = await _GetAllWeaponsHelper();
+        const allCommanderCards = await CommanderCardModel.find({});
+
+        const allCards = [...allSpells.bases, ...allSpells.targets, ...allSpells.modifiers, ...allWeapons.bases, ...allWeapons.forms, ...allWeapons.skills, ...allCommanderCards];
+
+        const finalCards = allCards.filter(card => {
+            return card.prerequisites.reduce((pv, cv) => {
+                if (pv) return pv;
+                if (cv.prerequisiteType == "class" && cv.skill == req.params["className"]) {
+                    return true;
+                }
+                return pv;
+            }, false)
+        })
+
+        console.log(finalCards);
+
+        res.status(200).json(finalCards);
+
+    }
+    catch(e) {
+        res.status(500).json(e);
+    }
+}
+
+export const GetAllCardsForClasses = async(req: Request, res: Response) => {
+    await _GetAllCardsOfCriteria(req, res, "class");
+}
+
+export const GetAllCardsForArcana = async(req: Request, res: Response) => {
+    await _GetAllCardsOfCriteria(req, res, "arcana");
+}
+
+export const GetAllCardsForAffinity = async(req: Request, res: Response) => {
+    await _GetAllCardsOfCriteria(req, res, "affinity")
+}
+
+const _GetAllCardsOfCriteria = async(req: Request, res: Response, criteria: _UPrerequisiteType) => {
+    try {
+        const allSpells = await _GetAllSpellsHelper();
+        const allWeapons = await _GetAllWeaponsHelper();
+        const allCommanderCards = await CommanderCardModel.find({});
+
+        const allCards = [...allSpells.bases, ...allSpells.targets, ...allSpells.modifiers, ...allWeapons.bases, ...allWeapons.forms, ...allWeapons.skills, ...allCommanderCards];
+
+        const finalCards: { [key: string]: any[] } = {};
+
+        allCards.forEach(card => {
+            card.prerequisites.forEach((prerequisite) => {
+                if (prerequisite.prerequisiteType === criteria) {
+                    const skill = prerequisite.skill;
+                    if (skill) {
+                        if (finalCards[skill]) {
+                            finalCards[skill].push(card);
+                        } else {
+                            finalCards[skill] = [card];
+                        }
+                    }
+                }
+            });
+        })
+
+        console.log(finalCards);
+
+        res.status(200).json(finalCards);
+
+    }
+    catch(e) {
+        res.status(500).json(e);
+    }
+}
+
+const _GetAllSpellsPossibleForUser = async(user: _IUserModel, characterId: string) => {
+    const char: _ICharacterData | null = await CharacterModel.findById(characterId);
+    if (char) {
+        const allCards = await _GetAllSpellsHelper();
+
+        const newBases = allCards.bases.filter((base) => {
+            // @ts-ignore
+            return char.knownBaseSpells.includes(base._id.toString());
+        })
+
+        return {
+            bases:  _PossibleFilter(newBases, char),
+            targets:  _PossibleFilter(allCards.targets, char),
+            modifiers:  _PossibleFilter(allCards.modifiers, char)
+        }
+    } else {
+        return {
+            bases: [],
+            targets: [],
+            modifiers: []
+        }
+    }
+}
+
+const _GetAllWeaponsPossibleForUser = async(user: _IUserModel, characterId: string) => {
+    const char: _ICharacterData | null = await CharacterModel.findById(characterId);
+    if (char) {
+        const allCards = await _GetAllWeaponsHelper();
+        const newWeapons = allCards.bases.filter((base) => {
+
+            return base.prerequisites.reduce((pv, prerequisite) => {
+                if (pv) return pv
+                if (prerequisite.prerequisiteType === "class" || prerequisite.prerequisiteType === "affinity" || prerequisite.prerequisiteType === "arcana") {
+                    return true;
+                }
+                return pv;
+            }, false) || char.knownWeapons.includes(base._id.toString());
+
+        })
+        return {
+            bases:  _PossibleFilter(newWeapons, char),
+            forms:  _PossibleFilter(allCards.forms, char),
+            skills:  _PossibleFilter(allCards.skills, char)
+        }
+    } else {
+        return {
+            bases: [],
+            forms: [],
+            skills: []
+        }
+    }
+}
+
+const _GetAllCommanderCardsPossibleForUser = async(user: _IUserModel, characterId: string) => {
+
+    const char: _ICharacterData | null = await CharacterModel.findById(characterId);
+    if (char) {
+        const allCards = await CommanderCardModel.find({});
+        console.log(allCards);
+        return _PossibleFilter(allCards, char);
+    } else {
+        return [];
+    }
+}
+
+const _GetAllCardsPossibleForUser = async(user: _IUserModel, characterId: string)  => {
+    return {
+        spells: await _GetAllSpellsPossibleForUser(user, characterId),
+        weapons: await _GetAllWeaponsPossibleForUser(user, characterId),
+        commanderCards: await _GetAllCommanderCardsPossibleForUser(user, characterId)
+    }
+}
+
+const _PossibleFilter = (cardList: Array<_IAbstractCardData>, character: _ICharacterData) => {
+    const {affinities, arcana} = _CalcAffinities(character);
+    return cardList.filter((card) => {
+        return card.prerequisites.reduce((pv, cv) => {
+            if (!pv) return false;
+            switch(cv.prerequisiteType) {
+                case "attribute":
+                    // console.log(character.characterStats[cv.skill as keyof _IAttributes].value)
+                    return character.characterStats[cv.skill as keyof _IAttributes].value >= cv.level;
+                case "affinity":
+                    // console.log(affinities[cv.skill as keyof _IAffinities])
+                    return affinities[cv.skill as keyof _IAffinities] >= cv.level;
+                case "class":
+                    return character.classes.filter(cc => cc.className.toLowerCase() == cv.skill.toLowerCase()).length > 0
+                case "arcana":
+                    // console.log(arcana[cv.skill as "arcane" | "warrior" | "support" | "hacker"], cv.level)
+                    return arcana[cv.skill as "arcane" | "warrior" | "support" | "hacker"] >= cv.level;
+                default:
+                    return pv;
+            }
+        }, true);
+    })
+}
+
+export const _CalcAffinities = (character: _ICharacterData) => {
+    const affinities: _IAffinities = {
+        abjuration: 0,
+        biohacking: 0,
+        deft: 0,
+        erudite: 0,
+        guardian: 0,
+        hex: 0,
+        infantry: 0,
+        leadership: 0,
+        machinery: 0,
+        rune: 0,
+        soul: 0,
+        supply: 0
+    }
+    character.classes.forEach((char) => {
+        Object.entries(char.affinities).forEach(([key, value]) => {
+            affinities[key as keyof _IAffinities] += value;
+        })
+    })
+    const arcana = {
+        arcane: affinities.hex + affinities.soul + affinities.soul,
+        warrior: affinities.deft + affinities.infantry + affinities.guardian,
+        support: affinities.supply + affinities.leadership + affinities.erudite,
+        hacker: affinities.biohacking + affinities.abjuration + affinities.machinery
+    }
+    return {
+        affinities,
+        arcana
+    }
+}
+
+export const GetAllSpellsPreparedForCharacter = new ValidQueryBuilder()
+    .addPerm('registered')
+    .success(async(req: Request, res: Response, user: _IUserModel) => {
+        const spellData = await _GetAllSpellsHelper();
+        const allSpells = [...spellData.bases, ...spellData.modifiers, ...spellData.targets]
+        await _GetPreparedCardsFromList(req, res, allSpells, "knownBaseSpells")
+    })
+    .exec();
+
+export const GetAllWeaponsPreparedForCharacter = new ValidQueryBuilder()
+    .addPerm('registered')
+    .success(async(req: Request, res: Response, user: _IUserModel) => {
+        const weaponData = await _GetAllWeaponsHelper();
+        const allSpells = [...weaponData.bases, ...weaponData.forms, ...weaponData.skills];
+        await _GetPreparedCardsFromList(req, res, allSpells, "knownWeapons")
+    })
+    .exec();
+
+const _GetPreparedCardsFromList = async(req: Request, res: Response, cardList: Array<_IAbstractCardData>, prepIndex: string) => {
+    try {
+        const char: _ICharacterData | null = await CharacterModel.findById(req.params["characterId"]);
+        if (!char) {
+            res.status(404).send("Could not find character.");
+        } else {
+            const newCards = cardList.filter((c) => {
+                // @ts-ignore
+                return [...char.preparedCards, ...char[prepIndex]].includes(c._id.toString());
+            })
+            res.status(200).json(newCards);
+        }
+    } catch (e) {
+        res.status(500).json(e);
+    }
+}
+
