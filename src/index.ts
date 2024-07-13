@@ -31,6 +31,7 @@ router.use("/equipment", EquipmentRouter);
 router.use("/abilities", AbilityRouter);
 router.use("/users", UserRouter);
 router.use("/classes", ClassRouter);
+router.get("/", (req, res) => {res.status(200).send("GOOD TO GO")})
 
 app.use('/api', router);
 
