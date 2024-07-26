@@ -19,7 +19,6 @@ export const SignUpUser = async (req: Request, res: Response) => {
             password: password || null,
             characters_owned: []
         })
-        console.log(user);
         const salt = bcrypt.genSaltSync(10);
         user.password = bcrypt.hashSync(password, salt);
         return user.save().then(async(resp) => {

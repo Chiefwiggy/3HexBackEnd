@@ -50,7 +50,6 @@ export const GetCharactersFromUser = new ValidQueryBuilder()
                         currentArmor: currentArmor
                     }
                     delete ret.currentArmorId;
-                    console.log(ret)
                     return ret;
                 }))
                 res.status(200).json(ret)
@@ -81,7 +80,6 @@ export const AddCharacter = async (req: Request, res: Response) : Promise<void> 
 export const UpdateCharacter = new ValidQueryBuilder()
     .addPerm("registered")
     .success(async(req: Request, res: Response, user: _IUserModel) => {
-        console.log("twice")
         try {
             const existingChar = await CharacterModel.findById(req.params.characterId);
             if (!existingChar) {

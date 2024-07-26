@@ -12,13 +12,11 @@ export const VerifyToken = async(req: Request): Promise<ITokenVerificationStruct
         const token = req.headers['authorization']?.split(" ")[1];
         const tokenData = jwt.verify(token as string, process.env.JWT_SIGNATURE_PRIVATE_TOKEN as string);
         if (tokenData instanceof String) {
-            console.log("gamer");
             return {
                 success: false,
                 tokenData: tokenData
             }
         } else {
-            console.log("Win")
             return {
                 success: true,
                 tokenData: tokenData

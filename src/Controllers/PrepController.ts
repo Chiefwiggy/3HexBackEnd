@@ -17,7 +17,7 @@ export const GetAllWeaponsPrepared = new ValidQueryBuilder()
 
             if (char) {
                 const ids = char.createdWeapons.reduce((pv: Array<string>, cv) => {
-                    return [cv.weaponBaseId, ...cv.weaponCardsIds, ...pv]
+                    return [cv.weaponBaseData.baseId, ...cv.weaponCardsIds, ...pv]
                 }, [])
 
                 const bases = await BaseWeaponCardModel.find({
@@ -60,7 +60,7 @@ export const AddPreparedWeapon = new ValidQueryBuilder()
                 }
 
                 if (char.createdWeapons.filter(entry => {
-                    if (entry.weaponBaseId != data.weaponBaseId) {
+                    if (entry.weaponBaseData.baseId != data.weaponBaseId) {
                         return false;
                     }
                     if (entry.weaponCardsIds.length !== data.weaponCardsIds.length) {

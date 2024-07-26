@@ -39,5 +39,5 @@ router.use("/classes", ClassRouter);
 
 app.use('/.netlify/functions/index', router);
 
-
+export default app;
 export const handler = serverless(app);

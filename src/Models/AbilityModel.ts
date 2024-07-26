@@ -45,7 +45,8 @@ export interface _IAbilityModel extends Document {
         expertiseDice?: number,
         weaponRequirement?: number,
         weaponPrestigeRequirement?: number,
-        quickSlots?: number
+        quickSlots?: number,
+        maxGlyphs?: number
     },
     unlocks: {
         unarmoredDefense?: boolean
@@ -105,7 +106,8 @@ const AbilitySchema = new Schema<_IAbilityModel>({
             expertiseDice: Number,
             weaponRequirement: Number,
             weaponPrestigeRequirement: Number,
-            quickSlots: Number
+            quickSlots: Number,
+            maxGlyphs: Number
         },
         required: true,
         default: {}

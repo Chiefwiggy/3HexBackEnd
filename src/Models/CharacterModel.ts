@@ -11,6 +11,18 @@ const IModifiable = {
     }
 }
 
+const IPreparedCardList = [
+    {
+        cardId: { type: String, required: true },
+        additionalData: {type: Schema.Types.Mixed, default: {}}
+    }
+]
+
+const IPreparedCard = {
+    cardId: { type: String, required: true },
+    additionalData: {type: Number, default: 0}
+}
+
 const IAttributeBar = {
     current: {type: Number, default: 0},
     scaling: IModifiable,
@@ -61,7 +73,10 @@ export interface _IAffinities {
 
 export interface _ICalculatedWeapon {
         customName?: string,
-        weaponBaseId: string,
+        weaponBaseData: {
+            baseId: string,
+            enchantmentLevel: number
+        },
         weaponCardsIds: Array<string>
 }
 
@@ -70,6 +85,16 @@ export interface _ICalculatedSpell {
     spellBaseId: string,
     spellTargetId: string,
     spellSkillsIds: Array<string>
+}
+
+export interface _IKnownWeaponStruct {
+        baseId: string,
+        enchantmentLevel: number
+}
+
+export interface _IPreparedCard {
+    cardID: string,
+    additionalData?: Object
 }
 
 
@@ -106,14 +131,14 @@ export interface _ICharacterData extends Document {
         hitBonus: number,
         critBonus: number
     },
-    preparedCards: Array<string>,
+    preparedCards: Array<_IPreparedCard>,
     preparedCommanderCards: Array<string>,
     createdSpells: Array<_ICalculatedSpell>,
     createdWeapons: Array<_ICalculatedWeapon>,
     currentSpell: _ICalculatedSpell,
     currentWeapon: _ICalculatedWeapon,
     currentArmorId: string,
-    knownWeapons: Array<string>,
+    knownWeapons: Array<_IKnownWeaponStruct>,
     knownBaseSpells: Array<string>,
     skillPoints: {
         athletics: number,
@@ -211,7 +236,12 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
         hitBonus: { type: Number, required: false, default: 0},
         critBonus: { type: Number, required: false, default: 0},
     },
-    preparedCards: [String],
+    preparedCards: [
+        {
+            cardId: { type: String, required: true },
+            additionalData: {type: Schema.Types.Mixed, default: {}}
+        }
+    ],
     preparedCommanderCards: [String],
     createdSpells: [
         {
@@ -241,7 +271,10 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
     currentWeapon: {
         type: {
             customName: {type: String, required: false},
-            weaponBaseId: {type: String, required: true},
+            weaponBaseData: {
+                baseId: {type: String, required: true},
+                enchantmentLevel: {type: Number, required: true, default: 0}
+            },
             weaponCardsIds: [String]
         },
         required: false,
@@ -249,7 +282,10 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
     },
     currentArmorId: String,
     knownBaseSpells: [String],
-    knownWeapons: [String],
+    knownWeapons: [{
+        baseId: {type: String, required: true},
+        enchantmentLevel: {type: Number, required: true, default: 0}
+    }],
     skillPoints: {
         type: {
             athletics: {type: Number, default: 0, required: true},

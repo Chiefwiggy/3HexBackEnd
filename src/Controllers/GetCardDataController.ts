@@ -8,7 +8,12 @@ import FormWeaponCardModel from "../Models/Cards/FormWeaponCardModel";
 import SkillWeaponCardModel from "../Models/Cards/SkillWeaponCardModel";
 import ValidQueryBuilder from "../Utils/ValidQueryBuilder";
 import {_IUserModel} from "../Models/UserModel";
-import CharacterModel, {_IAffinities, _IAttributes, _ICharacterData} from "../Models/CharacterModel";
+import CharacterModel, {
+    _IAffinities,
+    _IAttributes,
+    _ICharacterData,
+    _IKnownWeaponStruct
+} from "../Models/CharacterModel";
 import {_ISpellCardData} from "../Models/Cards/AbstractSpellCardSchema";
 import {_IAbstractCardData} from "../Models/Generics/AbstractCardSchema";
 import CommanderCardModel from "../Models/Cards/CommanderCardModel";
@@ -124,8 +129,6 @@ export const GetAllCardsForClass = async(req: Request, res: Response) => {
             }, false)
         })
 
-        console.log(finalCards);
-
         res.status(200).json(finalCards);
 
     }
@@ -171,8 +174,6 @@ const _GetAllCardsOfCriteria = async(req: Request, res: Response, criteria: _UPr
             });
         })
 
-        console.log(finalCards);
-
         res.status(200).json(finalCards);
 
     }
@@ -217,7 +218,7 @@ const _GetAllWeaponsPossibleForUser = async(user: _IUserModel, characterId: stri
                     return true;
                 }
                 return pv;
-            }, false) || char.knownWeapons.includes(base._id.toString());
+            }, false)
 
         })
         return {
@@ -239,7 +240,6 @@ const _GetAllCommanderCardsPossibleForUser = async(user: _IUserModel, characterI
     const char: _ICharacterData | null = await CharacterModel.findById(characterId);
     if (char) {
         const allCards = await CommanderCardModel.find({});
-        console.log(allCards);
         return _PossibleFilter(allCards, char);
     } else {
         return [];
@@ -335,8 +335,14 @@ const _GetPreparedCardsFromList = async(req: Request, res: Response, cardList: A
             res.status(404).send("Could not find character.");
         } else {
             const newCards = cardList.filter((c) => {
-                // @ts-ignore
-                return [...char.preparedCards, ...char[prepIndex]].includes(c._id.toString());
+
+                if (prepIndex === "knownWeapons") {
+                    return [...char.preparedCards, ...((char[prepIndex] as Array<_IKnownWeaponStruct>).map(e => e.baseId))].includes((c as any)._id.toString());
+                } else {
+                    // @ts-ignore
+                    return [...char.preparedCards, ...char[prepIndex]].includes(c._id.toString());
+                }
+
             })
             res.status(200).json(newCards);
         }
