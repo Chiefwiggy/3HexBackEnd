@@ -11,6 +11,7 @@ import UserRouter from "./Routers/UserRouter";
 import ClassRouter from "./Routers/ClassRouter";
 
 import serverless from 'serverless-http';
+import MinionRouter from "./Routers/MinionRouter";
 
 const PORT: number = Number(process.env.PORT) || 3001;
 
@@ -35,6 +36,7 @@ router.use("/equipment", EquipmentRouter);
 router.use("/abilities", AbilityRouter);
 router.use("/users", UserRouter);
 router.use("/classes", ClassRouter);
+router.use("/minions", MinionRouter);
 
 
 app.use('/.netlify/functions/index', router);

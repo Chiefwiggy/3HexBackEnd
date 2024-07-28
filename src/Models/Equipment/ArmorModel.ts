@@ -1,8 +1,23 @@
 import mongoose from 'mongoose'
 import {EArmorClass} from "../../Enums/EquipmentEnums";
-import {EPrerequisiteTypes} from "../../Enums/CardEnums";
+import {_UPrerequisiteType, EPrerequisiteTypes} from "../../Enums/CardEnums";
 
-const ArmorSchema = new mongoose.Schema({
+export interface _IArmor {
+    armorName: string,
+    armorClass: string,
+    vitalityRequirement: number,
+    additionalPrerequisites: Array<{
+        prerequisiteType: string
+        skill: string,
+        level: number
+    }>,
+    pDEFBonus: number,
+    mDEFBonus: number,
+    blockPDEFBonus: number,
+    blockMDEFBonus: number
+}
+
+const ArmorSchema = new mongoose.Schema<_IArmor>({
     armorName: {type: String, required: true, unique: true},
     armorClass: {
         type: String,
@@ -11,7 +26,7 @@ const ArmorSchema = new mongoose.Schema({
         default: 'standard'
     },
     vitalityRequirement: { type: Number, required: true, default: 0 },
-    additionalPrerequisities: [
+    additionalPrerequisites: [
         {
             prerequisiteType: {
                 type: String,

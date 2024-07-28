@@ -2,7 +2,7 @@ import mongoose, {Schema} from "mongoose";
 import {EEmblemType, ESkill} from "../Enums/CardEnums";
 
 
-const IModifiable = {
+export const IModifiable = {
     value: { type: Number, required: true },
     modifiers: {
         modifier: {type: Number, required: false, default: undefined},
@@ -23,13 +23,13 @@ const IPreparedCard = {
     additionalData: {type: Number, default: 0}
 }
 
-const IAttributeBar = {
+export const IAttributeBar = {
     current: {type: Number, default: 0},
     scaling: IModifiable,
 }
 
 
-interface _IModifiable {
+export interface _IModifiable {
     value: number,
     modifiers: {
         modifier: number,
@@ -38,7 +38,7 @@ interface _IModifiable {
     }
 }
 
-interface _IAttributeBar {
+export interface _IAttributeBar {
     current: number,
     scaling: _IModifiable
 }
@@ -161,7 +161,11 @@ export interface _ICharacterData extends Document {
         lore: number,
         occult: number,
         society: number
-    }
+    },
+    minionsOwned: Array<{
+        minionId: string,
+        isEquipped: boolean
+    }>
 }
 
 const CharacterSchema = new mongoose.Schema<_ICharacterData>({
@@ -310,6 +314,13 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
             society: {type: Number, default: 0, required: true}
         },
         required: true
+    },
+    minionsOwned: {
+        type: [{
+            minionId: {type: String, required: true},
+            isEquipped: {type: Boolean, required: true, default: false}
+        }],
+        default: []
     }
 })
 

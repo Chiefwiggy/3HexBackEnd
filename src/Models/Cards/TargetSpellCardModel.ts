@@ -10,7 +10,7 @@ export interface _ITargetSpellCardData extends _IBaseSpellCardData {
     }
 }
 
-const TargetSpellCardSchema = new Schema({
+const TargetSpellCardSchema = new Schema<_ITargetSpellCardData>({
     baseRange: {
         min: {type: Number, required: true, default: 1},
         max: {type: Number, required: true, default: 2},
