@@ -20,35 +20,50 @@ import CommanderCardModel from "../Models/Cards/CommanderCardModel";
 import {_UPrerequisiteType} from "../Enums/CardEnums";
 
 export const GetAllSpellBases = async(req: Request, res: Response) => {
-    return _GetCardsOfType(req, res, BaseSpellCardModel);
+    const finalData = await _GetCardsOfType(req, res, BaseSpellCardModel);
+    res.status(finalData.status).json(finalData.data);
 }
 
 export const GetAllSpellTargets = async(req: Request, res: Response) => {
-    return _GetCardsOfType(req, res, TargetSpellCardModel)
+    const finalData = await _GetCardsOfType(req, res, TargetSpellCardModel)
+    res.status(finalData.status).json(finalData.data);
 }
 
 export const GetAllSpellModifiers = async(req: Request, res: Response) => {
-    return _GetCardsOfType(req, res, ModifierSpellCardModel)
+    const finalData = await _GetCardsOfType(req, res, ModifierSpellCardModel)
+    res.status(finalData.status).json(finalData.data);
 }
 
 export const GetAllWeaponBases = async(req: Request, res: Response) => {
-    return _GetCardsOfType(req, res, BaseWeaponCardModel);
+    const finalData = await _GetCardsOfType(req, res, BaseWeaponCardModel);
+    res.status(finalData.status).json(finalData.data);
 }
 
 export const GetAllWeaponForms = async(req :Request, res: Response) => {
-    return _GetCardsOfType(req, res, FormWeaponCardModel)
+    const finalData = await _GetCardsOfType(req, res, FormWeaponCardModel)
+    res.status(finalData.status).json(finalData.data);
 }
 
 export const GetAllWeaponSkills = async(req: Request, res: Response) => {
-    return _GetCardsOfType(req, res, SkillWeaponCardModel);
+    const finalData = await _GetCardsOfType(req, res, SkillWeaponCardModel);
+    res.status(finalData.status).json(finalData.data);
 }
 
-const _GetCardsOfType = async(req: Request, res: Response, model: mongoose.Model<any>)  => {
+export const _GetCardsOfType = async(req: Request, res: Response, model: mongoose.Model<any>)  => {
     try {
         const result = await model.find({})
-        res.status(200).json(result);
+        return {
+            status: 200,
+            data: result
+        }
     } catch (err) {
-        res.status(404).send("Could not find anything...");
+        return {
+            status: 404,
+            data: {
+                err,
+                message: "Could not find anything..."
+            }
+        }
     }
 }
 
@@ -138,18 +153,21 @@ export const GetAllCardsForClass = async(req: Request, res: Response) => {
 }
 
 export const GetAllCardsForClasses = async(req: Request, res: Response) => {
-    await _GetAllCardsOfCriteria(req, res, "class");
+    const finalStruct = await _GetAllCardsOfCriteria(req, res, "class")
+    res.status(finalStruct.status).json(finalStruct.data);
 }
 
 export const GetAllCardsForArcana = async(req: Request, res: Response) => {
-    await _GetAllCardsOfCriteria(req, res, "arcana");
+    const finalStruct = await _GetAllCardsOfCriteria(req, res, "arcana")
+    res.status(finalStruct.status).json(finalStruct.data);
 }
 
 export const GetAllCardsForAffinity = async(req: Request, res: Response) => {
-    await _GetAllCardsOfCriteria(req, res, "affinity")
+    const finalStruct = await _GetAllCardsOfCriteria(req, res, "affinity")
+    res.status(finalStruct.status).json(finalStruct.data);
 }
 
-const _GetAllCardsOfCriteria = async(req: Request, res: Response, criteria: _UPrerequisiteType) => {
+export const _GetAllCardsOfCriteria = async(req: Request, res: Response, criteria: _UPrerequisiteType) => {
     try {
         const allSpells = await _GetAllSpellsHelper();
         const allWeapons = await _GetAllWeaponsHelper();
@@ -174,11 +192,17 @@ const _GetAllCardsOfCriteria = async(req: Request, res: Response, criteria: _UPr
             });
         })
 
-        res.status(200).json(finalCards);
+        return {
+            status: 200,
+            data: finalCards
+        }
 
     }
     catch(e) {
-        res.status(500).json(e);
+        return {
+            status: 500,
+            data: e
+        }
     }
 }
 

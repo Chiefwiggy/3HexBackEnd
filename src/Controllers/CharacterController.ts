@@ -3,7 +3,6 @@ import CharacterModel, {_ICharacterData} from "../Models/CharacterModel";
 import {VerifyToken} from "../Utils/VerifyToken";
 import ValidQueryBuilder from "../Utils/ValidQueryBuilder";
 import {_IUserModel} from "../Models/UserModel";
-import ArmorModel from "../Models/Equipment/ArmorModel";
 import mongoose from 'mongoose'
 
 export const GetAllCharacters = async (req: Request, res: Response) : Promise<void> => {
@@ -19,13 +18,7 @@ export const GetCharacterById = async (req: Request, res: Response) : Promise<vo
     try {
         const char = await CharacterModel.findById(req.params["id"]);
         if (char) {
-            const currentArmor = await ArmorModel.findById(char.currentArmorId);
-
-            const ret = {
-                ...char.toObject(),
-                currentArmor: currentArmor
-            }
-            res.status(200).json(ret);
+            res.status(200).json(char);
         }
 
     } catch (err) {
@@ -42,17 +35,7 @@ export const GetCharactersFromUser = new ValidQueryBuilder()
                 _id: {$in: user.characters_owned.map(e => e.id)}
             })
             if (char) {
-                const ret = await Promise.all(char.map(async(char) => {
-                    const currentArmor = await ArmorModel.findById(char.currentArmorId);
-
-                    const ret  = {
-                        ...char.toObject(),
-                        currentArmor: currentArmor
-                    }
-                    delete ret.currentArmorId;
-                    return ret;
-                }))
-                res.status(200).json(ret)
+                res.status(200).json(char)
             }
         } catch (err) {
             res.status(500).json(err);

@@ -91,7 +91,7 @@ export const GetAbilitiesForClass = async(req: Request, res: Response) => {
 
 
 
-const GetAllAbilitiesForCriteria = async(req: Request, res: Response, prereqType: _UPrerequisiteType) => {
+export const _GetAllAbilitiesForCriteria = async(req: Request, res: Response, prereqType: _UPrerequisiteType) => {
     try {
         const abilities = await AbilityModel.find({})
 
@@ -113,20 +113,29 @@ const GetAllAbilitiesForCriteria = async(req: Request, res: Response, prereqType
         });
 
 
-        res.status(200).json(finalAbilities);
+        return {
+            status: 200,
+            data: finalAbilities
+        }
     } catch (e) {
-        res.status(500).json(e);
+        return {
+            status: 500,
+            data: e
+        }
     }
 }
 
 export const GetAbilitiesForAllArcana = async(req: Request, res: Response) => {
-    await GetAllAbilitiesForCriteria(req, res, "arcana");
+    const finalData = await _GetAllAbilitiesForCriteria(req, res, "arcana");
+    res.status(finalData.status).json(finalData.data);
 }
 
 export const GetAbilitiesForAllAffinities = async(req: Request, res: Response) => {
-    await GetAllAbilitiesForCriteria(req, res, "affinity");
+    const finalData = await _GetAllAbilitiesForCriteria(req, res, "affinity");
+    res.status(finalData.status).json(finalData.data);
 }
 
 export const GetAbilitiesForAllClasses = async(req: Request, res: Response) => {
-    await GetAllAbilitiesForCriteria(req, res, "class");
+    const finalData = await _GetAllAbilitiesForCriteria(req, res, "class");
+    res.status(finalData.status).json(finalData.data);
 }

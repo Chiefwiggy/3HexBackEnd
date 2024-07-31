@@ -87,6 +87,11 @@ export interface _ICalculatedSpell {
     spellSkillsIds: Array<string>
 }
 
+export interface _IKnownArmorStruct {
+    baseId: string,
+    enchantmentLevel: number
+}
+
 export interface _IKnownWeaponStruct {
         baseId: string,
         enchantmentLevel: number
@@ -113,6 +118,7 @@ export interface _ICharacterData extends Document {
         stamina: _IAttributeBar,
         tether: _IAttributeBar
     },
+    currentActionPoints: number,
     characterStats: _IAttributes,
     movement: {
         stepSpeed: _IModifiable,
@@ -138,7 +144,8 @@ export interface _ICharacterData extends Document {
     currentSpell: _ICalculatedSpell,
     currentWeapon: _ICalculatedWeapon,
     counterWeapon: _ICalculatedWeapon,
-    currentArmorId: string,
+    currentArmor: _IKnownArmorStruct,
+    knownArmor: Array<_IKnownArmorStruct>,
     knownWeapons: Array<_IKnownWeaponStruct>,
     knownBaseSpells: Array<string>,
     skillPoints: {
@@ -212,6 +219,7 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
         stamina: IAttributeBar,
         tether: IAttributeBar,
     },
+    currentActionPoints: {type: Number, required: true, default: 0},
     characterStats: {
         might: IModifiable,
         agility: IModifiable,
@@ -285,6 +293,20 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
         required: false,
         default: null
     },
+    currentArmor: {
+        type: {
+            baseId: {type: String, required: true},
+            enchantmentLevel: {type: Number, required: true, default: 0}
+        },
+        required: false,
+        default: null
+    },
+    knownArmor: [
+        {
+            baseId: {type: String, required: true},
+            enchantmentLevel: {type: Number, required: true, default: 0}
+        }
+    ],
     counterWeapon: {
         type: {
             customName: {type: String, required: false},
@@ -297,7 +319,6 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
         required: false,
         default: null
     },
-    currentArmorId: String,
     knownBaseSpells: [String],
     knownWeapons: [{
         baseId: {type: String, required: true},

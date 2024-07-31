@@ -1,20 +1,21 @@
 import mongoose from 'mongoose'
 import {EArmorClass} from "../../Enums/EquipmentEnums";
 import {_UPrerequisiteType, EPrerequisiteTypes} from "../../Enums/CardEnums";
+import {_IScalingData, IScalingData} from "../Cards/BaseWeaponCardModel";
 
 export interface _IArmor {
     armorName: string,
     armorClass: string,
-    vitalityRequirement: number,
-    additionalPrerequisites: Array<{
+    vitalityRequirement: _IScalingData<number>,
+    additionalPrerequisites: _IScalingData<Array<{
         prerequisiteType: string
         skill: string,
         level: number
-    }>,
-    pDEFBonus: number,
-    mDEFBonus: number,
-    blockPDEFBonus: number,
-    blockMDEFBonus: number
+    }>>,
+    pDEFBonus: _IScalingData<number>,
+    mDEFBonus: _IScalingData<number>,
+    blockPDEFBonus: _IScalingData<number>,
+    blockMDEFBonus: _IScalingData<number>
 }
 
 const ArmorSchema = new mongoose.Schema<_IArmor>({
@@ -25,8 +26,8 @@ const ArmorSchema = new mongoose.Schema<_IArmor>({
         required: true,
         default: 'standard'
     },
-    vitalityRequirement: { type: Number, required: true, default: 0 },
-    additionalPrerequisites: [
+    vitalityRequirement: IScalingData(Number, 0),
+    additionalPrerequisites: IScalingData([
         {
             prerequisiteType: {
                 type: String,
@@ -37,11 +38,11 @@ const ArmorSchema = new mongoose.Schema<_IArmor>({
             skill: {type: String, required: true},
             level: {type: Number, required: true}
         }
-    ],
-    pDEFBonus: {type: Number, required: true, default: 0},
-    mDEFBonus: {type: Number, required: true, default: 0},
-    blockPDEFBonus: {type: Number, required: true, default: 0},
-    blockMDEFBonus: {type: Number, required: true, default: 0}
+    ], []),
+    pDEFBonus: IScalingData(Number, 0),
+    mDEFBonus: IScalingData(Number, 0),
+    blockPDEFBonus: IScalingData(Number, 0),
+    blockMDEFBonus: IScalingData(Number, 0),
 })
 
 const ArmorModel = mongoose.model('armor', ArmorSchema)

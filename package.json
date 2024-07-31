@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "npx tsc -w",
     "build": "npx tsc",
-    "dev": "ts-node-dev --respawn --transpile-only src/dev.ts"
+    "dev": "ts-node-dev --respawn --transpile-only --tree-kill --exit-child src/dev.ts"
   },
   "keywords": [],
   "author": "",
