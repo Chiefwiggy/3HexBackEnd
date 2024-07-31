@@ -137,6 +137,7 @@ export interface _ICharacterData extends Document {
     createdWeapons: Array<_ICalculatedWeapon>,
     currentSpell: _ICalculatedSpell,
     currentWeapon: _ICalculatedWeapon,
+    counterWeapon: _ICalculatedWeapon,
     currentArmorId: string,
     knownWeapons: Array<_IKnownWeaponStruct>,
     knownBaseSpells: Array<string>,
@@ -273,6 +274,18 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
         default: null
     },
     currentWeapon: {
+        type: {
+            customName: {type: String, required: false},
+            weaponBaseData: {
+                baseId: {type: String, required: true},
+                enchantmentLevel: {type: Number, required: true, default: 0}
+            },
+            weaponCardsIds: [String]
+        },
+        required: false,
+        default: null
+    },
+    counterWeapon: {
         type: {
             customName: {type: String, required: false},
             weaponBaseData: {

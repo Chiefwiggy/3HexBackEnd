@@ -27,6 +27,7 @@ export interface _IBaseWeaponCardData extends _IWeaponCardData {
     baseCrit: _IScalingData<number>,
     damageType: string,
     damageSubtype: string,
+    handedness: number,
     specialCrit: _IScalingData<_ICritData>,
     baseRange: {
         min: _IScalingData<number>,
@@ -84,6 +85,7 @@ const BaseWeaponCardSchema = new Schema<_IBaseWeaponCardData>({
         required: true,
         default: "slashing"
     },
+    handedness: {type: Number, required: true, default: 1.5},
     specialCrit: IScalingData({
         d1: { type: String, enum: ECritDie, required: true },
         d2: { type: String, enum: ECritDie, required: true },

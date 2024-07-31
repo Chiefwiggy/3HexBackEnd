@@ -9,7 +9,8 @@ export interface _IUserModel extends Document {
     characters_owned: Array<{
         id: string,
         access_mode: string
-    }>
+    }>,
+    privateAPIRequests: number
 }
 
 const UserSchema = new Schema<_IUserModel>({
@@ -31,7 +32,8 @@ const UserSchema = new Schema<_IUserModel>({
                 required: true
             }
         }
-    ]
+    ],
+    privateAPIRequests: {type: Number, default: 0}
 })
 
 const UserModel = mongoose.model('users', UserSchema);

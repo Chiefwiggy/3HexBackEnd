@@ -37,9 +37,16 @@ export interface _IAbilityModel extends Document {
         }
         pDEF?: number,
         mDEF?: number,
+        pDEFBlock?: number,
+        mDEFBlock?: number,
+        pDEFEvade?: number,
+        mDEFEvade?: number,
         maxStamina?: number,
         maxHealth?: number,
         maxTether?: number,
+        dodge?: number,
+        dodgeEvade?: number,
+        dodgeBlock?: number,
         cardSlots?: number,
         critDamage?: number,
         expertiseDice?: number,
@@ -49,7 +56,8 @@ export interface _IAbilityModel extends Document {
         maxGlyphs?: number
     },
     unlocks: {
-        unarmoredDefense?: boolean
+        unarmoredDefense?: boolean,
+        heavyArmor?: boolean
     }
 
 }
@@ -98,9 +106,16 @@ const AbilitySchema = new Schema<_IAbilityModel>({
             },
             pDEF: Number,
             mDEF: Number,
+            pDEFBlock: Number,
+            mDEFBlock: Number,
+            pDEFEvade: Number,
+            mDEFEvade: Number,
             maxHealth: Number,
             maxStamina: Number,
             maxTether: Number,
+            dodge: Number,
+            dodgeEvade: Number,
+            dodgeBlock: Number,
             cardSlots: Number,
             critDamage: Number,
             expertiseDice: Number,
@@ -123,4 +138,4 @@ const AbilitySchema = new Schema<_IAbilityModel>({
 
 const AbilityModel = mongoose.model('abilities', AbilitySchema);
 
-export default AbilityModel;
+export default AbilityModel;  

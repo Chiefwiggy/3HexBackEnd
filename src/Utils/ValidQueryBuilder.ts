@@ -41,17 +41,27 @@ class ValidQueryBuilder {
             const verifyResponse = await VerifyToken(req);
             if (verifyResponse.success) {
                 const user: _IUserModel | null = await UserModel.findOne({email: (verifyResponse as jwt.JwtPayload).tokenData.email});
-                if (user &&
-                    (
+                if (user) {
+                    if (user.privateAPIRequests) {
+                    user.privateAPIRequests++;
+                    } else {
+                        user.privateAPIRequests = 1;
+                    }
+                    if (
                         user.userPermissions.includes("admin") ||
                         this.accessReq.every(e => user.userPermissions.includes(e))
-                    )
-                ) {
-                    await this.successFn(req, res, user);
-                } else {
-                    res.status(403).send("You lack permission for this route");
+                    ) {
+                        await this.successFn(req, res, user);
+                    } else {
+                        res.status(403).send("You lack permission for this route");
+                    }
+                    await user.save();
+                    return;
+
                 }
-                return;
+
+
+
             } else {
                 if (JSON.parse(verifyResponse.tokenData as any).name == "TokenExpiredError") {
                     res.status(417).send("Please sign back in.");
