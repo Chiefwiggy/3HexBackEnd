@@ -61,8 +61,7 @@ export const CreateMinion = new ValidQueryBuilder()
     .exec();
 
 export interface _IMinionSchemaOutput extends _IMinionSchema {
-    cardData: Array<_IAbstractCardData>,
-    currentArmor: _IArmor|null
+    cardData: Array<_IAbstractCardData>
 }
 const _GetMinionData = async(minionId: string) => {
     const char: _IMinionSchema | null = await MinionModel.findById(minionId).lean();
@@ -116,17 +115,9 @@ const _GetMinionData = async(minionId: string) => {
             }
         }
 
-        if (char.currentArmorId) {
-            const armorData= await ArmorModel.findById(char.currentArmorId);
-            if (armorData){
-                currentArmor = armorData;
-            }
-        }
-
         const newChar: _IMinionSchemaOutput = {
             ...char,
-            cardData: cardList,
-            currentArmor: currentArmor
+            cardData: cardList
         }
         return newChar;
     }

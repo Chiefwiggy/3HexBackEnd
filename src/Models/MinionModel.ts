@@ -1,5 +1,5 @@
 import mongoose, {Schema} from 'mongoose'
-import {_IAttributeBar, _IModifiable, IAttributeBar, IModifiable} from "./CharacterModel";
+import {_IAttributeBar, _IKnownArmorStruct, _IModifiable, IAttributeBar, IModifiable} from "./CharacterModel";
 
 export interface _ICalculatedSpell {
     customName?: string,
@@ -47,7 +47,7 @@ export interface _IMinionSchema extends Document {
     currentSpell: _ICalculatedSpell|null,
     currentWeapon: _ICalculatedWeapon|null,
     isAdjutant: boolean,
-    currentArmorId: string,
+    currentArmor: _IKnownArmorStruct,
     bonuses: {
         staminaRefresh: number,
         tetherRefresh: number,
@@ -117,7 +117,14 @@ const MinionSchema = new mongoose.Schema<_IMinionSchema>({
         default: null
     },
     isAdjutant: {type: Boolean, required: true, default: false},
-    currentArmorId: {type: String, default: undefined},
+    currentArmor: {
+        type: {
+            baseId: {type: String, required: true},
+            enchantmentLevel: {type: Number, required: true, default: 0}
+        },
+        required: false,
+        default: null
+    },
 });
 
 const MinionModel = mongoose.model('minions', MinionSchema);

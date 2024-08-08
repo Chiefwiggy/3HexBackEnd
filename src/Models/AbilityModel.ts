@@ -53,11 +53,15 @@ export interface _IAbilityModel extends Document {
         weaponRequirement?: number,
         weaponPrestigeRequirement?: number,
         quickSlots?: number,
-        maxGlyphs?: number
+        maxGlyphs?: number,
+        actionPoints?: number,
+        stepSpeed?: number,
+        dashSpeed?: number
     },
     unlocks: {
         unarmoredDefense?: boolean,
         heavyArmor?: boolean
+        evadeWithHeavyArmor?: boolean
     }
 
 }
@@ -122,14 +126,19 @@ const AbilitySchema = new Schema<_IAbilityModel>({
             weaponRequirement: Number,
             weaponPrestigeRequirement: Number,
             quickSlots: Number,
-            maxGlyphs: Number
+            maxGlyphs: Number,
+            actionPoints: Number,
+            stepSpeed: Number,
+            dashSpeed: Number
         },
         required: true,
         default: {}
     },
     unlocks: {
         type: {
-            unarmoredDefense: Boolean
+            unarmoredDefense: Boolean,
+            heavyArmor: Boolean,
+            evadeWithHeavyArmor: Boolean
         },
         required: true,
         default: {}
