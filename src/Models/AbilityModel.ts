@@ -57,7 +57,8 @@ export interface _IAbilityModel extends Document {
         actionPoints?: number,
         stepSpeed?: number,
         dashSpeed?: number,
-        trapDamage?: number
+        trapDamage?: number,
+        summoningSlots?: number
     },
     unlocks: {
         unarmoredDefense?: boolean,
@@ -131,7 +132,8 @@ const AbilitySchema = new Schema<_IAbilityModel>({
             actionPoints: Number,
             stepSpeed: Number,
             dashSpeed: Number,
-            trapDamage: Number
+            trapDamage: Number,
+            summoningSlots: Number
         },
         required: true,
         default: {}
