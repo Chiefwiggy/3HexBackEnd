@@ -61,7 +61,9 @@ export interface _IAbilityModel extends Document {
     unlocks: {
         unarmoredDefense?: boolean,
         heavyArmor?: boolean
-        evadeWithHeavyArmor?: boolean
+        evadeWithHeavyArmor?: boolean,
+        mindBreathing?: boolean,
+        ironGrasp?: boolean
     }
 
 }
@@ -138,7 +140,9 @@ const AbilitySchema = new Schema<_IAbilityModel>({
         type: {
             unarmoredDefense: Boolean,
             heavyArmor: Boolean,
-            evadeWithHeavyArmor: Boolean
+            evadeWithHeavyArmor: Boolean,
+            mindBreathing: Boolean,
+            ironGrasp: Boolean
         },
         required: true,
         default: {}
