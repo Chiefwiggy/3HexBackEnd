@@ -12,12 +12,13 @@ import CharacterModel, {
     _IAffinities,
     _IAttributes,
     _ICharacterData,
-    _IKnownWeaponStruct
+    _IKnownWeaponStruct, _IPreparedSource
 } from "../Models/CharacterModel";
 import {_ISpellCardData} from "../Models/Cards/AbstractSpellCardSchema";
 import {_IAbstractCardData} from "../Models/Generics/AbstractCardSchema";
 import CommanderCardModel from "../Models/Cards/CommanderCardModel";
 import {_UPrerequisiteType} from "../Enums/CardEnums";
+import SourceModel, {_ISourceSchema} from "../Models/SourceModel";
 
 export const GetAllSpellBases = async(req: Request, res: Response) => {
     const finalData = await _GetCardsOfType(req, res, BaseSpellCardModel);
@@ -224,22 +225,45 @@ const _GetAllSpellsPossibleForUser = async(user: _IUserModel, characterId: strin
     const char: _ICharacterData | null = await CharacterModel.findById(characterId);
     if (char) {
         const allCards = await _GetAllSpellsHelper();
+        const {arcana} = _CalcAffinities(char);
 
-        const newBases = allCards.bases.filter((base) => {
-            // @ts-ignore
-            return char.knownBaseSpells.includes(base._id.toString());
-        })
 
-        return {
-            bases:  _PossibleFilter(newBases, char),
-            targets:  _PossibleFilter(allCards.targets, char),
-            modifiers:  _PossibleFilter(allCards.modifiers, char)
-        }
-    } else {
-        return {
-            bases: [],
-            targets: [],
-            modifiers: []
+        if (char.knownSources.length > 0) {
+            const sourceIds = (await Promise.all(char.knownSources.map(async (sourceMetadata) => {
+                const sourceData: _ISourceSchema | null = await SourceModel.findById(sourceMetadata.sourceId);
+                if (sourceData) {
+                    return sourceData.sourceTiers.flatMap(tier => {
+                        return (sourceMetadata.attunementLevel >= tier.layer && arcana["arcane"] >= tier.arcaneRequirement) ? tier.cardId : null
+                    }).filter(e => e);
+                }
+                return [];
+            }))).flat();
+
+            console.log(sourceIds);
+
+
+            const newBases = allCards.bases.filter((base) => {
+                // @ts-ignore
+                return sourceIds.includes(base._id.toString());
+                // return char.knownBaseSpells.includes(base._id.toString());
+            })
+
+            const newMods = allCards.modifiers.filter((mod)  => {
+                // @ts-ignore
+                return !(mod.cardSubtype == "edict" && mod.prerequisites.length == 1 && mod.prerequisites[0].prerequisiteType == "nodefault") || sourceIds.includes(mod._id.toString())
+            })
+
+            return {
+                bases: _PossibleFilter(newBases, char),
+                targets: _PossibleFilter(allCards.targets, char),
+                modifiers: _PossibleFilter(newMods, char)
+            }
+        } else {
+            return {
+                bases: [],
+                targets: [],
+                modifiers: []
+            }
         }
     }
 }

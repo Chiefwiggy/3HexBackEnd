@@ -55,6 +55,7 @@ export const _PopulateSourceData = async (sourceData: _ISourceSchema) => {
         })
     );
     return {
+            _id: sourceData._id,
             sourceName: sourceData.sourceName,
             sourceArcanotype: sourceData.sourceArcanotype,
             sourceTier: sourceData.sourceTier,

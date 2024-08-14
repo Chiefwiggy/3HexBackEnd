@@ -23,6 +23,11 @@ const IPreparedCard = {
     additionalData: {type: Number, default: 0}
 }
 
+const IPreparedSource = {
+    sourceId: { type: String, required: true },
+    attunementLevel: {type: Number, required: true, default: 0}
+}
+
 export const IAttributeBar = {
     current: {type: Number, default: 0},
     scaling: IModifiable,
@@ -102,6 +107,11 @@ export interface _IPreparedCard {
     additionalData?: Object
 }
 
+export interface _IPreparedSource {
+    sourceId: string,
+    attunementLevel: number
+}
+
 
 export interface _ICharacterData extends Document {
     characterName: string,
@@ -148,6 +158,7 @@ export interface _ICharacterData extends Document {
     knownArmor: Array<_IKnownArmorStruct>,
     knownWeapons: Array<_IKnownWeaponStruct>,
     knownBaseSpells: Array<string>,
+    knownSources: Array<_IPreparedSource>
     skillPoints: {
         athletics: number,
         handling: number,
@@ -320,6 +331,7 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
         default: null
     },
     knownBaseSpells: [String],
+    knownSources: [IPreparedSource],
     knownWeapons: [{
         baseId: {type: String, required: true},
         enchantmentLevel: {type: Number, required: true, default: 0}
