@@ -49,6 +49,20 @@ export const GetAllWeaponSkills = async(req: Request, res: Response) => {
     res.status(finalData.status).json(finalData.data);
 }
 
+export const _GetFilteredCardsOfType = async (req: Request, res: Response, model: mongoose.Model<any>, filter: (e: any) => boolean) => {
+    const allCardsOfType = await _GetCardsOfType(req, res, model);
+
+    if (Array.isArray(allCardsOfType.data)) {
+        return {
+            status: allCardsOfType.status,
+            data: allCardsOfType.data.filter(filter)
+        }
+    } else {
+        return allCardsOfType;
+    }
+
+}
+
 export const _GetCardsOfType = async(req: Request, res: Response, model: mongoose.Model<any>)  => {
     try {
         const result = await model.find({})

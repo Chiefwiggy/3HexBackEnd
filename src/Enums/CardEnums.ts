@@ -2,11 +2,11 @@ export const EArcanotype = ["elemental", "divine", "mystical", "axum", "primal",
 
 export const EEmblemType = ["default", "info", "warning", "tether", "stamina", "requirement", "priority", "power"]
 
-export const EPrerequisiteTypes = ["attribute", "affinity", "class", "arcana"]
+export const EPrerequisiteTypes = ["attribute", "affinity", "class", "arcana", "nodefault"]
 
 export const EActionType = ["free", "bonus", "quick", "standard", "long", "break", "downtime", "project", "passive"]
 
-export type _UPrerequisiteType = "attribute" | "affinity" | "class" | "arcana"
+export type _UPrerequisiteType = "attribute" | "affinity" | "class" | "arcana" | "nodefault"
 
 
 export const ESpellSubtypes = ["base", "target", "skill", "edict"]
