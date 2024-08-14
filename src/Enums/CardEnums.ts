@@ -2,11 +2,11 @@ export const EArcanotype = ["elemental", "divine", "mystical", "axum", "primal",
 
 export const EEmblemType = ["default", "info", "warning", "tether", "stamina", "requirement", "priority", "power"]
 
-export const EPrerequisiteTypes = ["attribute", "affinity", "class", "arcana"]
+export const EPrerequisiteTypes = ["attribute", "affinity", "class", "arcana", "nodefault"]
 
 export const EActionType = ["free", "bonus", "quick", "standard", "long", "break", "downtime", "project", "passive"]
 
-export type _UPrerequisiteType = "attribute" | "affinity" | "class" | "arcana"
+export type _UPrerequisiteType = "attribute" | "affinity" | "class" | "arcana" | "nodefault"
 
 
 export const ESpellSubtypes = ["base", "target", "skill", "edict"]
@@ -25,7 +25,7 @@ export const ESkill = ["athletics", "handling", "stealth", "deduction", "identif
 
 export const ERefreshTypes = ["passive", "atWill", "perBattle", "perRefresh", "perDay", "perConnect", "perDowntime"]
 
-export const EDamageTypes = ["magical", "physical", "raw"]
-export const EDamageSubtypes = ["crushing", "piercing", "slashing", "straining", "fire", "frost", "shock", "gravity", "light", "water", "perception", "curse"]
+export const EDamageTypes = ["magical", "physical", "raw", "none"]
+export const EDamageSubtypes = ["none", "crushing", "piercing", "slashing", "fire", "frost", "shock", "gravity", "light", "water", "perception", "curse"]
 
 export const ESaveTypes = ["might", "agility", "skill", "awareness", "vitality", "knowledge", "mind", "presence", "authority", "endurance", "luck", "none"]
