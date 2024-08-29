@@ -261,8 +261,8 @@ const _GetAllSpellsPossibleForUser = async(user: _IUserModel, characterId: strin
         } else {
             return {
                 bases: [],
-                targets: [],
-                modifiers: []
+                targets: _PossibleFilter(allCards.targets, char),
+                modifiers: _PossibleFilter(allCards.modifiers, char, true)
             }
         }
     }
@@ -316,7 +316,7 @@ const _GetAllCardsPossibleForUser = async(user: _IUserModel, characterId: string
     }
 }
 
-const _PossibleFilter = (cardList: Array<_IAbstractCardData>, character: _ICharacterData) => {
+const _PossibleFilter = (cardList: Array<_IAbstractCardData>, character: _ICharacterData, excludeNoDefault=false) => {
     const {affinities, arcana} = _CalcAffinities(character);
     return cardList.filter((card) => {
         return card.prerequisites.reduce((pv, cv) => {
@@ -333,6 +333,8 @@ const _PossibleFilter = (cardList: Array<_IAbstractCardData>, character: _IChara
                 case "arcana":
                     // console.log(arcana[cv.skill as "arcane" | "warrior" | "support" | "hacker"], cv.level)
                     return arcana[cv.skill as "arcane" | "warrior" | "support" | "hacker"] >= cv.level;
+                case "nodefault":
+                    return excludeNoDefault ? false : pv;
                 default:
                     return pv;
             }
