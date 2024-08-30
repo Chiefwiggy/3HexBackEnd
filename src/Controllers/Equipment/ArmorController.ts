@@ -2,6 +2,7 @@ import {Request, Response} from 'express'
 import ArmorModel from "../../Models/Equipment/ArmorModel";
 import ValidQueryBuilder from "../../Utils/ValidQueryBuilder";
 import {_IUserModel} from "../../Models/UserModel";
+import ConsumableModel from "../../Models/Equipment/ConsumableModel";
 
 
 export const GetAllArmor = async(req: Request, res: Response) => {
@@ -32,6 +33,22 @@ export const AddArmor = new ValidQueryBuilder()
     .success(async(req: Request, res: Response, user: _IUserModel) => {
         try {
             const data = new ArmorModel({...req.body});
+            await data.save();
+            res.status(201).json({
+                status: "success",
+                data: {...data}
+            })
+        } catch (err) {
+            res.status(500).send(err);
+        }
+    })
+    .exec();
+
+export const AddConsumable = new ValidQueryBuilder()
+    .addPerm('admin')
+    .success(async(req: Request, res: Response, user: _IUserModel) => {
+        try {
+            const data = new ConsumableModel({...req.body});
             await data.save();
             res.status(201).json({
                 status: "success",
