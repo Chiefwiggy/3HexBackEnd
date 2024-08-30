@@ -112,6 +112,11 @@ export interface _IPreparedSource {
     attunementLevel: number
 }
 
+export interface _IEquippedConsumable {
+    consumableId: string,
+    amount: number
+}
+
 
 export interface _ICharacterData extends Document {
     characterName: string,
@@ -155,6 +160,7 @@ export interface _ICharacterData extends Document {
     currentWeapon: _ICalculatedWeapon,
     counterWeapon: _ICalculatedWeapon,
     currentArmor: _IKnownArmorStruct,
+    knownConsumables: Array<_IEquippedConsumable>,
     knownArmor: Array<_IKnownArmorStruct>,
     knownWeapons: Array<_IKnownWeaponStruct>,
     knownBaseSpells: Array<string>,
@@ -312,6 +318,12 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
         required: false,
         default: null
     },
+    knownConsumables: [
+        {
+            consumableId: {type: String, required: true},
+            amount: {type: Number, required: true, default: 0}
+        }
+    ],
     knownArmor: [
         {
             baseId: {type: String, required: true},

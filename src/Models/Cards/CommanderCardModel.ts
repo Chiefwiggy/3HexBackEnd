@@ -41,11 +41,7 @@ export interface _ICommanderCardData extends _IAbstractCardData {
             stepSpeed: _IDataModifiers,
             dashSpeed: _IDataModifiers,
         },
-        bonuses: {
-            toHit: _IDataModifiers,
-            damage: _IDataModifiers,
-            consumableHealing: _IDataModifiers
-        },
+        bonuses: Object,
         specialization: {
             axes?: _ISpecialistData,
             blades?: _ISpecialistData,
@@ -94,11 +90,7 @@ const CommanderCardSchema = new Schema<_ICommanderCardData>({
             stepSpeed: IDataModifiers,
             dashSpeed: IDataModifiers
         },
-        bonuses: {
-            toHit: IDataModifiers,
-            damage: IDataModifiers,
-            consumableHealing: IDataModifiers
-        },
+        bonuses: Object,
         specialization: {
             axes: ISpecialistData,
             blades: ISpecialistData,

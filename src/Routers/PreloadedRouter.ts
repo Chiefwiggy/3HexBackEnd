@@ -9,6 +9,7 @@ import {_ISpellCardData} from "../Models/Cards/AbstractSpellCardSchema";
 import LawModel from "../Models/LawModel";
 import SourceModel from "../Models/SourceModel";
 import {_GetAllSources} from "../Controllers/SourceController";
+import ConsumableModel from "../Models/Equipment/ConsumableModel";
 
 const router = Router();
 
@@ -27,6 +28,8 @@ router.get("/getAllPreloadedContent", async(req: Request, res: Response) => {
     const weaponData = await _GetCardsOfType(req, res, BaseWeaponCardModel);
     const armorData = await ArmorModel.find({});
 
+    const consumableData = await ConsumableModel.find({});
+
     res.status(200).json({
         class: {
             cards: classCards.data,
@@ -43,7 +46,8 @@ router.get("/getAllPreloadedContent", async(req: Request, res: Response) => {
         },
         sources: allSources.data,
         weaponData: weaponData.data,
-        armorData: armorData
+        armorData: armorData,
+        consumableData: consumableData
     })
 
 
