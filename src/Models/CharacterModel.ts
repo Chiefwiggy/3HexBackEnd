@@ -126,7 +126,8 @@ export interface _ICharacterData extends Document {
         affinities: _IAffinities,
         classExpertises: Array<string>,
         downtimeActivities: Array<string>,
-        classTier: number
+        classTier: number,
+        isPromoted: boolean
     }>,
     attributeBars: {
         health: _IAttributeBar,
@@ -228,7 +229,8 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
                     default: "Hemocraft Kit"
                 }
             ],
-            classTier: {type: Number, required: true, default: 1}
+            classTier: {type: Number, required: true, default: 1},
+            isPromoted: {type: Boolean, required: true, default: false}
         }
     ],
     attributeBars: {
