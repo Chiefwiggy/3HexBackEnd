@@ -117,6 +117,30 @@ export interface _IEquippedConsumable {
     amount: number
 }
 
+export interface _IMinionSpecificData {
+    minionName: string,
+    minionTemplateId: string,
+    minionXP: number,
+    minionStatBonuses: {
+        might: _IModifiable,
+        agility: _IModifiable,
+        skill: _IModifiable,
+        awareness: _IModifiable,
+        vitality: _IModifiable,
+        knowledge: _IModifiable,
+        mind: _IModifiable,
+        presence: _IModifiable,
+        command: _IModifiable,
+        endurance: _IModifiable
+    },
+    attributeBars: {
+        health: _IAttributeBar,
+        stamina: _IAttributeBar,
+        tether: _IAttributeBar
+    },
+    bonuses: Object
+}
+
 
 export interface _ICharacterData extends Document {
     characterName: string,
@@ -191,7 +215,8 @@ export interface _ICharacterData extends Document {
     minionsOwned: Array<{
         minionId: string,
         isEquipped: boolean
-    }>
+    }>,
+    minionData: Array<_IMinionSpecificData>
 }
 
 const CharacterSchema = new mongoose.Schema<_ICharacterData>({
@@ -379,6 +404,32 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
         type: [{
             minionId: {type: String, required: true},
             isEquipped: {type: Boolean, required: true, default: false}
+        }],
+        default: []
+    },
+    minionData: {
+        type: [{
+            minionName: {type: String, required: true},
+            minionTemplateId: {type: String, required: true},
+            minionXP: {type: Number, default: 0},
+            attributeBars: {
+                health: IAttributeBar,
+                stamina: IAttributeBar,
+                tether: IAttributeBar,
+            },
+            minionStatBonuses: {
+                might: IModifiable,
+                agility: IModifiable,
+                skill: IModifiable,
+                awareness: IModifiable,
+                vitality: IModifiable,
+                knowledge: IModifiable,
+                mind: IModifiable,
+                presence: IModifiable,
+                command: IModifiable,
+                endurance: IModifiable
+            },
+            bonuses: Object
         }],
         default: []
     }

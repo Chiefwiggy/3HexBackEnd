@@ -12,3 +12,5 @@ export const EArcana = [
 ]
 
 export const EChoiceLabel = [...EAffinity, ...EArcana]
+
+export const EMinionRole = ["brute", "tank", "soldier", "ranged", "magic", "support"]

@@ -13,6 +13,7 @@ import FormWeaponCardModel from "../Models/Cards/FormWeaponCardModel";
 import SkillWeaponCardModel from "../Models/Cards/SkillWeaponCardModel";
 import ModifierSpellCardModel from "../Models/Cards/ModifierSpellCardModel";
 import TargetSpellCardModel from "../Models/Cards/TargetSpellCardModel";
+import MinionTemplateModel from "../Models/MinionTemplateModel";
 
 
 export const GetAllMinions = () => {
@@ -44,10 +45,10 @@ export const GetMinionsByIds = new validQueryBuilder()
     .exec();
 
 export const CreateMinion = new ValidQueryBuilder()
-    .admin()
+    .addPerm("registered")
     .success(async(req: Request, res: Response, user: _IUserModel) => {
         try {
-            const data = new MinionModel({...req.body});
+            const data = new MinionTemplateModel({...req.body});
             await data.save();
 
             res.status(201).json({
