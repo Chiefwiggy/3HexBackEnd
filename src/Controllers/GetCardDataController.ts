@@ -349,7 +349,7 @@ export const _CalcAffinities = (character: _ICharacterData) => {
         deft: 0,
         erudite: 0,
         guardian: 0,
-        hex: 0,
+        focus: 0,
         infantry: 0,
         leadership: 0,
         machinery: 0,

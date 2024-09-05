@@ -62,7 +62,7 @@ export interface _IAttributes {
 }
 
 export interface _IAffinities {
-    hex: number,
+    focus: number,
     rune: number,
     soul: number,
     deft: number,
@@ -226,7 +226,7 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
         {
             className: { type: String, required: true },
             affinities: {
-                hex: { type: Number, required: false, default: 0},
+                focus: { type: Number, required: false, default: 0},
                 rune: {type: Number, required: false, default: 0},
                 soul: {type: Number, required: false, default: 0},
                 deft: {type: Number, required: false, default: 0},

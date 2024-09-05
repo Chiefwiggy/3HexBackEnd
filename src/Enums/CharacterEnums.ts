@@ -1,7 +1,7 @@
 
 
 export const EChoiceType = ["affinity", "arcana"];
-export const EAffinity = ["infantry", "guardian", "hex", "rune", "soul", "deft", "leadership", "erudite", "supply", "biohacking", "abjuration", "machinery"];
+export const EAffinity = ["infantry", "guardian", "focus", "rune", "soul", "deft", "leadership", "erudite", "supply", "biohacking", "abjuration", "machinery"];
 
 export const EArcana = [
     "arcane",
