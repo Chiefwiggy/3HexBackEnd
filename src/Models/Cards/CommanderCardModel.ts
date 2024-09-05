@@ -54,12 +54,7 @@ export interface _ICommanderCardData extends _IAbstractCardData {
         },
         quickSlots: _IDataModifiers,
     },
-    unlocks: {
-        minionsUseEdicts?: boolean,
-        weaponSpecialistPower?: boolean,
-        weaponSpecialistAccuracy?: boolean,
-        weaponSpecialistGeneralist?: boolean
-    },
+    unlocks: Object,
     minionSlots: number,
     adjutantSlots: number
 }
@@ -103,12 +98,7 @@ const CommanderCardSchema = new Schema<_ICommanderCardData>({
         },
         quickSlots: IDataModifiers,
     },
-    unlocks: {
-        minionsUseEdicts: Boolean,
-        weaponSpecialistAccuracy: Boolean,
-        weaponSpecialistPower: Boolean,
-        weaponSpecialistGeneralist: Boolean
-    },
+    unlocks: Object,
     minionSlots: Number,
     adjutantSlots: Number
 })
