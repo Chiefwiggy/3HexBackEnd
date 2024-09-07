@@ -10,6 +10,7 @@ import LawModel from "../Models/LawModel";
 import SourceModel from "../Models/SourceModel";
 import {_GetAllSources} from "../Controllers/SourceController";
 import ConsumableModel from "../Models/Equipment/ConsumableModel";
+import {GetFatelineData} from "../Controllers/FatelineController";
 
 const router = Router();
 
@@ -30,6 +31,8 @@ router.get("/getAllPreloadedContent", async(req: Request, res: Response) => {
 
     const consumableData = await ConsumableModel.find({});
 
+    const fatelineData = await GetFatelineData(req, res);
+
     res.status(200).json({
         class: {
             cards: classCards.data,
@@ -47,7 +50,8 @@ router.get("/getAllPreloadedContent", async(req: Request, res: Response) => {
         sources: allSources.data,
         weaponData: weaponData.data,
         armorData: armorData,
-        consumableData: consumableData
+        consumableData: consumableData,
+        fatelineData: fatelineData
     })
 
 

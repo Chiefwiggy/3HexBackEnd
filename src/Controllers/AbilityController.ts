@@ -53,6 +53,8 @@ export const GetAbilitiesForChar = new ValidQueryBuilder()
                                 case "arcana":
                                     // console.log(arcana[cv.skill as "arcane" | "warrior" | "support" | "hacker"], cv.level)
                                     return arcana[cv.skill as "arcane" | "warrior" | "support" | "hacker"] >= cv.level;
+                                case "fateline":
+                                    return (char.fateline.fatelineName === cv.skill && (cv.level === -1) === char.fateline.isReversed)
                                 default:
                                     return pv;
                             }

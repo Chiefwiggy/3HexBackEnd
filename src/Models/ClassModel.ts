@@ -2,7 +2,7 @@ import mongoose, {Schema, Document} from 'mongoose'
 import {EChoiceType, EChoiceLabel} from "../Enums/CharacterEnums";
 import {_UPrerequisiteType, EPrerequisiteTypes} from "../Enums/CardEnums";
 
-interface _IChoiceData {
+export interface _IChoiceData {
     choiceType: string,
     choiceName: string,
     choiceAmount: number
@@ -30,7 +30,7 @@ export interface _IClassModel extends Document {
     }>,
 }
 
-const MChoiceData = {
+export const MChoiceData = {
     choiceType: {
         type: String,
         enum: EChoiceType,

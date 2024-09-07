@@ -1,5 +1,6 @@
 import mongoose, {Schema} from "mongoose";
 import {EEmblemType, ESkill} from "../Enums/CardEnums";
+import {EFatelines, ERaceRole} from "../Enums/CharacterEnums";
 
 
 export const IModifiable = {
@@ -153,6 +154,15 @@ export interface _ICharacterData extends Document {
         classTier: number,
         isPromoted: boolean
     }>,
+    fateline: {
+        fatelineName: string,
+        affinities: _IAffinities,
+        isReversed: boolean
+    },
+    race: {
+        raceName: string,
+        raceRole: string
+    },
     attributeBars: {
         health: _IAttributeBar,
         stamina: _IAttributeBar,
@@ -258,6 +268,28 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
             isPromoted: {type: Boolean, required: true, default: false}
         }
     ],
+    fateline: {
+        fatelineName: {type: String, required: true, enum: EFatelines, default: "fool"},
+        affinities: {
+            focus: { type: Number, required: false, default: 0},
+            rune: {type: Number, required: false, default: 0},
+            soul: {type: Number, required: false, default: 0},
+            deft: {type: Number, required: false, default: 0},
+            infantry: {type: Number, required: false, default: 0},
+            guardian: {type: Number, required: false, default: 0},
+            leadership: {type: Number, required: false, default: 0},
+            erudite: {type: Number, required: false, default: 0},
+            supply: {type: Number, required: false, default: 0},
+            biohacking: {type: Number, required: false, default: 0},
+            abjuration: {type: Number, required: false, default: 0},
+            machinery: {type: Number, required: false, default: 0},
+        },
+        isReversed: {type: Boolean, required: true, default: false}
+    },
+    race: {
+        raceName: {type: String, required: true},
+        raceRole: {type: String, required: true, enum: ERaceRole}
+    },
     attributeBars: {
         health: IAttributeBar,
         stamina: IAttributeBar,

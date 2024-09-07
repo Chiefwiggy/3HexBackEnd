@@ -14,3 +14,7 @@ export const EArcana = [
 export const EChoiceLabel = [...EAffinity, ...EArcana]
 
 export const EMinionRole = ["brute", "tank", "soldier", "ranged", "magic", "support"]
+
+export const ERaceRole = ["flying", "bulky"];
+
+export const EFatelines = ["fool", "magician", "high_priestess", "empress", "emperor", "hierophant", "lovers", "chariot", "strength", "hermit", "fortune", "justice", "hanged_man", "death", "temperance", "devil", "tower", "star", "moon", "sun", "judgement", "world"]

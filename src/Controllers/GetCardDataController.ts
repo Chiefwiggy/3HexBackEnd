@@ -335,6 +335,10 @@ const _PossibleFilter = (cardList: Array<_IAbstractCardData>, character: _IChara
                     return arcana[cv.skill as "arcane" | "warrior" | "support" | "hacker"] >= cv.level;
                 case "nodefault":
                     return excludeNoDefault ? false : pv;
+                case "fateline":
+                    return (character.fateline.fatelineName === cv.skill && (cv.level === -1) === character.fateline.isReversed)
+                case "race":
+                    return false;
                 default:
                     return pv;
             }
@@ -363,7 +367,7 @@ export const _CalcAffinities = (character: _ICharacterData) => {
         })
     })
     const arcana = {
-        arcane: affinities.hex + affinities.soul + affinities.soul,
+        arcane: affinities.focus + affinities.soul + affinities.soul,
         warrior: affinities.deft + affinities.infantry + affinities.guardian,
         support: affinities.supply + affinities.leadership + affinities.erudite,
         hacker: affinities.biohacking + affinities.abjuration + affinities.machinery
