@@ -156,6 +156,7 @@ export interface _ICharacterData extends Document {
     }>,
     fateline: {
         fatelineName: string,
+        fatelineId: string,
         affinities: _IAffinities,
         isReversed: boolean
     },
@@ -269,22 +270,26 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
         }
     ],
     fateline: {
-        fatelineName: {type: String, required: true, enum: EFatelines, default: "fool"},
-        affinities: {
-            focus: { type: Number, required: false, default: 0},
-            rune: {type: Number, required: false, default: 0},
-            soul: {type: Number, required: false, default: 0},
-            deft: {type: Number, required: false, default: 0},
-            infantry: {type: Number, required: false, default: 0},
-            guardian: {type: Number, required: false, default: 0},
-            leadership: {type: Number, required: false, default: 0},
-            erudite: {type: Number, required: false, default: 0},
-            supply: {type: Number, required: false, default: 0},
-            biohacking: {type: Number, required: false, default: 0},
-            abjuration: {type: Number, required: false, default: 0},
-            machinery: {type: Number, required: false, default: 0},
+        type: {
+            fatelineName: {type: String, required: true, default: "The Fool"},
+            fatelineId: {type: String, required: true, enum: EFatelines, default: "fool"},
+            affinities: {
+                focus: {type: Number, required: false, default: 0},
+                rune: {type: Number, required: false, default: 0},
+                soul: {type: Number, required: false, default: 0},
+                deft: {type: Number, required: false, default: 0},
+                infantry: {type: Number, required: false, default: 0},
+                guardian: {type: Number, required: false, default: 0},
+                leadership: {type: Number, required: false, default: 0},
+                erudite: {type: Number, required: false, default: 0},
+                supply: {type: Number, required: false, default: 0},
+                biohacking: {type: Number, required: false, default: 0},
+                abjuration: {type: Number, required: false, default: 0},
+                machinery: {type: Number, required: false, default: 0},
+            },
+            isReversed: {type: Boolean, required: true, default: false}
         },
-        isReversed: {type: Boolean, required: true, default: false}
+        required: false
     },
     race: {
         raceName: {type: String, required: true},

@@ -336,7 +336,7 @@ const _PossibleFilter = (cardList: Array<_IAbstractCardData>, character: _IChara
                 case "nodefault":
                     return excludeNoDefault ? false : pv;
                 case "fateline":
-                    return (character.fateline.fatelineName === cv.skill && (cv.level === -1) === character.fateline.isReversed)
+                    return character.fateline ? (character.fateline.fatelineId === cv.skill && (cv.level === -1) === character.fateline.isReversed) : false
                 case "race":
                     return false;
                 default:
