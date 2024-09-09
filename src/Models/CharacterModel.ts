@@ -292,8 +292,8 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
         required: false
     },
     race: {
-        raceName: {type: String, required: true},
-        raceRole: {type: String, required: true, enum: ERaceRole}
+        raceName: {type: String, required: true, default: "none"},
+        raceRole: {type: String, required: true, enum: ERaceRole, default: "standard"}
     },
     attributeBars: {
         health: IAttributeBar,
