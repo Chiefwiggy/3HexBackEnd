@@ -366,6 +366,9 @@ export const _CalcAffinities = (character: _ICharacterData) => {
             affinities[key as keyof _IAffinities] += value;
         })
     })
+    Object.entries(character.fateline.affinities).forEach(([key, value]) => {
+        affinities[key as keyof _IAffinities] += value;
+    })
     const arcana = {
         arcane: affinities.focus + affinities.soul + affinities.soul,
         warrior: affinities.deft + affinities.infantry + affinities.guardian,
