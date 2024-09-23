@@ -52,7 +52,7 @@ const AbstractCardSchema = new Schema({
     cardName: {type: String, required: true, unique: true},
     cardType: {
         type: String,
-        enum: ["spell", "weapon", "hack", "commander"],
+        enum: ["spell", "weapon", "hack", "commander", "condition"],
         required: true,
         default: "spell"
     },

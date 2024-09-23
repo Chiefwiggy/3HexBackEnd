@@ -13,6 +13,7 @@ export const GetAllCommanderCards = async(req: Request, res: Response) => {
     }
 }
 
+
 export const AddCommanderCard = new ValidQueryBuilder()
     .addPerm("admin")
     .success(async(req: Request, res: Response, user: _IUserModel) => {

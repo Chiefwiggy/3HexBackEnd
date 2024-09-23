@@ -8,6 +8,7 @@ import {
     GetAllCardsPossibleForUser
 } from "../Controllers/GetCardDataController";
 import CommanderCardRouter from "./CommanderCardRouter";
+import ConditionCardRouter from "./ConditionCardRouter";
 
 const router = Router();
 
@@ -21,6 +22,7 @@ router.get('/get/arcana/all', GetAllCardsForArcana);
 router.use('/spells', SpellCardsRouter);
 router.use('/weapons', WeaponCardsRouter);
 router.use('/commander', CommanderCardRouter)
+router.use('/conditions', ConditionCardRouter);
 
 export default router;
 

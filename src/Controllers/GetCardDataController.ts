@@ -19,6 +19,7 @@ import {_IAbstractCardData} from "../Models/Generics/AbstractCardSchema";
 import CommanderCardModel from "../Models/Cards/CommanderCardModel";
 import {_UPrerequisiteType} from "../Enums/CardEnums";
 import SourceModel, {_ISourceSchema} from "../Models/SourceModel";
+import ConditionCardModel from "../Models/Cards/ConditionCardModel";
 
 export const GetAllSpellBases = async(req: Request, res: Response) => {
     const finalData = await _GetCardsOfType(req, res, BaseSpellCardModel);
@@ -47,6 +48,11 @@ export const GetAllWeaponForms = async(req :Request, res: Response) => {
 
 export const GetAllWeaponSkills = async(req: Request, res: Response) => {
     const finalData = await _GetCardsOfType(req, res, SkillWeaponCardModel);
+    res.status(finalData.status).json(finalData.data);
+}
+
+export const GetAllConditionCards = async(req: Request, res: Response) => {
+    const finalData = await _GetCardsOfType(req, res, ConditionCardModel)
     res.status(finalData.status).json(finalData.data);
 }
 
@@ -366,9 +372,11 @@ export const _CalcAffinities = (character: _ICharacterData) => {
             affinities[key as keyof _IAffinities] += value;
         })
     })
-    Object.entries(character.fateline.affinities).forEach(([key, value]) => {
-        affinities[key as keyof _IAffinities] += value;
-    })
+    if (character.fateline) {
+        Object.entries(character.fateline.affinities).forEach(([key, value]) => {
+            affinities[key as keyof _IAffinities] += value;
+        })
+    }
     const arcana = {
         arcane: affinities.focus + affinities.soul + affinities.soul,
         warrior: affinities.deft + affinities.infantry + affinities.guardian,

@@ -1,5 +1,10 @@
 import {Router, Request, Response} from 'express'
-import {_GetAllCardsOfCriteria, _GetCardsOfType, _GetFilteredCardsOfType} from "../Controllers/GetCardDataController";
+import {
+    _GetAllCardsOfCriteria,
+    _GetCardsOfType,
+    _GetFilteredCardsOfType,
+    GetAllConditionCards
+} from "../Controllers/GetCardDataController";
 import BaseWeaponCardModel from "../Models/Cards/BaseWeaponCardModel";
 import ArmorModel from "../Models/Equipment/ArmorModel";
 import {_GetAllAbilitiesForCriteria} from "../Controllers/AbilityController";
@@ -11,6 +16,7 @@ import SourceModel from "../Models/SourceModel";
 import {_GetAllSources} from "../Controllers/SourceController";
 import ConsumableModel from "../Models/Equipment/ConsumableModel";
 import {GetFatelineData} from "../Controllers/FatelineController";
+import ConditionCardModel from "../Models/Cards/ConditionCardModel";
 
 const router = Router();
 
@@ -33,6 +39,8 @@ router.get("/getAllPreloadedContent", async(req: Request, res: Response) => {
 
     const fatelineData = await GetFatelineData(req, res);
 
+    const conditionCards = await ConditionCardModel.find({});
+
     res.status(200).json({
         class: {
             cards: classCards.data,
@@ -51,7 +59,8 @@ router.get("/getAllPreloadedContent", async(req: Request, res: Response) => {
         weaponData: weaponData.data,
         armorData: armorData,
         consumableData: consumableData,
-        fatelineData: fatelineData
+        fatelineData: fatelineData,
+        conditionCards: conditionCards
     })
 
 

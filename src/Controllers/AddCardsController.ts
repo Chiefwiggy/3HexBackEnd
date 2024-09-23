@@ -6,6 +6,7 @@ import BaseWeaponCardModel from "../Models/Cards/BaseWeaponCardModel";
 import mongoose from "mongoose";
 import FormWeaponCardModel from "../Models/Cards/FormWeaponCardModel";
 import SkillWeaponCardModel from "../Models/Cards/SkillWeaponCardModel";
+import ConditionCardModel, {_IConditionCard} from "../Models/Cards/ConditionCardModel";
 
 export const AddBaseSpell = async (req: Request, res: Response) => {
     return _AddSpellCard(req, res, "base", BaseSpellCardModel)
@@ -34,6 +35,10 @@ export const AddWeaponForm = async(req: Request, res: Response) => {
 
 export const AddWeaponSkill = async(req: Request, res: Response) => {
     return _AddWeaponCard(req, res, "skill", SkillWeaponCardModel)
+}
+
+export const AddConditionCard = async(req: Request, res: Response) => {
+    return _AddCard(req, res, "condition", ((req.body) as _IConditionCard).cardSubtype, ConditionCardModel);
 }
 
 const _AddWeaponCard = async(req: Request, res: Response, subtype: string, model: mongoose.Model<any>) => {

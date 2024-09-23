@@ -15,7 +15,8 @@ export interface _IAbilityModel extends Document {
     actionType: string,
     abilityRefreshTime: string,
     bonuses: Object,
-    unlocks: Object
+    unlocks: Object,
+    showByDefault?: boolean
 }
 
 const AbilitySchema = new Schema<_IAbilityModel>({
@@ -39,7 +40,8 @@ const AbilitySchema = new Schema<_IAbilityModel>({
     actionType: {type: String, enum: EActionType, required: false},
     abilityRefreshTime: {type: String, required: true, enum: ERefreshTypes, default: "passive"},
     bonuses: Object,
-    unlocks: Object
+    unlocks: Object,
+    showByDefault: {type: Boolean, default: true, required: false}
 })
 
 const AbilityModel = mongoose.model('abilities', AbilitySchema);
