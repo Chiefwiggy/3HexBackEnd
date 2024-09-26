@@ -115,6 +115,7 @@ export interface _IPreparedSource {
 
 export interface _IEquippedConsumable {
     consumableId: string,
+    prepared: number,
     amount: number
 }
 
@@ -385,7 +386,8 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
     knownConsumables: [
         {
             consumableId: {type: String, required: true},
-            amount: {type: Number, required: true, default: 0}
+            amount: {type: Number, required: true, default: 0},
+            prepared: {type: Number, required: true, default: 0}
         }
     ],
     knownArmor: [
