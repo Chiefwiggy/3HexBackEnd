@@ -16,6 +16,7 @@ import PreloadedRouter from "./Routers/PreloadedRouter";
 import LawRouter from "./Routers/LawRouter";
 import SourceRouter from "./Routers/SourceRouter";
 import FatelineRouter from "./Routers/FatelineRouter";
+import DowntimeRouter from "./Routers/DowntimeRouter";
 
 const PORT: number = Number(process.env.PORT) || 3001;
 
@@ -45,6 +46,7 @@ router.use("/preload", PreloadedRouter)
 router.use("/laws", LawRouter);
 router.use("/sources", SourceRouter);
 router.use("/fatelines", FatelineRouter);
+router.use("/downtime", DowntimeRouter)
 
 
 app.use('/.netlify/functions/index', router);

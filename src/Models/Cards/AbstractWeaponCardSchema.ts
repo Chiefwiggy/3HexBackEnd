@@ -19,6 +19,8 @@ export interface _IWeaponCardData extends _IAbstractCardData {
     hitMod?: _IDataModifiers,
     baseCritMod?: _IDataModifiers,
     critMod?: _IDataModifiers,
+    canUseForOffhand?: boolean,
+    offhandOnly?: boolean,
     weaponClassOverride?: string,
     weaponDamageTypeOverride?: string,
     weaponDamageSubtypeOverride?: string
@@ -29,6 +31,8 @@ const AbstractWeaponCardSchema = new Schema<_IWeaponCardData>({
     hitMod: IDataModifiers,
     baseCritMod: IDataModifiers,
     critMod: IDataModifiers,
+    canUseForOffhand: { type: Boolean, default: false, required: true},
+    offhandOnly: {type: Boolean, default: false},
     weaponClassOverride: {
         type: String,
         enum: EWeaponClass,

@@ -239,18 +239,16 @@ const _GetAllSpellsPossibleForUser = async(user: _IUserModel, characterId: strin
                 const sourceData: _ISourceSchema | null = await SourceModel.findById(sourceMetadata.sourceId);
                 if (sourceData) {
                     return sourceData.sourceTiers.flatMap(tier => {
-                        return (sourceMetadata.attunementLevel >= tier.layer && arcana["arcane"] >= tier.arcaneRequirement) ? tier.cardId : null
+                        return (sourceMetadata.attunementLevel >= tier.layer) ? tier.cardId : null
                     }).filter(e => e);
                 }
                 return [];
             }))).flat();
 
-            console.log(sourceIds);
-
 
             const newBases = allCards.bases.filter((base) => {
                 // @ts-ignore
-                return sourceIds.includes(base._id.toString());
+                return sourceIds.includes(base._id.toString()) || base.prerequisites.length > 0;
                 // return char.knownBaseSpells.includes(base._id.toString());
             })
 
@@ -335,7 +333,15 @@ const _PossibleFilter = (cardList: Array<_IAbstractCardData>, character: _IChara
                     // console.log(affinities[cv.skill as keyof _IAffinities])
                     return affinities[cv.skill as keyof _IAffinities] >= cv.level;
                 case "class":
-                    return character.classes.filter(cc => cc.className.toLowerCase() == cv.skill.toLowerCase()).length > 0
+                    const clz = character.classes.find(cc => cc.className.toLowerCase() == cv.skill.toLowerCase())
+                    if (clz) {
+                        if (cv.level == 1) {
+                            return true;
+                        } else {
+                            return clz.isPromoted;
+                        }
+                    }
+                    return false;
                 case "arcana":
                     // console.log(arcana[cv.skill as "arcane" | "warrior" | "support" | "hacker"], cv.level)
                     return arcana[cv.skill as "arcane" | "warrior" | "support" | "hacker"] >= cv.level;

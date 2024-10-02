@@ -119,6 +119,12 @@ export interface _IEquippedConsumable {
     amount: number
 }
 
+export interface _IDowntimePlayerData {
+    activityId: string,
+    currentProgress: number,
+    proficiency: number
+}
+
 export interface _IMinionSpecificData {
     minionName: string,
     minionTemplateId: string,
@@ -151,10 +157,10 @@ export interface _ICharacterData extends Document {
         className: string,
         affinities: _IAffinities,
         classExpertises: Array<string>,
-        downtimeActivities: Array<string>,
         classTier: number,
         isPromoted: boolean
     }>,
+    downtimeData: Array<_IDowntimePlayerData>,
     fateline: {
         fatelineName: string,
         fatelineId: string,
@@ -195,6 +201,7 @@ export interface _ICharacterData extends Document {
     createdWeapons: Array<_ICalculatedWeapon>,
     currentSpell: _ICalculatedSpell,
     currentWeapon: _ICalculatedWeapon,
+    currentOffhandWeapon: _ICalculatedWeapon,
     counterWeapon: _ICalculatedWeapon,
     currentArmor: _IKnownArmorStruct,
     knownConsumables: Array<_IEquippedConsumable>,
@@ -259,17 +266,19 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
                     default: "Athletics"
                 }
             ],
-            downtimeActivities: [
-                {
-                    type: String,
-                    required: true,
-                    default: "Hemocraft Kit"
-                }
-            ],
             classTier: {type: Number, required: true, default: 1},
             isPromoted: {type: Boolean, required: true, default: false}
         }
     ],
+    downtimeData: {
+      type: [
+          {
+              activityId: {type: String, required: true},
+              currentProgress: {type: Number, required: true, default: 0},
+              proficiency: {type: Number, required: true, default: 0}
+          }
+      ]
+    },
     fateline: {
         type: {
             fatelineName: {type: String, required: true, default: "The Fool"},
@@ -364,6 +373,18 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
         default: null
     },
     currentWeapon: {
+        type: {
+            customName: {type: String, required: false},
+            weaponBaseData: {
+                baseId: {type: String, required: true},
+                enchantmentLevel: {type: Number, required: true, default: 0}
+            },
+            weaponCardsIds: [String]
+        },
+        required: false,
+        default: null
+    },
+    currentOffhandWeapon: {
         type: {
             customName: {type: String, required: false},
             weaponBaseData: {
