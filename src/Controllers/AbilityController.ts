@@ -49,7 +49,15 @@ export const GetAbilitiesForChar = new ValidQueryBuilder()
                                     // console.log(affinities[cv.skill as keyof _IAffinities])
                                     return affinities[cv.skill as keyof _IAffinities] >= cv.level;
                                 case "class":
-                                    return char.classes.filter(cc => cc.className.toLowerCase() == cv.skill.toLowerCase()).length > 0
+                                    const clz = char.classes.find(cc => cc.className.toLowerCase() == cv.skill.toLowerCase())
+                                    if (clz) {
+                                        if (cv.level == 1) {
+                                            return true;
+                                        } else {
+                                            return clz.isPromoted;
+                                        }
+                                    }
+                                    return false;
                                 case "arcana":
                                     // console.log(arcana[cv.skill as "arcane" | "warrior" | "support" | "hacker"], cv.level)
                                     return arcana[cv.skill as "arcane" | "warrior" | "support" | "hacker"] >= cv.level;
