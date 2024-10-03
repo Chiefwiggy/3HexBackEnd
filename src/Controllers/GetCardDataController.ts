@@ -389,7 +389,6 @@ export const _CalcAffinities = (character: _ICharacterData) => {
         support: affinities.supply + affinities.leadership + affinities.erudite,
         hacker: affinities.biohacking + affinities.abjuration + affinities.machinery
     }
-    console.log(arcana)
     return {
         affinities,
         arcana
