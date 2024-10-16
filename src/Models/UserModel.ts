@@ -18,8 +18,7 @@ const UserSchema = new Schema<_IUserModel>({
     password: {type: String, required: true},
     userPermissions: [
         {
-            type: String,
-            enum: EPermission
+            type: String
         }
     ],
     characters_owned: [

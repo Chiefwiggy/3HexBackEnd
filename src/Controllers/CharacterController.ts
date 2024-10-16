@@ -30,10 +30,15 @@ export const GetCharactersFromUser = new ValidQueryBuilder()
     .addPerm("registered")
     .success(async(req: Request, res: Response, user: _IUserModel) => {
         try {
-            // @ts-ignore
-            const char: Array<any> | null = await CharacterModel.find({
-                _id: {$in: user.characters_owned.map(e => e.id)}
-            })
+            let char: Array<any> | null;
+            if (user.userPermissions.includes("admin")) {
+                char = await CharacterModel.find({});
+            } else {
+                // @ts-ignore
+                char = await CharacterModel.find({
+                    _id: {$in: user.characters_owned.map(e => e.id)}
+                })
+            }
             if (char) {
                 res.status(200).json(char)
             }

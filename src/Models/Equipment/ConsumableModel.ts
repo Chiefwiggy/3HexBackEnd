@@ -10,7 +10,9 @@ export interface _IConsumable {
     tetherCost?: number,
     itemType: string,
     description: Array<string>,
-    slotCost: number
+    slotCost: number,
+    itemTier: number,
+    itemBaseHealth?: number
 }
 
 const ConsumableSchema = new mongoose.Schema<_IConsumable>({
@@ -21,7 +23,9 @@ const ConsumableSchema = new mongoose.Schema<_IConsumable>({
     tetherCost: {type: Number, required: false},
     itemType: {type: String, required: true, enum: EConsumableType},
     description: {type: [String], required: true},
-    slotCost: {type: Number, required: true, default: 1}
+    slotCost: {type: Number, required: true, default: 1},
+    itemTier: {type: Number, required: true, default: 1},
+    itemBaseHealth: Number
 })
 
 const ConsumableModel = mongoose.model("consumables", ConsumableSchema);

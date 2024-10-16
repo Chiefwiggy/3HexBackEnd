@@ -60,6 +60,7 @@ export const _PopulateSourceData = async (sourceData: _ISourceSchema) => {
             sourceArcanotype: sourceData.sourceArcanotype,
             sourceTier: sourceData.sourceTier,
             law: law,
+            visibility: sourceData.visibility,
             sourceTiers
         }
 }
