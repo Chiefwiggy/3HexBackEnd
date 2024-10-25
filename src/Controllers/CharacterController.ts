@@ -88,3 +88,36 @@ export const UpdateCharacter = new ValidQueryBuilder()
 
     })
     .exec();
+
+export const DeleteCharacter = new ValidQueryBuilder()
+    .addPerm("registered")
+    .success(async(req: Request, res: Response, user: _IUserModel) => {
+        try {
+            if (user.characters_owned.map(e => e.id).includes(req.params.characterId) || user.userPermissions.includes("admin")) {
+                const existingChar = await CharacterModel.findByIdAndDelete(req.params.characterId);
+                if (!existingChar) {
+                    res.status(404).json({
+                        message: "Character successfully removed.",
+                        status: "NOT FOUND"
+                        }
+                    );
+                    return;
+                }
+                let message = {
+                    message: "Character successfully removed.",
+                    status: "SUCCESS"
+                }
+                res.status(200).json(message);
+            } else {
+                res.status(401).json({
+                    message: "Unauthorized. You do not own this character.",
+                    status: "UNAUTHORIZED"
+                })
+            }
+        } catch (e) {
+            console.error(e)
+            res.status(500).send(e);
+        }
+
+    })
+    .exec()

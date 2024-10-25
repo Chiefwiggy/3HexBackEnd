@@ -153,6 +153,7 @@ export interface _IMinionSpecificData {
 export interface _ICharacterData extends Document {
     characterName: string,
     characterLevel: number,
+    isMainCharacter: boolean,
     classes: Array<{
         className: string,
         affinities: _IAffinities,
@@ -241,6 +242,7 @@ export interface _ICharacterData extends Document {
 const CharacterSchema = new mongoose.Schema<_ICharacterData>({
     characterName: { type: String, required: true, unique: true},
     characterLevel: { type: Number, required: true },
+    isMainCharacter: {type: Boolean, required: true, default: false},
     classes: [
         {
             className: { type: String, required: true },

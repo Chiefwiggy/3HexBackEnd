@@ -6,7 +6,7 @@ interface ISignatureData {
 }
 export const GenerateAccessToken = async(sign_data: ISignatureData) => {
     return new Promise((resolve, reject) => {
-        jwt.sign(sign_data, process.env.JWT_SIGNATURE_PRIVATE_TOKEN as string, {expiresIn: "2h"}, (err, data) => {
+        jwt.sign(sign_data, process.env.JWT_SIGNATURE_PRIVATE_TOKEN as string, {expiresIn: "1d"}, (err, data) => {
             if (err) reject(err);
             else resolve(data);
         })
@@ -15,7 +15,7 @@ export const GenerateAccessToken = async(sign_data: ISignatureData) => {
 
 export const GenerateRefreshToken = async(sign_data: ISignatureData) => {
     return new Promise((resolve, reject) => {
-        jwt.sign(sign_data, process.env.JWT_SIGNATURE_REFRESH as string, {expiresIn: "21d"}, (err, data) => {
+        jwt.sign(sign_data, process.env.JWT_SIGNATURE_REFRESH as string, {expiresIn: "365d"}, (err, data) => {
             if (err) reject(err);
             else resolve(data);
         })
