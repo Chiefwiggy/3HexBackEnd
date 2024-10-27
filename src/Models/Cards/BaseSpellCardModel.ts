@@ -44,7 +44,7 @@ const BaseSpellCardSchema = new Schema<_IBaseSpellCardData>({
         type: String,
         enum: EDamageSubtypes,
         required: true,
-        default: "slashing"
+        default: "slash"
     },
     environmentBonus: {type: String, required: true}
 })

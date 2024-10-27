@@ -83,7 +83,7 @@ const BaseWeaponCardSchema = new Schema<_IBaseWeaponCardData>({
         type: String,
         enum: EDamageSubtypes,
         required: true,
-        default: "slashing"
+        default: "slash"
     },
     handedness: {type: Number, required: true, default: 1.5},
     specialCrit: IScalingData({

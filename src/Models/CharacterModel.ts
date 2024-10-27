@@ -326,8 +326,6 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
         endurance: IModifiable
     },
     movement: {
-        stepSpeed: IModifiable,
-        dashSpeed: IModifiable,
         canClimb: { type: Boolean, required: false, default: false },
         canFly: { type: Boolean, required: false, default: false },
         canSwim: { type: Boolean, required: false, default: false },
@@ -360,7 +358,9 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
     createdWeapons: [
         {
             customName: {type: String, required: false},
-            weaponBaseId: {type: String, required: true},
+            weaponBaseData: {
+                baseId: {type: String, required: true}
+            },
             weaponCardsIds: [String]
         }
     ],
