@@ -4,7 +4,7 @@ import {
     GetAllCharacters, GetCharacterById,
     GetCharactersFromUser,
     UpdateCharacter,
-    DeleteCharacter
+    DeleteCharacter, UpdateCharacterSettings
 } from "../Controllers/CharacterController";
 import PreparationRouter from "./Prep/PreparationRouter";
 
@@ -15,6 +15,7 @@ router.get("/get/:id", GetCharacterById);
 router.get("/getMine", GetCharactersFromUser);
 
 router.put("/update/:characterId", UpdateCharacter);
+router.put("/settings/update/:characterId", UpdateCharacterSettings);
 
 router.delete("/delete/:characterId", DeleteCharacter);
 

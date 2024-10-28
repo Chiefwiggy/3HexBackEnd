@@ -89,6 +89,30 @@ export const UpdateCharacter = new ValidQueryBuilder()
     })
     .exec();
 
+export const UpdateCharacterSettings = new ValidQueryBuilder()
+    .addPerm("registered")
+    .success(async(req: Request, res: Response, user: _IUserModel) => {
+        try {
+            const existingChar = await CharacterModel.findById(req.params.characterId);
+            if (!existingChar) {
+                res.status(404).send("Could not find character.")
+                return;
+            }
+            await CharacterModel.findByIdAndUpdate(
+                req.params.characterId,
+                { $set: {"settings": req.body}, $inc: {__v: 1}},
+                { new: true, runValidators: true}
+            )
+            let message = { message: "Character settings successfully updated" };
+            res.status(202).json(message);
+        } catch (e) {
+            console.error(e)
+            res.status(500).send(e)
+        }
+
+    })
+    .exec();
+
 export const DeleteCharacter = new ValidQueryBuilder()
     .addPerm("registered")
     .success(async(req: Request, res: Response, user: _IUserModel) => {

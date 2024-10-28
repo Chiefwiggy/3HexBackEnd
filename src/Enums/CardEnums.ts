@@ -28,6 +28,6 @@ export const ESkill = ["athletics", "handling", "stealth", "deduction", "identif
 export const ERefreshTypes = ["passive", "atWill", "perBattle", "perRefresh", "perDay", "perConnect", "perDowntime"]
 
 export const EDamageTypes = ["magical", "physical", "raw", "none"]
-export const EDamageSubtypes = ["none", "force", "pierce", "slash", "impact", "burn", "frost", "shock", "corrosive", "sensory", "curse", "holy", "soul"]
+export const EDamageSubtypes = ["none", "pierce", "slash", "kinetic", "burn", "frost", "shock", "corrosive", "sensory", "curse", "holy", "soul"]
 
 export const ESaveTypes = ["might", "agility", "skill", "awareness", "vitality", "knowledge", "mind", "presence", "authority", "endurance", "luck", "none"]

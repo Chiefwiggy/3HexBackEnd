@@ -169,9 +169,11 @@ export interface _ICharacterData extends Document {
         isReversed: boolean
     },
     race: {
+        raceId: string,
         raceName: string,
         raceRole: string
     },
+    specialId: string,
     attributeBars: {
         health: _IAttributeBar,
         stamina: _IAttributeBar,
@@ -236,7 +238,10 @@ export interface _ICharacterData extends Document {
         minionId: string,
         isEquipped: boolean
     }>,
-    minionData: Array<_IMinionSpecificData>
+    minionData: Array<_IMinionSpecificData>,
+    settings: {
+        dieColorId: string
+    }
 }
 
 const CharacterSchema = new mongoose.Schema<_ICharacterData>({
@@ -305,8 +310,10 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
     },
     race: {
         raceName: {type: String, required: true, default: "none"},
+        raceId: {type: String, required: true},
         raceRole: {type: String, required: true, enum: ERaceRole, default: "standard"}
     },
+    specialId: String,
     attributeBars: {
         health: IAttributeBar,
         stamina: IAttributeBar,
@@ -494,6 +501,9 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
             bonuses: Object
         }],
         default: []
+    },
+    settings: {
+        dieColorId: {type: String, required: true, default: "DD_STANDARD"}
     }
 })
 
