@@ -49,9 +49,7 @@ export const AddPreparedWeapon = new ValidQueryBuilder()
         try {
             const char = await CharacterModel.findById(req.params["characterId"])
             if (char) {
-                console.log(req.body);
                 const {weaponBaseData, weaponCardsIds, customName} = req.body;
-                console.log(weaponBaseData, weaponCardsIds, !weaponBaseData, !weaponCardsIds)
                 if (!weaponBaseData || !weaponCardsIds) {
                     res.status(401).send("Invalid body.");
                     return;
@@ -80,7 +78,6 @@ export const AddPreparedWeapon = new ValidQueryBuilder()
                 }
 
                 char.createdWeapons.push(req.body);
-                console.log(char);
                 await char.save();
                 res.status(201).json({
                     message: "Successfully updated.",
