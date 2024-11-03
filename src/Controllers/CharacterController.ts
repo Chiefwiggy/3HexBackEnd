@@ -16,7 +16,11 @@ export const GetAllCharacters = async (req: Request, res: Response) : Promise<vo
 
 export const GetCharacterById = async (req: Request, res: Response) : Promise<void> => {
     try {
-        const char = await CharacterModel.findById(req.params["id"]);
+        const char = await CharacterModel.findByIdAndUpdate(
+                req.params["id"],
+                { $inc: {__times_accessed: 1}},
+                { new: true, runValidators: true}
+            )
         if (char) {
             res.status(200).json(char);
         }

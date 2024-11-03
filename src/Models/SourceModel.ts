@@ -15,7 +15,9 @@ export interface _ISourceSchema extends Document {
     sourceTier: number,
     lawId: string | null,
     sourceTiers: Array<_ITierData>,
-    visibility: string
+    visibility: string,
+    onlyTemporary: boolean,
+    neverTemporary: boolean
 }
 
 const SourceSchema = new mongoose.Schema<_ISourceSchema>({
@@ -32,7 +34,9 @@ const SourceSchema = new mongoose.Schema<_ISourceSchema>({
             isSecret: Boolean
         }
     ],
-    visibility: {type: String, required: true, default: "all", enum: ["all", "restricted", "admin"]}
+    visibility: {type: String, required: true, default: "all", enum: ["all", "restricted", "admin"]},
+    onlyTemporary: {type: Boolean, default: false, required: true},
+    neverTemporary: {type: Boolean, default: false, required: true}
 });
 
 const SourceModel = mongoose.model('sources', SourceSchema);

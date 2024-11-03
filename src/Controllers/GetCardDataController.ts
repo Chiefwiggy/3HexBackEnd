@@ -234,8 +234,18 @@ const _GetAllSpellsPossibleForUser = async(user: _IUserModel, characterId: strin
         const {arcana} = _CalcAffinities(char);
 
 
-        if (char.knownSources.length > 0) {
+        if (char.knownSources.length > 0 || char.temporarySources.length > 0) {
             const sourceIds = (await Promise.all(char.knownSources.map(async (sourceMetadata) => {
+                const sourceData: _ISourceSchema | null = await SourceModel.findById(sourceMetadata.sourceId);
+                if (sourceData) {
+                    return sourceData.sourceTiers.flatMap(tier => {
+                        return (sourceMetadata.attunementLevel >= tier.layer) ? tier.cardId : null
+                    }).filter(e => e);
+                }
+                return [];
+            }))).flat();
+
+            const tempIds = (await Promise.all(char.temporarySources.map(async (sourceMetadata) => {
                 const sourceData: _ISourceSchema | null = await SourceModel.findById(sourceMetadata.sourceId);
                 if (sourceData) {
                     return sourceData.sourceTiers.flatMap(tier => {
@@ -248,7 +258,12 @@ const _GetAllSpellsPossibleForUser = async(user: _IUserModel, characterId: strin
 
             const newBases = allCards.bases.filter((base) => {
                 // @ts-ignore
-                return sourceIds.includes(base._id.toString()) || base.prerequisites.length > 0;
+                if (tempIds.includes(base._id.toString())) {
+                    // @ts-ignore
+                    base.isFromTemporarySource = true;
+                }
+                // @ts-ignore
+                return [...sourceIds, ...tempIds].includes(base._id.toString()) || base.prerequisites.length > 0;
                 // return char.knownBaseSpells.includes(base._id.toString());
             })
 

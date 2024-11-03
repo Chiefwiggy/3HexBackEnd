@@ -15,7 +15,8 @@ export interface _IBaseSpellCardData extends _ISpellCardData, Document {
     damageType: string,
     damageSubtype: string,
     baseSpellSet: number,
-    saveType: string
+    saveType: string,
+    isFromTemporarySource: boolean
 }
 
 
@@ -46,7 +47,8 @@ const BaseSpellCardSchema = new Schema<_IBaseSpellCardData>({
         required: true,
         default: "slash"
     },
-    environmentBonus: {type: String, required: true}
+    environmentBonus: {type: String, required: true},
+    isFromTemporarySource: {required: true, type: Boolean, default: false}
 })
 
 BaseSpellCardSchema.add(AbstractSpellCardSchema);

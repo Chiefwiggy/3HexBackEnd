@@ -211,7 +211,8 @@ export interface _ICharacterData extends Document {
     knownArmor: Array<_IKnownArmorStruct>,
     knownWeapons: Array<_IKnownWeaponStruct>,
     knownBaseSpells: Array<string>,
-    knownSources: Array<_IPreparedSource>
+    knownSources: Array<_IPreparedSource>,
+    temporarySources: Array<_IPreparedSource>,
     skillPoints: {
         athletics: number,
         handling: number,
@@ -241,7 +242,8 @@ export interface _ICharacterData extends Document {
     minionData: Array<_IMinionSpecificData>,
     settings: {
         dieColorId: string
-    }
+    },
+    __times_accessed: number
 }
 
 const CharacterSchema = new mongoose.Schema<_ICharacterData>({
@@ -310,7 +312,7 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
     },
     race: {
         raceName: {type: String, required: true, default: "none"},
-        raceId: {type: String, required: true},
+        raceId: {type: String, required: true, default: "_"},
         raceRole: {type: String, required: true, enum: ERaceRole, default: "standard"}
     },
     specialId: String,
@@ -440,6 +442,7 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
     },
     knownBaseSpells: [String],
     knownSources: [IPreparedSource],
+    temporarySources: [IPreparedSource],
     knownWeapons: [{
         baseId: {type: String, required: true},
         enchantmentLevel: {type: Number, required: true, default: 0}
@@ -504,7 +507,8 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
     },
     settings: {
         dieColorId: {type: String, required: true, default: "DD_STANDARD"}
-    }
+    },
+    __times_accessed: {default: 0, type: Number, required: true}
 })
 
 const CharacterModel = mongoose.model('characters', CharacterSchema);
