@@ -61,6 +61,8 @@ export const _PopulateSourceData = async (sourceData: _ISourceSchema) => {
             sourceTier: sourceData.sourceTier,
             law: law,
             visibility: sourceData.visibility,
+            onlyTemporary: sourceData.onlyTemporary,
+            neverTemporary: sourceData.neverTemporary,
             sourceTiers
         }
 }
