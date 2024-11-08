@@ -2,7 +2,7 @@ import {Router} from 'express'
 import SpellCardsRouter from "./SpellCards/SpellCardsRouter";
 import WeaponCardsRouter from "./WeaponCards/WeaponCardsRouter";
 import {
-    GetAllCardsForAffinity, GetAllCardsForArcana,
+    GetAllCardsForAffinity, GetAllCardsForPath,
     GetAllCardsForClass,
     GetAllCardsForClasses,
     GetAllCardsPossibleForUser
@@ -17,7 +17,7 @@ router.get("/getPossible/:characterId", GetAllCardsPossibleForUser);
 router.get("/get/class/all", GetAllCardsForClasses)
 router.get("/get/class/:className", GetAllCardsForClass)
 router.get("/get/affinity/all", GetAllCardsForAffinity);
-router.get('/get/arcana/all', GetAllCardsForArcana);
+router.get('/get/path/all', GetAllCardsForPath);
 
 router.use('/spells', SpellCardsRouter);
 router.use('/weapons', WeaponCardsRouter);

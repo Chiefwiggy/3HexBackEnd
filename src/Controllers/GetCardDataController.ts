@@ -178,8 +178,8 @@ export const GetAllCardsForClasses = async(req: Request, res: Response) => {
     res.status(finalStruct.status).json(finalStruct.data);
 }
 
-export const GetAllCardsForArcana = async(req: Request, res: Response) => {
-    const finalStruct = await _GetAllCardsOfCriteria(req, res, "arcana")
+export const GetAllCardsForPath = async(req: Request, res: Response) => {
+    const finalStruct = await _GetAllCardsOfCriteria(req, res, "path")
     res.status(finalStruct.status).json(finalStruct.data);
 }
 
@@ -231,7 +231,7 @@ const _GetAllSpellsPossibleForUser = async(user: _IUserModel, characterId: strin
     const char: _ICharacterData | null = await CharacterModel.findById(characterId);
     if (char) {
         const allCards = await _GetAllSpellsHelper();
-        const {arcana} = _CalcAffinities(char);
+        const {path} = _CalcAffinities(char);
 
 
         if (char.knownSources.length > 0 || char.temporarySources.length > 0) {
@@ -295,7 +295,7 @@ const _GetAllWeaponsPossibleForUser = async(user: _IUserModel, characterId: stri
 
             return base.prerequisites.reduce((pv, prerequisite) => {
                 if (pv) return pv
-                if (prerequisite.prerequisiteType === "class" || prerequisite.prerequisiteType === "affinity" || prerequisite.prerequisiteType === "arcana") {
+                if (prerequisite.prerequisiteType === "class" || prerequisite.prerequisiteType === "affinity" || prerequisite.prerequisiteType === "path") {
                     return true;
                 }
                 return pv;
@@ -336,7 +336,7 @@ const _GetAllCardsPossibleForUser = async(user: _IUserModel, characterId: string
 }
 
 const _PossibleFilter = (cardList: Array<_IAbstractCardData>, character: _ICharacterData, excludeNoDefault=false) => {
-    const {affinities, arcana} = _CalcAffinities(character);
+    const {affinities, path} = _CalcAffinities(character);
     return cardList.filter((card) => {
         return card.prerequisites.reduce((pv, cv) => {
             if (!pv) return false;
@@ -357,9 +357,9 @@ const _PossibleFilter = (cardList: Array<_IAbstractCardData>, character: _IChara
                         }
                     }
                     return false;
-                case "arcana":
-                    // console.log(arcana[cv.skill as "arcane" | "warrior" | "support" | "hacker"], cv.level)
-                    return arcana[cv.skill as "arcane" | "warrior" | "support" | "hacker"] >= cv.level;
+                case "path":
+                    // console.log(path[cv.skill as "arcane" | "warrior" | "support" | "hacker"], cv.level)
+                    return path[cv.skill as "arcanist" | "warrior" | "commander" | "navigator" | "scholar" | "hacker"] >= cv.level;
                 case "nodefault":
                     return excludeNoDefault ? false : pv;
                 case "fateline":
@@ -375,18 +375,24 @@ const _PossibleFilter = (cardList: Array<_IAbstractCardData>, character: _IChara
 
 export const _CalcAffinities = (character: _ICharacterData) => {
     const affinities: _IAffinities = {
-        abjuration: 0,
-        biohacking: 0,
-        deft: 0,
-        erudite: 0,
+        nimble: 0,
+        infantry: 0,
         guardian: 0,
         focus: 0,
-        infantry: 0,
+        creation: 0,
+        alteration: 0,
         leadership: 0,
-        machinery: 0,
+        supply: 0,
+        summoning: 0,
+        swift: 0,
+        riding: 0,
+        versatile: 0,
         rune: 0,
-        soul: 0,
-        supply: 0
+        sourcecraft: 0,
+        research: 0,
+        machinery: 0,
+        abjuration: 0,
+        biohacking: 0
     }
     character.classes.forEach((char) => {
         Object.entries(char.affinities).forEach(([key, value]) => {
@@ -398,15 +404,17 @@ export const _CalcAffinities = (character: _ICharacterData) => {
             affinities[key as keyof _IAffinities] += value;
         })
     }
-    const arcana = {
-        arcane: affinities.focus + affinities.soul + affinities.rune,
-        warrior: affinities.deft + affinities.infantry + affinities.guardian,
-        support: affinities.supply + affinities.leadership + affinities.erudite,
-        hacker: affinities.biohacking + affinities.abjuration + affinities.machinery
+    const path = {
+        warrior: affinities.nimble + affinities.infantry + affinities.guardian,
+        arcanist: affinities.focus + affinities.creation + affinities.alteration,
+        commander: affinities.leadership + affinities.supply + affinities.summoning,
+        navigator: affinities.swift + affinities.riding + affinities.versatile,
+        scholar: affinities.rune + affinities.research + affinities.sourcecraft,
+        hacker: affinities.abjuration + affinities.machinery + affinities.biohacking
     }
     return {
         affinities,
-        arcana
+        path
     }
 }
 

@@ -1,17 +1,19 @@
 
 
-export const EChoiceType = ["affinity", "arcana"];
-export const EAffinity = ["infantry", "guardian", "focus", "rune", "soul", "deft", "leadership", "erudite", "supply", "biohacking", "abjuration", "machinery"];
+export const EChoiceType = ["affinity", "path"];
 
-export const EArcana = [
-    "arcane",
+export const EAffinity = ["nimble", "infantry", "guardian", "focus", "creation", "alteration", "leadership", "supply", "summoning", "swift", "riding", "versatile", "rune", "sourcecraft", "research", "biohacking", "abjuration", "machinery"]
+
+export const EPath = [
     "warrior",
-    "support",
-    "hacker",
-    "any"
+    "arcanist",
+    "commander",
+    "navigator",
+    "scholar",
+    "hacker"
 ]
 
-export const EChoiceLabel = [...EAffinity, ...EArcana]
+export const EChoiceLabel = [...EAffinity, ...EPath]
 
 export const EMinionRole = ["brute", "tank", "soldier", "ranged", "magic", "support"]
 

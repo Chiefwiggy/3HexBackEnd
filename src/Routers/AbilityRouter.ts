@@ -1,6 +1,6 @@
 import {Router} from 'express'
 import {
-    AddAbility, GetAbilitiesForAllAffinities, GetAbilitiesForAllArcana,
+    AddAbility, GetAbilitiesForAllAffinities, GetAbilitiesForAllPath,
     GetAbilitiesForAllClasses,
     GetAbilitiesForChar,
     GetAbilitiesForClass
@@ -12,7 +12,7 @@ router.post("/add", AddAbility)
 router.get("/getPossible/:characterId", GetAbilitiesForChar)
 router.get("/get/class/all", GetAbilitiesForAllClasses)
 router.get("/get/class/:className", GetAbilitiesForClass)
-router.get("/get/arcana/all", GetAbilitiesForAllArcana);
+router.get("/get/path/all", GetAbilitiesForAllPath);
 router.get("/get/affinity/all", GetAbilitiesForAllAffinities);
 
 

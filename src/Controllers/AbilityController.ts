@@ -37,7 +37,7 @@ export const GetAbilitiesForChar = new ValidQueryBuilder()
                 if (!abilities) {
                     res.status(500).send("Could not find abilities.");
                 } else {
-                    const {affinities, arcana} = _CalcAffinities(char);
+                    const {affinities, path} = _CalcAffinities(char);
                     res.status(200).json(abilities.filter(ability => {
                         return ability.prerequisites.reduce((pv, cv) => {
                             if (!pv) return false;
@@ -58,9 +58,9 @@ export const GetAbilitiesForChar = new ValidQueryBuilder()
                                         }
                                     }
                                     return false;
-                                case "arcana":
-                                    // console.log(arcana[cv.skill as "arcane" | "warrior" | "support" | "hacker"], cv.level)
-                                    return arcana[cv.skill as "arcane" | "warrior" | "support" | "hacker"] >= cv.level;
+                                case "path":
+                                    // console.log(path[cv.skill as "arcane" | "warrior" | "support" | "hacker"], cv.level)
+                                    return path[cv.skill as "arcanist" | "warrior" | "commander" | "navigator" | "hacker"] >= cv.level;
                                 case "fateline":
                                     return char.fateline ? (char.fateline.fatelineId === cv.skill && (cv.level === -1) === char.fateline.isReversed) : false
                                 default:
@@ -135,8 +135,8 @@ export const _GetAllAbilitiesForCriteria = async(req: Request, res: Response, pr
     }
 }
 
-export const GetAbilitiesForAllArcana = async(req: Request, res: Response) => {
-    const finalData = await _GetAllAbilitiesForCriteria(req, res, "arcana");
+export const GetAbilitiesForAllPath = async(req: Request, res: Response) => {
+    const finalData = await _GetAllAbilitiesForCriteria(req, res, "path");
     res.status(finalData.status).json(finalData.data);
 }
 

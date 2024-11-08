@@ -25,11 +25,11 @@ router.get("/getAllPreloadedContent", async(req: Request, res: Response) => {
 
     const classCards = await _GetAllCardsOfCriteria(req, res, "class");
     const affinityCards = await _GetAllCardsOfCriteria(req, res, "affinity");
-    const arcanaCards = await _GetAllCardsOfCriteria(req, res, "arcana");
+    const pathCards = await _GetAllCardsOfCriteria(req, res, "path");
 
     const classAbilities = await _GetAllAbilitiesForCriteria(req, res, "class");
     const affinityAbilities = await _GetAllAbilitiesForCriteria(req, res, "affinity");
-    const arcanaAbilities = await _GetAllAbilitiesForCriteria(req, res, "arcana");
+    const pathAbilities = await _GetAllAbilitiesForCriteria(req, res, "path");
 
     const allSources = await _GetAllSources(req, res);
 
@@ -54,9 +54,9 @@ router.get("/getAllPreloadedContent", async(req: Request, res: Response) => {
             cards: affinityCards.data,
             abilities: affinityAbilities.data,
         },
-        arcana: {
-            cards: arcanaCards.data,
-            abilities: arcanaAbilities.data,
+        path: {
+            cards: pathCards.data,
+            abilities: pathAbilities.data,
         },
         sources: allSources.data,
         weaponData: weaponData.data,
