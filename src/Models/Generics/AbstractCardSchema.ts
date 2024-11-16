@@ -46,6 +46,7 @@ export interface _IAbstractCardData extends Document {
     potencyMod?: _IDataModifiers,
     staminaCostMod?: _IDataModifiers,
     tetherCostMod?: _IDataModifiers,
+    moneyCostMod?: _IDataModifiers
 }
 
 const AbstractCardSchema = new Schema({
@@ -99,6 +100,7 @@ const AbstractCardSchema = new Schema({
     potencyMod: IDataModifiers,
     staminaCostMod: IDataModifiers,
     tetherCostMod: IDataModifiers,
+    moneyCostMod: IDataModifiers
 }, {discriminatorKey: 'kind'});
 
 export default AbstractCardSchema

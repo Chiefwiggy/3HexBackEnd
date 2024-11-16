@@ -2,7 +2,7 @@
 
 export const EChoiceType = ["affinity", "path"];
 
-export const EAffinity = ["nimble", "infantry", "guardian", "focus", "creation", "alteration", "leadership", "supply", "summoning", "swift", "riding", "versatile", "rune", "sourcecraft", "research", "biohacking", "abjuration", "machinery"]
+export const EAffinity = ["nimble", "infantry", "guardian", "focus", "creation", "alteration", "leadership", "supply", "summoning", "swift", "riding", "versatile", "rune", "sourcecraft", "research", "biohacking", "abjuration", "machinery", "any"]
 
 export const EPath = [
     "warrior",
