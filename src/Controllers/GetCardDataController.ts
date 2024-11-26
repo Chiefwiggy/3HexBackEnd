@@ -188,7 +188,7 @@ export const GetAllCardsForAffinity = async(req: Request, res: Response) => {
     res.status(finalStruct.status).json(finalStruct.data);
 }
 
-export const _GetAllCardsOfCriteria = async(req: Request, res: Response, criteria: _UPrerequisiteType) => {
+export const _GetAllCardsOfCriteria = async(req: Request, res: Response, criteria: _UPrerequisiteType, ignoreNoDefault = false) => {
     try {
         const allSpells = await _GetAllSpellsHelper();
         const allWeapons = await _GetAllWeaponsHelper();
@@ -199,6 +199,12 @@ export const _GetAllCardsOfCriteria = async(req: Request, res: Response, criteri
         const finalCards: { [key: string]: any[] } = {};
 
         allCards.forEach(card => {
+
+            const hasNoDefault = card.prerequisites.some(prerequisite => prerequisite.prerequisiteType === "nodefault");
+            if (ignoreNoDefault && hasNoDefault) {
+                return;
+            }
+
             card.prerequisites.forEach((prerequisite) => {
                 if (prerequisite.prerequisiteType === criteria) {
                     const skill = prerequisite.skill;
@@ -296,6 +302,9 @@ const _GetAllWeaponsPossibleForUser = async(user: _IUserModel, characterId: stri
             return base.prerequisites.reduce((pv, prerequisite) => {
                 if (pv) return pv
                 if (prerequisite.prerequisiteType === "class" || prerequisite.prerequisiteType === "affinity" || prerequisite.prerequisiteType === "path") {
+                    return true;
+                }
+                if (prerequisite.prerequisiteType === "nodefault" && (user.userPermissions.includes(`weapon_${base._id}`) || user.userPermissions.includes("admin"))) {
                     return true;
                 }
                 return pv;

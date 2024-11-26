@@ -29,7 +29,7 @@ export const AddFateline = new ValidQueryBuilder()
 export const GetFatelineData = async(req: Request, res: Response) => {
     const baseFatelineData: Array<_IFatelineData> = await FatelineModel.find({});
 
-    const fatelineCards = (await _GetAllCardsOfCriteria(req, res, "fateline")).data as any
+    const fatelineCards = (await _GetAllCardsOfCriteria(req, res, "fateline", true)).data as any
     const fatelineAbilities = (await _GetAllAbilitiesForCriteria(req, res, "fateline")).data as any
 
     return baseFatelineData.map(fateline => {
