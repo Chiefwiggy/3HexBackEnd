@@ -177,7 +177,9 @@ export interface _ICharacterData extends Document {
     race: {
         raceId: string,
         raceName: string,
-        raceRole: string
+        raceRole: string,
+        subraceId: string,
+        affinities: _IAffinities
     },
     specialId: string,
     attributeBars: {
@@ -331,7 +333,28 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
     race: {
         raceName: {type: String, required: true, default: "none"},
         raceId: {type: String, required: true, default: "_"},
-        raceRole: {type: String, required: true, enum: ERaceRole, default: "standard"}
+        raceRole: {type: String, required: true, enum: ERaceRole, default: "standard"},
+        subraceId: {type: String, required: false},
+        affinities: {
+                nimble: { type: Number, required: false, default: 0 },
+                infantry: { type: Number, required: false, default: 0 },
+                guardian: { type: Number, required: false, default: 0 },
+                focus: { type: Number, required: false, default: 0 },
+                creation: { type: Number, required: false, default: 0 },
+                alteration: { type: Number, required: false, default: 0 },
+                leadership: { type: Number, required: false, default: 0 },
+                supply: { type: Number, required: false, default: 0 },
+                summoning: { type: Number, required: false, default: 0 },
+                swift: { type: Number, required: false, default: 0 },
+                riding: { type: Number, required: false, default: 0 },
+                versatile: { type: Number, required: false, default: 0 },
+                rune: { type: Number, required: false, default: 0 },
+                sourcecraft: { type: Number, required: false, default: 0 },
+                research: { type: Number, required: false, default: 0 },
+                machinery: { type: Number, required: false, default: 0 },
+                abjuration: { type: Number, required: false, default: 0 },
+                biohacking: { type: Number, required: false, default: 0 }
+            },
     },
     specialId: String,
     attributeBars: {

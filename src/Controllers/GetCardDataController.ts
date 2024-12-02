@@ -240,7 +240,7 @@ const _GetAllSpellsPossibleForUser = async(user: _IUserModel, characterId: strin
         const {path} = _CalcAffinities(char);
 
 
-        if (char.knownSources.length > 0 || char.temporarySources.length > 0) {
+        // if (char.knownSources.length > 0 || char.temporarySources.length > 0) {
             const sourceIds = (await Promise.all(char.knownSources.map(async (sourceMetadata) => {
                 const sourceData: _ISourceSchema | null = await SourceModel.findById(sourceMetadata.sourceId);
                 if (sourceData) {
@@ -283,13 +283,14 @@ const _GetAllSpellsPossibleForUser = async(user: _IUserModel, characterId: strin
                 targets: _PossibleFilter(allCards.targets, char),
                 modifiers: _PossibleFilter(newMods, char)
             }
-        } else {
-            return {
-                bases: [],
-                targets: _PossibleFilter(allCards.targets, char),
-                modifiers: _PossibleFilter(allCards.modifiers, char, true)
-            }
-        }
+        // }
+        // else {
+        //     return {
+        //         bases: [],
+        //         targets: _PossibleFilter(allCards.targets, char),
+        //         modifiers: _PossibleFilter(allCards.modifiers, char, true)
+        //     }
+        // }
     }
 }
 
@@ -374,7 +375,11 @@ const _PossibleFilter = (cardList: Array<_IAbstractCardData>, character: _IChara
                 case "fateline":
                     return character.fateline ? (character.fateline.fatelineId === cv.skill && (cv.level === -1) === character.fateline.isReversed) : false
                 case "race":
-                    return false;
+                    return character.race.raceId === cv.skill
+                case "role":
+                    return character.race.raceRole === cv.skill;
+                case "subrace":
+                    return character.race.subraceId === cv.skill;
                 default:
                     return pv;
             }

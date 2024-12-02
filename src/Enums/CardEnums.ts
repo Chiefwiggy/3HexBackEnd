@@ -6,7 +6,7 @@ export const EPrerequisiteTypes = ["attribute", "affinity", "class", "path", "no
 
 export const EActionType = ["free", "bonus", "quick", "standard", "long", "break", "downtime", "project", "passive"]
 
-export type _UPrerequisiteType = "attribute" | "affinity" | "class" | "path" | "nodefault" | "race" | "fateline"
+export type _UPrerequisiteType = "attribute" | "affinity" | "class" | "path" | "nodefault" | "race" | "fateline" | "role" | "subrace"
 
 
 export const ESpellSubtypes = ["base", "target", "skill", "edict"]

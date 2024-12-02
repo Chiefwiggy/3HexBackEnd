@@ -63,6 +63,12 @@ export const GetAbilitiesForChar = new ValidQueryBuilder()
                                     return path[cv.skill as "arcanist" | "warrior" | "commander" | "navigator" | "hacker"] >= cv.level;
                                 case "fateline":
                                     return char.fateline ? (char.fateline.fatelineId === cv.skill && (cv.level === -1) === char.fateline.isReversed) : false
+                                case "race":
+                                    return char.race.raceId === cv.skill
+                                case "role":
+                                    return char.race.raceRole === cv.skill;
+                                case "subrace":
+                                    return char.race.subraceId === cv.skill;
                                 default:
                                     return pv;
                             }
