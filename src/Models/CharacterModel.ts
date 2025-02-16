@@ -215,8 +215,10 @@ export interface _ICharacterData extends Document {
     currentOffhandWeapon: _ICalculatedWeapon,
     counterWeapon: _ICalculatedWeapon,
     currentArmor: _IKnownArmorStruct,
+    currentShield: _IKnownArmorStruct,
     knownConsumables: Array<_IEquippedConsumable>,
     knownArmor: Array<_IKnownArmorStruct>,
+    knownShield: Array<_IKnownArmorStruct>,
     knownWeapons: Array<_IKnownWeaponStruct>,
     knownBaseSpells: Array<string>,
     knownSources: Array<_IPreparedSource>,
@@ -456,6 +458,14 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
         required: false,
         default: null
     },
+    currentShield: {
+        type: {
+            baseId: {type: String, required: true},
+            enchantmentLevel: {type: Number, required: true, default: 0}
+        },
+        required: false,
+        default: null
+    },
     knownConsumables: [
         {
             consumableId: {type: String, required: true},
@@ -464,6 +474,12 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
         }
     ],
     knownArmor: [
+        {
+            baseId: {type: String, required: true},
+            enchantmentLevel: {type: Number, required: true, default: 0}
+        }
+    ],
+    knownShield: [
         {
             baseId: {type: String, required: true},
             enchantmentLevel: {type: Number, required: true, default: 0}

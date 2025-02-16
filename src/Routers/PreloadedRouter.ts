@@ -18,6 +18,7 @@ import ConsumableModel from "../Models/Equipment/ConsumableModel";
 import {GetFatelineData} from "../Controllers/FatelineController";
 import ConditionCardModel from "../Models/Cards/ConditionCardModel";
 import DowntimeActivityModel from "../Models/DowntimeActivityModel";
+import ShieldModel from "../Models/Equipment/ShieldModel";
 
 const router = Router();
 
@@ -35,6 +36,7 @@ router.get("/getAllPreloadedContent", async(req: Request, res: Response) => {
 
     const weaponData = await _GetCardsOfType(req, res, BaseWeaponCardModel);
     const armorData = await ArmorModel.find({});
+    const shieldData = await ShieldModel.find({});
 
     const consumableData = await ConsumableModel.find({});
 
@@ -61,6 +63,7 @@ router.get("/getAllPreloadedContent", async(req: Request, res: Response) => {
         sources: allSources.data,
         weaponData: weaponData.data,
         armorData: armorData,
+        shieldData: shieldData,
         consumableData: consumableData,
         fatelineData: fatelineData,
         conditionCards: conditionCards,
