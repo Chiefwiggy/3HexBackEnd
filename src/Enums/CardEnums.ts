@@ -2,7 +2,7 @@ export const EArcanotype = ["elemental", "divine", "mystical", "axum", "primal",
 
 export const EEmblemType = ["default", "info", "warning", "tether", "stamina", "requirement", "priority", "power", "health", "buff", "debuff", "money"]
 
-export const EPrerequisiteTypes = ["attribute", "affinity", "class", "path", "nodefault", "race", "fateline"]
+export const EPrerequisiteTypes = ["attribute", "affinity", "class", "path", "nodefault", "race", "subrace", "fateline"]
 
 export const EActionType = ["free", "bonus", "quick", "standard", "long", "break", "downtime", "project", "passive"]
 

@@ -245,7 +245,7 @@ const _GetAllSpellsPossibleForUser = async(user: _IUserModel, characterId: strin
                 const sourceData: _ISourceSchema | null = await SourceModel.findById(sourceMetadata.sourceId);
                 if (sourceData) {
                     return sourceData.sourceTiers.flatMap(tier => {
-                        return (sourceMetadata.attunementLevel >= tier.layer) ? tier.cardId : null
+                        return (!tier.isSecret || user.userPermissions.includes("admin") || user.userPermissions.includes(`spell_${tier.cardId}_src_${sourceMetadata.sourceId}`)) ? tier.cardId : null
                     }).filter(e => e);
                 }
                 return [];
