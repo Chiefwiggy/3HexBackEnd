@@ -17,6 +17,7 @@ import LawRouter from "./Routers/LawRouter";
 import SourceRouter from "./Routers/SourceRouter";
 import FatelineRouter from "./Routers/FatelineRouter";
 import DowntimeRouter from "./Routers/DowntimeRouter";
+import ConditionRouter from "./Routers/ConditionRouter";
 
 const PORT: number = Number(process.env.PORT) || 3001;
 
@@ -47,6 +48,7 @@ router.use("/laws", LawRouter);
 router.use("/sources", SourceRouter);
 router.use("/fatelines", FatelineRouter);
 router.use("/downtime", DowntimeRouter)
+router.use("/conditions", ConditionRouter);
 
 
 app.use('/.netlify/functions/index', router);

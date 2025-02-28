@@ -19,6 +19,8 @@ import {GetFatelineData} from "../Controllers/FatelineController";
 import ConditionCardModel from "../Models/Cards/ConditionCardModel";
 import DowntimeActivityModel from "../Models/DowntimeActivityModel";
 import ShieldModel from "../Models/Equipment/ShieldModel";
+import {GetAllConditions} from "../Controllers/ConditionController";
+import ConditionModel from "../Models/ConditionModel";
 
 const router = Router();
 
@@ -46,6 +48,8 @@ router.get("/getAllPreloadedContent", async(req: Request, res: Response) => {
 
     const downtime = await DowntimeActivityModel.find({});
 
+    const conditions = await ConditionModel.find({});
+
     res.status(200).json({
         class: {
             cards: classCards.data,
@@ -67,7 +71,8 @@ router.get("/getAllPreloadedContent", async(req: Request, res: Response) => {
         consumableData: consumableData,
         fatelineData: fatelineData,
         conditionCards: conditionCards,
-        downtimeActivitiesData: downtime
+        downtimeActivitiesData: downtime,
+        conditionTags: conditions
     })
 
 
