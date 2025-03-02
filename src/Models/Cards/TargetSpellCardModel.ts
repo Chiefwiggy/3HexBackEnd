@@ -23,11 +23,10 @@ export interface _ITargetSpellCardData extends _IBaseSpellCardData {
     },
     summonData?: {
         maxHealth: _ITargetSummonScaling,
-        damage: _ITargetSummonScaling,
-        toHit: _ITargetSummonScaling,
         pDEF: _ITargetSummonScaling,
         mDEF: _ITargetSummonScaling,
         movement: _ITargetSummonScaling,
+        dodge: _ITargetSummonScaling,
         simpleName: string,
         summonSize: string
     }
@@ -44,6 +43,7 @@ const TargetSpellCardSchema = new Schema<_ITargetSpellCardData>({
         pDEF: ITargetSummoningScaling(20, "none", 1),
         mDEF: ITargetSummoningScaling(0, "none", 1),
         movement: ITargetSummoningScaling(2, "none", 1),
+        dodge: ITargetSummoningScaling(0, "none", 1),
         simpleName: String,
         summonSize: {type: String, required: true, default: "small"}
     }
