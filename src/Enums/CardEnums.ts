@@ -9,7 +9,7 @@ export const EActionType = ["free", "bonus", "quick", "standard", "long", "break
 export type _UPrerequisiteType = "attribute" | "affinity" | "class" | "path" | "nodefault" | "race" | "fateline" | "role" | "subrace"
 
 
-export const ESpellSubtypes = ["base", "target", "skill", "edict"]
+export const ESpellSubtypes = ["base", "target", "skill", "edict", "summon"]
 
 export const EWeaponSubtypes = ["base", "form", "skill"]
 

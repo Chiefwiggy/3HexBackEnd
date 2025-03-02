@@ -16,6 +16,10 @@ export const AddTargetSpell = async (req: Request, res: Response) => {
     return _AddSpellCard(req, res, "target", TargetSpellCardModel)
 }
 
+export const AddSummonTargetSpell = async (req: Request, res: Response) => {
+    return _AddSpellCard(req, res, "summon", TargetSpellCardModel)
+}
+
 export const AddModifierSpell = async(req: Request, res: Response) => {
     return _AddSpellCard(req, res, "skill", ModifierSpellCardModel);
 }
