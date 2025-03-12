@@ -39,7 +39,7 @@ const TargetSpellCardSchema = new Schema<_ITargetSpellCardData>({
         isMelee: {type: Boolean, required: true, default: false}
     },
     summonData: {
-        maxHealth: ITargetSummoningScaling(0, "bar.maxTether", 1),
+        maxHealth: ITargetSummoningScaling(0, "spell.tetherCost", 1),
         pDEF: ITargetSummoningScaling(20, "none", 1),
         mDEF: ITargetSummoningScaling(0, "none", 1),
         movement: ITargetSummoningScaling(2, "none", 1),

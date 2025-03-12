@@ -22,6 +22,7 @@ export interface _ISpellCardData extends _IAbstractCardData {
     energyCostMod?: _IDataModifiers,
     baseSpellSetMod?: _IDataModifiers,
     spellSetMod?: _IDataModifiers,
+    summonHealthMod?: _IDataModifiers,
     forceMelee?: boolean,
     forceRange?: boolean
 }
@@ -35,6 +36,7 @@ const AbstractSpellCardSchema = new Schema({
     energyCostMod: IDataModifiers,
     baseSpellSetMod: IDataModifiers,
     spellSetMod: IDataModifiers,
+    summonHealthMod: IDataModifiers,
     forceMelee: {type: Boolean, default: false},
     forceRange: {type: Boolean, default: false},
 }, {discriminatorKey: 'kind'})
