@@ -87,7 +87,9 @@ export interface _ICalculatedWeapon {
         customName?: string,
         weaponBaseData: {
             baseId: string,
-            enchantmentLevel: number
+            enchantmentLevel: number,
+            improvements?: number,
+            efficientUse?: boolean
         },
         weaponCardsIds: Array<string>
 }
@@ -431,7 +433,9 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
             customName: {type: String, required: false},
             weaponBaseData: {
                 baseId: {type: String, required: true},
-                enchantmentLevel: {type: Number, required: true, default: 0}
+                enchantmentLevel: {type: Number, required: true, default: 0},
+                improvements: Number,
+                efficientUse: Boolean
             },
             weaponCardsIds: [String]
         },
@@ -443,7 +447,9 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
             customName: {type: String, required: false},
             weaponBaseData: {
                 baseId: {type: String, required: true},
-                enchantmentLevel: {type: Number, required: true, default: 0}
+                enchantmentLevel: {type: Number, required: true, default: 0},
+                improvements: Number,
+                efficientUse: Boolean
             },
             weaponCardsIds: [String]
         },
@@ -502,7 +508,9 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
     temporarySources: [IPreparedSource],
     knownWeapons: [{
         baseId: {type: String, required: true},
-        enchantmentLevel: {type: Number, required: true, default: 0}
+        enchantmentLevel: {type: Number, required: true, default: 0},
+        improvements: Number,
+        efficientUse: Boolean
     }],
     skillPoints: {
         type: {
