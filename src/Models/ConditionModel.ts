@@ -9,7 +9,8 @@ export interface _ICondition {
     conditionCountdownType: string,
     description: Array<string>,
     xVals: Array<{
-        basePower: number
+        basePower: number,
+        tierScaling: number
     }>,
     conditionTier: number
 }
@@ -22,7 +23,8 @@ const ConditionSchema = new mongoose.Schema<_ICondition>({
     description: {type: [String], required: true},
     xVals: [
         {
-            basePower: {type: Number, required: true, default: 0}
+            basePower: {type: Number, required: true, default: 0},
+            tierScaling: {type: Number, required: true, default: 0}
         }
     ],
     conditionTier: {type: Number, default: 1}
