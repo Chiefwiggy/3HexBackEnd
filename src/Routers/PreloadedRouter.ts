@@ -21,6 +21,7 @@ import DowntimeActivityModel from "../Models/DowntimeActivityModel";
 import ShieldModel from "../Models/Equipment/ShieldModel";
 import {GetAllConditions} from "../Controllers/ConditionController";
 import ConditionModel from "../Models/ConditionModel";
+import MountBaseModel from "../Models/MountBaseModel";
 
 const router = Router();
 
@@ -50,6 +51,8 @@ router.get("/getAllPreloadedContent", async(req: Request, res: Response) => {
 
     const conditions = await ConditionModel.find({});
 
+    const mounts = await MountBaseModel.find({});
+
     res.status(200).json({
         class: {
             cards: classCards.data,
@@ -72,7 +75,8 @@ router.get("/getAllPreloadedContent", async(req: Request, res: Response) => {
         fatelineData: fatelineData,
         conditionCards: conditionCards,
         downtimeActivitiesData: downtime,
-        conditionTags: conditions
+        conditionTags: conditions,
+        mountData: mounts
     })
 
 

@@ -30,8 +30,9 @@ const SourceSchema = new mongoose.Schema<_ISourceSchema>({
             layer: {type: Number, required: true},
             cardType: {type: String, enum: ["base", "edict"], required: true, default: "base"},
             cardId: {type: String, required: true},
-            arcaneRequirement: {type: Number, required: true, default: 1},
-            isSecret: Boolean
+            communionRequirement: {type: Number, required: false, default: 0},
+            isSecret: Boolean,
+            isObscuredUntilUnlocked: Boolean
         }
     ],
     visibility: {type: String, required: true, default: "all", enum: ["all", "restricted", "admin"]},
