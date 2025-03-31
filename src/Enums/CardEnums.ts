@@ -19,7 +19,7 @@ export const EConditionSubtypes = ["buff", "debuff"]
 export const ECardSubtypes = [...ESpellSubtypes, ...EWeaponSubtypes, ...ECommanderSubtypes, ...EConditionSubtypes]
 
 export const EWeaponClass = ["light", "standard", "heavy", ""]
-export const EWeaponType = ["axe", "blade", "bomb", "bow", "club", "polearm", "wand", "spear", "unarmed", "special"]
+export const EWeaponType = ["axe", "blade", "bomb", "bow", "club", "polearm", "wand", "spear", "unarmed", "shield", "special"]
 
 export const ECritDie = ["1", "2", "3", "4", "5", "6", "-", "?"]
 
@@ -28,6 +28,6 @@ export const ESkill = ["athletics", "handling", "stealth", "deduction", "identif
 export const ERefreshTypes = ["passive", "atWill", "perBattle", "perRefresh", "perDay", "perConnect", "perDowntime"]
 
 export const EDamageTypes = ["magical", "physical", "raw", "none"]
-export const EDamageSubtypes = ["none", "pierce", "slash", "kinetic", "burn", "frost", "shock", "corrosive", "sensory", "curse", "holy", "soul"]
+export const EDamageSubtypes = ["none", "pierce", "slash", "impact", "burn", "frost", "shock", "corrosive", "sensory", "curse", "holy", "soul"]
 
 export const ESaveTypes = ["might", "agility", "skill", "awareness", "vitality", "knowledge", "mind", "presence", "authority", "endurance", "luck", "none"]

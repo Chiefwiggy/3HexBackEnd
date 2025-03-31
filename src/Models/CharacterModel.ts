@@ -252,10 +252,13 @@ export interface _ICharacterData extends Document {
         isEquipped: boolean
     }>,
     minionData: Array<_IMinionSpecificData>,
+    isDead: boolean,
+    creatorName: string,
     settings: {
         dieColorId: string
     },
-    __times_accessed: number
+    __times_accessed: number,
+
 }
 
 const CharacterSchema = new mongoose.Schema<_ICharacterData>({
@@ -570,6 +573,8 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
         }],
         default: []
     },
+    isDead: {type: Boolean, required: false, default: false},
+    creatorName: {type: String, required: true, default: "Unknown"},
     settings: {
         dieColorId: {type: String, required: true, default: "DD_STANDARD"}
     },

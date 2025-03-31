@@ -4,6 +4,7 @@ import {ECharacterAccess, EPermission, UPermission} from "../Enums/UserEnums";
 export interface _IUserModel extends Document {
     _id: string,
     email: string,
+    name: string,
     password: string,
     userPermissions: Array<UPermission>
     characters_owned: Array<{
@@ -15,6 +16,7 @@ export interface _IUserModel extends Document {
 
 const UserSchema = new Schema<_IUserModel>({
     email: {type: String, required: true, unique: true, lowercase: true},
+    name: String,
     password: {type: String, required: true},
     userPermissions: [
         {
