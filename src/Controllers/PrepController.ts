@@ -60,17 +60,28 @@ export const AddPreparedWeapon = new ValidQueryBuilder()
                 }
 
                 if (char.createdWeapons.filter(entry => {
+                    console.log(entry)
+
                     if (entry.weaponBaseData.baseId != data.weaponBaseData.baseId) {
                         return false;
                     }
                     if (entry.weaponCardsIds.length !== data.weaponCardsIds.length) {
                         return false;
                     }
-                    entry.weaponCardsIds.forEach(e => {
-                       if (!data.weaponCardsIds.includes(e)) {
-                           return false;
-                       }
-                    });
+                    for (const skill in entry.weaponCardsIds) {
+                        if (!data.weaponCardsIds.includes(skill)) {
+                            return false;
+                        }
+                    }
+                    // entry.weaponCardsIds.forEach(e => {
+                    //    if (!data.weaponCardsIds.includes(e)) {
+                    //        console.log("skill cards are different")
+                    //        return false;
+                    //    } else {
+                    //        console.log(`${JSON.stringify(data.weaponCardsIds)} contains ${e}`)
+                    //    }
+                    // });
+                    console.log(`GOT HERE with ${entry}`)
                     return true;
                 }).length != 0) {
                     res.status(208).send("Element already exists.");

@@ -22,6 +22,9 @@ import ShieldModel from "../Models/Equipment/ShieldModel";
 import {GetAllConditions} from "../Controllers/ConditionController";
 import ConditionModel from "../Models/ConditionModel";
 import MountBaseModel from "../Models/MountBaseModel";
+import MinionRoleModel from "../Models/MinionRoleModel";
+import MinionModel from "../Models/MinionModel";
+import MinionModel_New from "../Models/MinionModel_New";
 
 const router = Router();
 
@@ -53,6 +56,9 @@ router.get("/getAllPreloadedContent", async(req: Request, res: Response) => {
 
     const mounts = await MountBaseModel.find({});
 
+    const minionRoles = await MinionRoleModel.find({});
+    const allMinions = await MinionModel_New.find({});
+
     res.status(200).json({
         class: {
             cards: classCards.data,
@@ -76,7 +82,9 @@ router.get("/getAllPreloadedContent", async(req: Request, res: Response) => {
         conditionCards: conditionCards,
         downtimeActivitiesData: downtime,
         conditionTags: conditions,
-        mountData: mounts
+        mountData: mounts,
+        minionRoles: minionRoles,
+        allMinions: allMinions
     })
 
 

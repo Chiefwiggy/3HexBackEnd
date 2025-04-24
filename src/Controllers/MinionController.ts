@@ -14,6 +14,8 @@ import SkillWeaponCardModel from "../Models/Cards/SkillWeaponCardModel";
 import ModifierSpellCardModel from "../Models/Cards/ModifierSpellCardModel";
 import TargetSpellCardModel from "../Models/Cards/TargetSpellCardModel";
 import MinionTemplateModel from "../Models/MinionTemplateModel";
+import MinionModel_New, {_IMinionSchema_New} from "../Models/MinionModel_New";
+import MinionRoleModel from "../Models/MinionRoleModel";
 
 
 export const GetAllMinions = () => {
@@ -48,7 +50,7 @@ export const CreateMinion = new ValidQueryBuilder()
     .addPerm("registered")
     .success(async(req: Request, res: Response, user: _IUserModel) => {
         try {
-            const data = new MinionTemplateModel({...req.body});
+            const data = new MinionModel_New({...req.body});
             await data.save();
 
             res.status(201).json({
@@ -61,11 +63,28 @@ export const CreateMinion = new ValidQueryBuilder()
     })
     .exec();
 
-export interface _IMinionSchemaOutput extends _IMinionSchema {
+export const CreateMinionRole = new ValidQueryBuilder()
+    .addPerm("registered")
+    .success(async(req: Request, res: Response, user: _IUserModel) => {
+        try {
+            const data = new MinionRoleModel({...req.body});
+            await data.save();
+
+            res.status(201).json({
+               status: "success",
+               data: {...data}
+            });
+        } catch (e) {
+            res.status(400).json(e);
+        }
+    })
+    .exec();
+
+export interface _IMinionSchemaOutput extends _IMinionSchema_New {
     cardData: Array<_IAbstractCardData>
 }
 const _GetMinionData = async(minionId: string) => {
-    const char: _IMinionSchema | null = await MinionModel.findById(minionId).lean();
+    const char: _IMinionSchema_New | null = await MinionModel_New.findById(minionId).lean();
     if (char) {
         let currentArmor = null;
         let cardList: Array<_IAbstractCardData> = [];
@@ -116,11 +135,10 @@ const _GetMinionData = async(minionId: string) => {
             }
         }
 
-        const newChar: _IMinionSchemaOutput = {
+        return {
             ...char,
             cardData: cardList
         }
-        return newChar;
     }
     return undefined;
 }
@@ -129,12 +147,12 @@ export const UpdateMinion = new ValidQueryBuilder()
     .addPerm("registered")
     .success(async(req: Request, res: Response, user: _IUserModel) => {
         try {
-            const existingChar = await MinionModel.findById(req.query.id);
+            const existingChar = await MinionModel_New.findById(req.query.id);
             if (!existingChar) {
                 res.status(404).send("Could not find minion.")
                 return;
             }
-            await MinionModel.findByIdAndUpdate(
+            await MinionModel_New.findByIdAndUpdate(
                 req.query.id,
                 { $set: req.body, $inc: {__v: 1}},
                 { new: true, runValidators: true}

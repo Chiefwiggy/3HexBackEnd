@@ -24,7 +24,7 @@ const IPreparedCard = {
     additionalData: {type: Number, default: 0}
 }
 
-const IPreparedSource = {
+export const IPreparedSource = {
     sourceId: { type: String, required: true },
     attunementLevel: {type: Number, required: true, default: 0}
 }
@@ -83,15 +83,40 @@ export interface _IAffinities {
     biohacking: number
 }
 
+export interface _ISkills {
+    athletics: number,
+    handling: number,
+    stealth: number,
+    deduction: number,
+    identify: number,
+    science: number,
+    technology: number,
+    biology: number,
+    metaphysics: number,
+    spellcraft: number,
+    survival: number,
+    perception: number,
+    streetwise: number,
+    discovery: number,
+    diplomacy: number,
+    hostility: number,
+    guile: number,
+    lore: number,
+    occult: number,
+    society: number
+}
+
 export interface _ICalculatedWeapon {
         customName?: string,
-        weaponBaseData: {
-            baseId: string,
-            enchantmentLevel: number,
-            improvements?: number,
-            efficientUse?: boolean
-        },
+        weaponBaseData: _IEnchantmentData,
         weaponCardsIds: Array<string>
+}
+
+export interface _IEnchantmentData {
+    baseId: string,
+    enchantmentLevel: number,
+    improvements?: number,
+    efficientUse?: boolean
 }
 
 export interface _ICalculatedSpell {
@@ -225,28 +250,7 @@ export interface _ICharacterData extends Document {
     knownBaseSpells: Array<string>,
     knownSources: Array<_IPreparedSource>,
     temporarySources: Array<_IPreparedSource>,
-    skillPoints: {
-        athletics: number,
-        handling: number,
-        stealth: number,
-        deduction: number,
-        identify: number,
-        science: number,
-        technology: number,
-        biology: number,
-        metaphysics: number,
-        spellcraft: number,
-        survival: number,
-        perception: number,
-        streetwise: number,
-        discovery: number,
-        diplomacy: number,
-        hostility: number,
-        guile: number,
-        lore: number,
-        occult: number,
-        society: number
-    },
+    skillPoints: _ISkills,
     minionsOwned: Array<{
         minionId: string,
         isEquipped: boolean
