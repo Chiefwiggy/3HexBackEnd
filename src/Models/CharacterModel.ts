@@ -253,7 +253,8 @@ export interface _ICharacterData extends Document {
     skillPoints: _ISkills,
     minionsOwned: Array<{
         minionId: string,
-        isEquipped: boolean
+        isEquipped: boolean,
+        equippedAs: string
     }>,
     minionData: Array<_IMinionSpecificData>,
     isDead: boolean,
@@ -547,7 +548,8 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
     minionsOwned: {
         type: [{
             minionId: {type: String, required: true},
-            isEquipped: {type: Boolean, required: true, default: false}
+            isEquipped: {type: Boolean, required: true, default: false},
+            equippedAs: {type: String, required: false}
         }],
         default: []
     },

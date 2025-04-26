@@ -36,7 +36,7 @@ export const GetMinionsByIds = new validQueryBuilder()
         const finalCharacters = [];
 
         for (const id of idArray) {
-            const mdata = await _GetMinionData(id);
+            const mdata = await GetMinionData(id);
             if (mdata) {
                 finalCharacters.push(mdata);
             }
@@ -83,7 +83,7 @@ export const CreateMinionRole = new ValidQueryBuilder()
 export interface _IMinionSchemaOutput extends _IMinionSchema_New {
     cardData: Array<_IAbstractCardData>
 }
-const _GetMinionData = async(minionId: string) => {
+export const GetMinionData = async(minionId: string) => {
     const char: _IMinionSchema_New | null = await MinionModel_New.findById(minionId).lean();
     if (char) {
         let currentArmor = null;

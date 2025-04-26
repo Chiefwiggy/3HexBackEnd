@@ -33,7 +33,8 @@ export interface _IMinionRoleSchema extends Document {
     },
     otherModifiers: {
         movement: number,
-    }
+    },
+    unlocks: Array<string>
 }
 
 const MinionRoleSchema = new mongoose.Schema<_IMinionRoleSchema>({
@@ -69,7 +70,8 @@ const MinionRoleSchema = new mongoose.Schema<_IMinionRoleSchema>({
     },
     otherModifiers: {
         movement: {type: Number, required: true, default: 0.0},
-    }
+    },
+    unlocks: [String]
 })
 
 const MinionRoleModel = mongoose.model("minion_roles", MinionRoleSchema);

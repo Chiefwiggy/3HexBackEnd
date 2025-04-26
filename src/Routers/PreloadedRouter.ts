@@ -1,18 +1,11 @@
 import {Router, Request, Response} from 'express'
 import {
     _GetAllCardsOfCriteria,
-    _GetCardsOfType,
-    _GetFilteredCardsOfType,
-    GetAllConditionCards
+    _GetCardsOfType
 } from "../Controllers/GetCardDataController";
 import BaseWeaponCardModel from "../Models/Cards/BaseWeaponCardModel";
 import ArmorModel from "../Models/Equipment/ArmorModel";
 import {_GetAllAbilitiesForCriteria} from "../Controllers/AbilityController";
-import BaseSpellCardModel from "../Models/Cards/BaseSpellCardModel";
-import ModifierSpellCardModel from "../Models/Cards/ModifierSpellCardModel";
-import {_ISpellCardData} from "../Models/Cards/AbstractSpellCardSchema";
-import LawModel from "../Models/LawModel";
-import SourceModel from "../Models/SourceModel";
 import {_GetAllSources} from "../Controllers/SourceController";
 import ConsumableModel from "../Models/Equipment/ConsumableModel";
 import {GetFatelineData} from "../Controllers/FatelineController";
@@ -25,6 +18,7 @@ import MountBaseModel from "../Models/MountBaseModel";
 import MinionRoleModel from "../Models/MinionRoleModel";
 import MinionModel from "../Models/MinionModel";
 import MinionModel_New from "../Models/MinionModel_New";
+import {GetMinionData} from "../Controllers/MinionController";
 
 const router = Router();
 
@@ -59,6 +53,10 @@ router.get("/getAllPreloadedContent", async(req: Request, res: Response) => {
     const minionRoles = await MinionRoleModel.find({});
     const allMinions = await MinionModel_New.find({});
 
+    const allMinionsPlusData = await Promise.all(
+        allMinions.map(e => GetMinionData(e._id))
+    )
+
     res.status(200).json({
         class: {
             cards: classCards.data,
@@ -84,7 +82,7 @@ router.get("/getAllPreloadedContent", async(req: Request, res: Response) => {
         conditionTags: conditions,
         mountData: mounts,
         minionRoles: minionRoles,
-        allMinions: allMinions
+        allMinions: allMinionsPlusData
     })
 
 
