@@ -19,6 +19,7 @@ import MinionRoleModel from "../Models/MinionRoleModel";
 import MinionModel from "../Models/MinionModel";
 import MinionModel_New from "../Models/MinionModel_New";
 import {GetMinionData} from "../Controllers/MinionController";
+import {Document} from "mongoose"
 
 const router = Router();
 
@@ -56,7 +57,7 @@ router.get("/getAllPreloadedContent", async(req: Request, res: Response) => {
 
     const allMinionsPlusData = await Promise.all(
 
-        allMinions.map(e => {
+        allMinions.map((e: Document) => {
             return GetMinionData(e._id);
         })
     )
