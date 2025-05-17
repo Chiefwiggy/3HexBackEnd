@@ -177,7 +177,9 @@ export interface _IMinionSpecificData {
     attributeBars: {
         health: _IAttributeBar,
         stamina: _IAttributeBar,
-        tether: _IAttributeBar
+        tether: _IAttributeBar,
+        orders: _IAttributeBar,
+        technik: _IAttributeBar
     },
     bonuses: Object
 }
@@ -212,7 +214,9 @@ export interface _ICharacterData extends Document {
     attributeBars: {
         health: _IAttributeBar,
         stamina: _IAttributeBar,
-        tether: _IAttributeBar
+        tether: _IAttributeBar,
+        orders: _IAttributeBar,
+        technik: _IAttributeBar
     },
     currentActionPoints: number,
     characterStats: _IAttributes,
@@ -373,6 +377,8 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
         health: IAttributeBar,
         stamina: IAttributeBar,
         tether: IAttributeBar,
+        orders: IAttributeBar,
+        technik: IAttributeBar
     },
     currentActionPoints: {type: Number, required: true, default: 0},
     characterStats: {

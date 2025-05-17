@@ -5,6 +5,7 @@ import BaseSpellCardModel from "../Models/Cards/BaseSpellCardModel";
 import ModifierSpellCardModel from "../Models/Cards/ModifierSpellCardModel";
 import ValidQueryBuilder from "../Utils/ValidQueryBuilder";
 import {_IUserModel} from "../Models/UserModel";
+import SkillWeaponCardModel from "../Models/Cards/SkillWeaponCardModel";
 
 
 export const GetAllSources = async(req: Request, res: Response) => {
@@ -42,8 +43,10 @@ export const _PopulateSourceData = async (sourceData: _ISourceSchema) => {
             let cardData = null;
             if (tier.cardType === "base") {
                 cardData = await BaseSpellCardModel.findById(tier.cardId);
-            } else {
+            } else if (tier.cardType == "edict") {
                 cardData = await ModifierSpellCardModel.findById(tier.cardId);
+            } else {
+                cardData = await SkillWeaponCardModel.findById(tier.cardId);
             }
             return {
                 layer: tier.layer,

@@ -312,10 +312,23 @@ const _GetAllWeaponsPossibleForUser = async(user: _IUserModel, characterId: stri
             }, false)
 
         })
+        const sourceIds = (await Promise.all(char.knownSources.map(async (sourceMetadata) => {
+                const sourceData: _ISourceSchema | null = await SourceModel.findById(sourceMetadata.sourceId);
+                if (sourceData) {
+                    return sourceData.sourceTiers.flatMap(tier => {
+                        return (!tier.isSecret || user.userPermissions.includes("admin") || user.userPermissions.includes(`spell_${tier.cardId}_src_${sourceMetadata.sourceId}`)) ? tier.cardId : null
+                    }).filter(e => e);
+                }
+                return [];
+            }))).flat();
+        const newSkills = allCards.skills.filter((mod)  => {
+                // @ts-ignore
+                return !(mod.cardSubtype == "order" && mod.prerequisites.length == 1 && mod.prerequisites[0].prerequisiteType == "nodefault") || sourceIds.includes(mod._id.toString())
+            })
         return {
             bases:  _PossibleFilter(newWeapons, char),
             forms:  _PossibleFilter(allCards.forms, char),
-            skills:  _PossibleFilter(allCards.skills, char)
+            skills:  _PossibleFilter(newSkills, char)
         }
     } else {
         return {

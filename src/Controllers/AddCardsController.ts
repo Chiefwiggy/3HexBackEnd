@@ -37,6 +37,10 @@ export const AddWeaponForm = async(req: Request, res: Response) => {
     return _AddWeaponCard(req, res, "form", FormWeaponCardModel);
 }
 
+export const AddWeaponOrder = async(req: Request, res: Response) => {
+    return _AddWeaponCard(req, res, "order", SkillWeaponCardModel);
+}
+
 export const AddWeaponSkill = async(req: Request, res: Response) => {
     return _AddWeaponCard(req, res, "skill", SkillWeaponCardModel)
 }

@@ -28,7 +28,7 @@ const SourceSchema = new mongoose.Schema<_ISourceSchema>({
     sourceTiers: [
         {
             layer: {type: Number, required: true},
-            cardType: {type: String, enum: ["base", "edict"], required: true, default: "base"},
+            cardType: {type: String, enum: ["base", "edict", "order"], required: true, default: "base"},
             cardId: {type: String, required: true},
             communionRequirement: {type: Number, required: false, default: 0},
             isSecret: Boolean,

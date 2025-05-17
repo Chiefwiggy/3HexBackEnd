@@ -1,6 +1,6 @@
 export const EArcanotype = ["elemental", "divine", "mystical", "axum", "primal", "eonic", "animus", "esoteric"]
 
-export const EEmblemType = ["default", "info", "warning", "tether", "stamina", "requirement", "priority", "power", "health", "buff", "debuff", "money", "die"]
+export const EEmblemType = ["default", "info", "warning", "tether", "stamina", "requirement", "priority", "power", "health", "buff", "debuff", "money", "die", "soul_charge", "order"]
 
 export const EPrerequisiteTypes = ["attribute", "affinity", "class", "path", "nodefault", "race", "subrace", "fateline"]
 
@@ -11,7 +11,7 @@ export type _UPrerequisiteType = "attribute" | "affinity" | "class" | "path" | "
 
 export const ESpellSubtypes = ["base", "target", "skill", "edict", "summon"]
 
-export const EWeaponSubtypes = ["base", "form", "skill"]
+export const EWeaponSubtypes = ["base", "form", "skill", "order"]
 
 export const ECommanderSubtypes = ["commander"]
 
