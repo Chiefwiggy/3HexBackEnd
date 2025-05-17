@@ -58,7 +58,7 @@ router.get("/getAllPreloadedContent", async(req: Request, res: Response) => {
     const allMinionsPlusData = await Promise.all(
 
         allMinions.map((e: Document) => {
-            return GetMinionData(e._id);
+            return GetMinionData(e._id as string);
         })
     )
 
