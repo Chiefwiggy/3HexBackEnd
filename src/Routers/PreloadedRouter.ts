@@ -53,8 +53,12 @@ router.get("/getAllPreloadedContent", async(req: Request, res: Response) => {
     const minionRoles = await MinionRoleModel.find({});
     const allMinions = await MinionModel_New.find({});
 
+
     const allMinionsPlusData = await Promise.all(
-        allMinions.map(e => GetMinionData(e._id))
+
+        allMinions.map(e => {
+            return GetMinionData(e._id);
+        })
     )
 
     res.status(200).json({
