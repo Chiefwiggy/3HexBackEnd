@@ -371,7 +371,7 @@ const _PossibleFilter = (cardList: Array<_IAbstractCardData>, character: _IChara
                     // console.log(affinities[cv.skill as keyof _IAffinities])
                     return affinities[cv.skill as keyof _IAffinities] >= cv.level;
                 case "class":
-                    const clz = character.classes.find(cc => cc.className.toLowerCase() == cv.skill.toLowerCase())
+                    const clz = character.classes.find(cc => cc.className.split(" ").join("_").toLowerCase() == cv.skill.toLowerCase())
                     if (clz) {
                         if (cv.level == 1) {
                             return true;
