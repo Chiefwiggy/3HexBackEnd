@@ -46,6 +46,7 @@ export interface _IAbstractCardData extends Document {
     potencyMod?: _IDataModifiers,
     staminaCostMod?: _IDataModifiers,
     tetherCostMod?: _IDataModifiers,
+    technikCostMod?: _IDataModifiers,
     specialLogicTags?: Array<string>
     moneyCostMod?: _IDataModifiers
 }
