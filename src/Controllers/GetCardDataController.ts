@@ -255,7 +255,7 @@ const _GetAllSpellsPossibleForUser = async(user: _IUserModel, characterId: strin
                 const sourceData: _ISourceSchema | null = await SourceModel.findById(sourceMetadata.sourceId);
                 if (sourceData) {
                     return sourceData.sourceTiers.flatMap(tier => {
-                        return (sourceMetadata.attunementLevel >= tier.layer) ? tier.cardId : null
+                        return tier.cardId
                     }).filter(e => e);
                 }
                 return [];
