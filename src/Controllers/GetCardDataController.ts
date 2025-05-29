@@ -413,7 +413,7 @@ export const _CalcAffinities = (character: _ICharacterData) => {
         summoning: 0,
         swift: 0,
         riding: 0,
-        versatile: 0,
+        adaptation: 0,
         rune: 0,
         sourcecraft: 0,
         research: 0,
@@ -435,7 +435,7 @@ export const _CalcAffinities = (character: _ICharacterData) => {
         warrior: affinities.nimble + affinities.infantry + affinities.guardian,
         arcanist: affinities.focus + affinities.creation + affinities.alteration,
         commander: affinities.leadership + affinities.supply + affinities.summoning,
-        navigator: affinities.swift + affinities.riding + affinities.versatile,
+        navigator: affinities.swift + affinities.riding + affinities.adaptation,
         scholar: affinities.rune + affinities.research + affinities.sourcecraft,
         hacker: affinities.abjuration + affinities.machinery + affinities.biohacking
     }
