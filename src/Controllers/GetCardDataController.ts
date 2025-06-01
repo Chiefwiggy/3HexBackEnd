@@ -388,11 +388,24 @@ const _PossibleFilter = (cardList: Array<_IAbstractCardData>, character: _IChara
                 case "fateline":
                     return character.fateline ? (character.fateline.fatelineId === cv.skill && (cv.level === -1) === character.fateline.isReversed) : false
                 case "race":
-                    return character.race.raceId === cv.skill
-                case "role":
-                    return character.race.raceRole === cv.skill;
+                    if (cv.level == 1) {
+                        return character.race.raceId === cv.skill;
+                    } else {
+                        return character.race.pointsSpentOn.includes(card._id)
+                    }
+                case "race_role":
+                    if (cv.level == 1) {
+                        return character.race.raceRoles.includes(cv.skill);
+                    }
+                    else {
+                        return character.race.pointsSpentOn.includes(card._id)
+                    }
                 case "subrace":
-                    return character.race.subraceId === cv.skill;
+                    if (cv.level == 1) {
+                        return character.race.subraceId === cv.skill;
+                    } else {
+                        return character.race.pointsSpentOn.includes(card._id)
+                    }
                 default:
                     return pv;
             }

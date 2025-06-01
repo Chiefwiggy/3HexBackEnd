@@ -18,6 +18,7 @@ import SourceRouter from "./Routers/SourceRouter";
 import FatelineRouter from "./Routers/FatelineRouter";
 import DowntimeRouter from "./Routers/DowntimeRouter";
 import ConditionRouter from "./Routers/ConditionRouter";
+import RaceRouter from "./Routers/RaceRouter";
 
 const PORT: number = Number(process.env.PORT) || 3001;
 
@@ -47,6 +48,7 @@ router.use("/preload", PreloadedRouter)
 router.use("/laws", LawRouter);
 router.use("/sources", SourceRouter);
 router.use("/fatelines", FatelineRouter);
+router.use("/races", RaceRouter);
 router.use("/downtime", DowntimeRouter)
 router.use("/conditions", ConditionRouter);
 

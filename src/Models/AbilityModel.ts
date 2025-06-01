@@ -2,6 +2,7 @@ import mongoose, {Schema} from 'mongoose';
 import {_UPrerequisiteType, EActionType, EPrerequisiteTypes, ERefreshTypes} from "../Enums/CardEnums";
 
 export interface _IAbilityModel extends Document {
+    _id: string,
     abilityName: string,
     prerequisites: Array<{
         prerequisiteType: _UPrerequisiteType,

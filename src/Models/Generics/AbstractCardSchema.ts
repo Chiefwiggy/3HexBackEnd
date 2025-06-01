@@ -19,6 +19,7 @@ export interface _IDataModifiers {
 }
 
 export interface _IAbstractCardData extends Document {
+    _id: string,
     cardName: string,
     cardType: string
     cardSubtype: string

@@ -20,6 +20,7 @@ import MinionModel from "../Models/MinionModel";
 import MinionModel_New from "../Models/MinionModel_New";
 import {GetMinionData} from "../Controllers/MinionController";
 import {Document} from "mongoose"
+import RaceModel from "../Models/RaceModel";
 
 const router = Router();
 
@@ -42,6 +43,15 @@ router.get("/getAllPreloadedContent", async(req: Request, res: Response) => {
     const consumableData = await ConsumableModel.find({});
 
     const fatelineData = await GetFatelineData(req, res);
+
+    const raceCards = (await _GetAllCardsOfCriteria(req, res, "race", true)).data as any
+    const subraceCards = (await _GetAllCardsOfCriteria(req, res, "subrace", true)).data as any
+    const raceRoleCards = (await _GetAllCardsOfCriteria(req, res, "race_role", true)).data as any
+
+    const raceMetadata = await RaceModel.find({});
+    const raceAbilities = (await _GetAllAbilitiesForCriteria(req, res, "race")).data;
+    const subraceAbilities = (await _GetAllAbilitiesForCriteria(req, res, "subrace")).data;
+    const raceRoleAbilities = (await _GetAllAbilitiesForCriteria(req, res, "race_role")).data;
 
     const conditionCards = await ConditionCardModel.find({});
 
@@ -87,7 +97,16 @@ router.get("/getAllPreloadedContent", async(req: Request, res: Response) => {
         conditionTags: conditions,
         mountData: mounts,
         minionRoles: minionRoles,
-        allMinions: allMinionsPlusData
+        allMinions: allMinionsPlusData,
+        raceData: {
+            raceCards,
+            subraceCards,
+            raceRoleCards,
+            raceAbilities,
+            subraceAbilities,
+            raceRoleAbilities,
+            raceMetadata
+        }
     })
 
 

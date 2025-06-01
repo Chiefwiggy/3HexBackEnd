@@ -60,15 +60,28 @@ export const GetAbilitiesForChar = new ValidQueryBuilder()
                                     return false;
                                 case "path":
                                     // console.log(path[cv.skill as "arcane" | "warrior" | "support" | "hacker"], cv.level)
-                                    return path[cv.skill as "arcanist" | "warrior" | "commander" | "navigator" | "hacker"] >= cv.level;
+                                    return path[cv.skill as "arcanist" | "warrior" | "commander" | "navigator" | "scholar" | "hacker"] >= cv.level;
                                 case "fateline":
                                     return char.fateline ? (char.fateline.fatelineId === cv.skill && (cv.level === -1) === char.fateline.isReversed) : false
                                 case "race":
-                                    return char.race.raceId === cv.skill
-                                case "role":
-                                    return char.race.raceRole === cv.skill;
+                                    if (cv.level == 1) {
+                                        return char.race.raceId === cv.skill;
+                                    } else {
+                                        return char.race.pointsSpentOn.includes(ability._id)
+                                    }
+                                case "race_role":
+                                    if (cv.level == 1) {
+                                        return char.race.raceRoles.includes(cv.skill);
+                                    }
+                                    else {
+                                        return char.race.pointsSpentOn.includes(ability._id)
+                                    }
                                 case "subrace":
-                                    return char.race.subraceId === cv.skill;
+                                    if (cv.level == 1) {
+                                        return char.race.subraceId === cv.skill;
+                                    } else {
+                                        return char.race.pointsSpentOn.includes(ability._id)
+                                    }
                                 default:
                                     return pv;
                             }
