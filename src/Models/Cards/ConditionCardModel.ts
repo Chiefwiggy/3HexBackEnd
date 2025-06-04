@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import AbstractSpellCardSchema, {_ISpellCardData} from "./AbstractSpellCardSchema";
 import AbstractWeaponCardSchema, {_IWeaponCardData} from "./AbstractWeaponCardSchema";
 
-export interface _IConditionCard extends _ISpellCardData, _IWeaponCardData, mongoose.Document {
+export interface _IConditionCard extends _ISpellCardData, _IWeaponCardData {
     appliesTo: {
         attacks: boolean,
         spells: boolean,
