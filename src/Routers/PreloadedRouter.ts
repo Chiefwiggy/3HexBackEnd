@@ -48,10 +48,14 @@ router.get("/getAllPreloadedContent", async(req: Request, res: Response) => {
     const subraceCards = (await _GetAllCardsOfCriteria(req, res, "subrace", true)).data as any
     const raceRoleCards = (await _GetAllCardsOfCriteria(req, res, "race_role", true)).data as any
 
+    const developmentCards = (await _GetAllCardsOfCriteria(req, res, "development", true)).data as any
+
     const raceMetadata = await RaceModel.find({});
     const raceAbilities = (await _GetAllAbilitiesForCriteria(req, res, "race")).data;
     const subraceAbilities = (await _GetAllAbilitiesForCriteria(req, res, "subrace")).data;
     const raceRoleAbilities = (await _GetAllAbilitiesForCriteria(req, res, "race_role")).data;
+
+    const developmentAbilities = (await _GetAllAbilitiesForCriteria(req, res, "development")).data;
 
     const conditionCards = await ConditionCardModel.find({});
 
@@ -106,6 +110,10 @@ router.get("/getAllPreloadedContent", async(req: Request, res: Response) => {
             subraceAbilities,
             raceRoleAbilities,
             raceMetadata
+        },
+        development: {
+            abilities: developmentAbilities,
+            cards: developmentCards
         }
     })
 

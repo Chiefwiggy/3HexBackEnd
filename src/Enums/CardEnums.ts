@@ -1,12 +1,12 @@
 export const EArcanotype = ["elemental", "divine", "mystical", "axum", "primal", "eonic", "animus", "esoteric"]
 
-export const EEmblemType = ["default", "info", "warning", "tether", "stamina", "requirement", "priority", "power", "health", "buff", "debuff", "money", "die", "soul_charge", "order", "enchantment"]
+export const EEmblemType = ["default", "info", "warning", "tether", "stamina", "requirement", "priority", "power", "health", "buff", "debuff", "money", "die", "soul_charge", "order", "enchantment", "rift_object"]
 
-export const EPrerequisiteTypes = ["attribute", "affinity", "class", "path", "nodefault", "race", "subrace", "fateline", "race_role", "minion_role"]
+export const EPrerequisiteTypes = ["attribute", "affinity", "class", "path", "nodefault", "race", "subrace", "fateline", "race_role", "minion_role", "level", "development"]
 
 export const EActionType = ["free", "bonus", "quick", "standard", "long", "break", "downtime", "project", "passive"]
 
-export type _UPrerequisiteType = "attribute" | "affinity" | "class" | "path" | "nodefault" | "race" | "fateline" | "race_role" | "minion_role" | "subrace"
+export type _UPrerequisiteType = "attribute" | "affinity" | "class" | "path" | "nodefault" | "race" | "fateline" | "race_role" | "minion_role" | "subrace" | "level" | "development"
 
 
 export const ESpellSubtypes = ["base", "target", "skill", "edict", "summon"]

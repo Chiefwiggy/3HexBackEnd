@@ -265,6 +265,7 @@ export interface _ICharacterData extends Document {
     settings: {
         dieColorId: string
     },
+    developmentIds: Array<string>,
     __times_accessed: number,
 
 }
@@ -566,6 +567,7 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
     },
     isDead: {type: Boolean, required: false, default: false},
     creatorName: {type: String, required: true, default: "Unknown"},
+    developmentIds: [String],
     settings: {
         dieColorId: {type: String, required: true, default: "DD_STANDARD"}
     },

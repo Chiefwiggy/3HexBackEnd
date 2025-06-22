@@ -82,6 +82,10 @@ export const GetAbilitiesForChar = new ValidQueryBuilder()
                                     } else {
                                         return char.race.pointsSpentOn.includes(ability._id)
                                     }
+                                case "level":
+                                    return char.characterLevel >= cv.level;
+                                case "development":
+                                    return char.developmentIds.includes(ability._id)
                                 default:
                                     return pv;
                             }

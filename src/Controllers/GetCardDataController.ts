@@ -406,6 +406,10 @@ const _PossibleFilter = (cardList: Array<_IAbstractCardData>, character: _IChara
                     } else {
                         return character.race.pointsSpentOn.includes(card._id)
                     }
+                    case "level":
+                        return character.characterLevel >= cv.level;
+                    case "development":
+                        return character.developmentIds.includes(card._id)
                 default:
                     return pv;
             }
