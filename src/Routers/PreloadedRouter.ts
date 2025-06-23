@@ -31,7 +31,6 @@ const doesUserNeedNewestBatch = (db_name: string, userCache: _ICachingModel, mas
         const master_data = masterCache.db_cache_timestamps.find(e => e.entry_name == db_name)
         const user_data = userCache.db_cache_timestamps.find(e => e.entry_name == db_name)
         if (master_data && user_data) {
-            console.log(master_data.last_updated, user_data.last_updated, new Date(master_data.last_updated) > new Date(user_data.last_updated))
             return (new Date(master_data.last_updated) > new Date(user_data.last_updated))
         } else {
             return true;
