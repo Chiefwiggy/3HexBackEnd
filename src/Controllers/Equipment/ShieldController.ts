@@ -2,6 +2,7 @@ import {Request, Response} from 'express'
 import ShieldModel from "../../Models/Equipment/ShieldModel";
 import ValidQueryBuilder from "../../Utils/ValidQueryBuilder";
 import {_IUserModel} from "../../Models/UserModel";
+import {UpdateCacheInternal} from "../CacheController";
 
 export const GetAllShields = async(req: Request, res: Response) => {
     const allShields = await ShieldModel.find({});
@@ -14,6 +15,7 @@ export const AddShield = new ValidQueryBuilder()
         try {
             const data = new ShieldModel({...req.body});
             await data.save();
+            await UpdateCacheInternal(["shields"])
             res.status(201).json({
                 status: "success",
                 id: data._id,

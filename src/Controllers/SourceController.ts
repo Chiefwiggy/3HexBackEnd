@@ -6,6 +6,7 @@ import ModifierSpellCardModel from "../Models/Cards/ModifierSpellCardModel";
 import ValidQueryBuilder from "../Utils/ValidQueryBuilder";
 import {_IUserModel} from "../Models/UserModel";
 import SkillWeaponCardModel from "../Models/Cards/SkillWeaponCardModel";
+import {UpdateCacheInternal} from "./CacheController";
 
 
 export const GetAllSources = async(req: Request, res: Response) => {
@@ -76,7 +77,7 @@ export const AddSource = new ValidQueryBuilder()
         try {
             const data = new SourceModel({...req.body});
             await data.save();
-
+            await UpdateCacheInternal(["sources"])
             res.status(201).json({
                 status: "success",
                 data: {...data}

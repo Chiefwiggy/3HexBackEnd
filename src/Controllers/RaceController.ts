@@ -2,6 +2,7 @@ import RaceModel from "../Models/RaceModel";
 import ValidQueryBuilder from "../Utils/ValidQueryBuilder";
 import {Request, Response} from "express";
 import {_IUserModel} from "../Models/UserModel";
+import {UpdateCacheInternal} from "./CacheController";
 
 
 export const GetAllRaces = async(req: Request, res: Response)=> {
@@ -15,7 +16,7 @@ export const AddRace = new ValidQueryBuilder()
         try {
             const data = new RaceModel({...req.body});
             await data.save();
-
+            await UpdateCacheInternal(["races"])
             res.status(201).json({
                 status: "success",
                 _id: data._id,

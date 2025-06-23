@@ -8,6 +8,8 @@ export interface _ICondition {
     conditionType: string
     conditionCountdownType: string,
     description: Array<string>,
+    stackBonusDescription: string,
+    inverseConditionId: string,
     xVals: Array<{
         basePower: number,
         tierScaling: number
@@ -21,6 +23,8 @@ const ConditionSchema = new mongoose.Schema<_ICondition>({
     conditionType: {type: String, required: true, enum: EConditionType},
     conditionCountdownType: {type: String, required: true, enum: EConditionCountdownType},
     description: {type: [String], required: true},
+    stackBonusDescription: {type: String, required: true},
+    inverseConditionId: String,
     xVals: [
         {
             basePower: {type: Number, required: true, default: 0},

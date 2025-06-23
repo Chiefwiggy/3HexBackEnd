@@ -2,6 +2,7 @@ import ConditionModel from "../Models/ConditionModel";
 import {Request, Response} from "express";
 import ValidQueryBuilder from "../Utils/ValidQueryBuilder";
 import {_IUserModel} from "../Models/UserModel";
+import {UpdateCacheInternal} from "./CacheController";
 
 
 export const GetAllConditions = async(req: Request, res: Response) => {
@@ -19,7 +20,7 @@ export const AddCondition = new ValidQueryBuilder()
         try {
             const data = new ConditionModel({...req.body});
             await data.save();
-
+            await UpdateCacheInternal(["conditions"])
             res.status(201).json({
                 status: "success",
                 data: {...data}

@@ -3,6 +3,7 @@ import CommanderCardModel from "../Models/Cards/CommanderCardModel";
 import ClassModel from "../Models/ClassModel";
 import ValidQueryBuilder from "../Utils/ValidQueryBuilder";
 import {_IUserModel} from "../Models/UserModel";
+import {UpdateCacheInternal} from "./CacheController";
 
 export const GetAllCommanderCards = async(req: Request, res: Response) => {
     try {
@@ -20,6 +21,7 @@ export const AddCommanderCard = new ValidQueryBuilder()
         try {
             const data = new CommanderCardModel({...req.body});
             await data.save();
+            await UpdateCacheInternal(["cards"])
             res.status(201).json(data);
         } catch (e) {
             res.status(500).json(e);

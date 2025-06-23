@@ -3,6 +3,7 @@ import ArmorModel from "../../Models/Equipment/ArmorModel";
 import ValidQueryBuilder from "../../Utils/ValidQueryBuilder";
 import {_IUserModel} from "../../Models/UserModel";
 import ConsumableModel from "../../Models/Equipment/ConsumableModel";
+import {UpdateCacheInternal} from "../CacheController";
 
 
 export const GetAllArmor = async(req: Request, res: Response) => {
@@ -34,6 +35,7 @@ export const AddArmor = new ValidQueryBuilder()
         try {
             const data = new ArmorModel({...req.body});
             await data.save();
+            await UpdateCacheInternal(["armors"])
             res.status(201).json({
                 status: "success",
                 data: {...data}

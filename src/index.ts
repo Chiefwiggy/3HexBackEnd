@@ -19,6 +19,7 @@ import FatelineRouter from "./Routers/FatelineRouter";
 import DowntimeRouter from "./Routers/DowntimeRouter";
 import ConditionRouter from "./Routers/ConditionRouter";
 import RaceRouter from "./Routers/RaceRouter";
+import CachingRouter from "./Routers/CachingRouter";
 
 const PORT: number = Number(process.env.PORT) || 3001;
 
@@ -51,6 +52,7 @@ router.use("/fatelines", FatelineRouter);
 router.use("/races", RaceRouter);
 router.use("/downtime", DowntimeRouter)
 router.use("/conditions", ConditionRouter);
+router.use("/cache", CachingRouter)
 
 
 app.use('/.netlify/functions/index', router);

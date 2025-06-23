@@ -3,6 +3,7 @@ import MountBaseModel from "../../Models/MountBaseModel";
 import ValidQueryBuilder from "../../Utils/ValidQueryBuilder";
 import {_IUserModel} from "../../Models/UserModel";
 import ShieldModel from "../../Models/Equipment/ShieldModel";
+import {UpdateCacheInternal} from "../CacheController";
 
 
 
@@ -18,6 +19,7 @@ export const AddMount = new ValidQueryBuilder()
         try {
             const data = new MountBaseModel({...req.body});
             await data.save();
+            await UpdateCacheInternal(["mounts"])
             res.status(201).json({
                 status: "success",
                 id: data._id,

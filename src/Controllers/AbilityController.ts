@@ -6,6 +6,7 @@ import CharacterModel, {_IAffinities, _IAttributes, _ICharacterData} from "../Mo
 import AbilityRouter from "../Routers/AbilityRouter";
 import {_CalcAffinities} from "./GetCardDataController";
 import {_UPrerequisiteType} from "../Enums/CardEnums";
+import {UpdateCacheInternal} from "./CacheController";
 
 
 export const AddAbility = new ValidQueryBuilder()
@@ -14,6 +15,7 @@ export const AddAbility = new ValidQueryBuilder()
         try {
             const result = new AbilityModel({...req.body});
             await result.save();
+            await UpdateCacheInternal(["abilities"])
             res.status(201).json({
                 status: "success",
                 data: {...result}

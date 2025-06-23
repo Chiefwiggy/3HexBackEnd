@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 import FormWeaponCardModel from "../Models/Cards/FormWeaponCardModel";
 import SkillWeaponCardModel from "../Models/Cards/SkillWeaponCardModel";
 import ConditionCardModel, {_IConditionCard} from "../Models/Cards/ConditionCardModel";
+import {UpdateCacheInternal} from "./CacheController";
 
 export const AddBaseSpell = async (req: Request, res: Response) => {
     return _AddSpellCard(req, res, "base", BaseSpellCardModel)
@@ -61,6 +62,7 @@ const _AddCard = async(req: Request, res: Response, type: string, subtype: strin
     try {
         const result = new model({...req.body, cardType: type, cardSubtype: subtype})
         await result.save();
+        await UpdateCacheInternal([`cards`], false)
         res.status(201).json({
             status: "success",
             data: {...result}

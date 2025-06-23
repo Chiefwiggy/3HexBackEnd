@@ -9,7 +9,7 @@ import {_GetAllAbilitiesForCriteria} from "../Controllers/AbilityController";
 import {_GetAllSources} from "../Controllers/SourceController";
 import ConsumableModel from "../Models/Equipment/ConsumableModel";
 import {GetFatelineData} from "../Controllers/FatelineController";
-import ConditionCardModel from "../Models/Cards/ConditionCardModel";
+import ConditionCardModel, {_IConditionCard} from "../Models/Cards/ConditionCardModel";
 import DowntimeActivityModel from "../Models/DowntimeActivityModel";
 import ShieldModel from "../Models/Equipment/ShieldModel";
 import {GetAllConditions} from "../Controllers/ConditionController";
@@ -21,49 +21,144 @@ import MinionModel_New from "../Models/MinionModel_New";
 import {GetMinionData} from "../Controllers/MinionController";
 import {Document} from "mongoose"
 import RaceModel from "../Models/RaceModel";
+import CachingModel, {_ICachingModel} from "../Models/CachingModel";
+import SourceModel, {_ISourceSchema} from "../Models/SourceModel";
 
 const router = Router();
 
-router.get("/getAllPreloadedContent", async(req: Request, res: Response) => {
+const doesUserNeedNewestBatch = (db_name: string, userCache: _ICachingModel, masterCache: _ICachingModel | null) => {
+    if (masterCache) {
+        const master_data = masterCache.db_cache_timestamps.find(e => e.entry_name == db_name)
+        const user_data = userCache.db_cache_timestamps.find(e => e.entry_name == db_name)
+        if (master_data && user_data) {
+            console.log(master_data.last_updated, user_data.last_updated, new Date(master_data.last_updated) > new Date(user_data.last_updated))
+            return (new Date(master_data.last_updated) > new Date(user_data.last_updated))
+        } else {
+            return true;
+        }
+    } else {
+        return true
+    }
+}
 
-    const classCards = await _GetAllCardsOfCriteria(req, res, "class");
-    const affinityCards = await _GetAllCardsOfCriteria(req, res, "affinity");
-    const pathCards = await _GetAllCardsOfCriteria(req, res, "path");
+router.post("/getAllPreloadedContent", async(req: Request, res: Response) => {
 
-    const classAbilities = await _GetAllAbilitiesForCriteria(req, res, "class");
-    const affinityAbilities = await _GetAllAbilitiesForCriteria(req, res, "affinity");
-    const pathAbilities = await _GetAllAbilitiesForCriteria(req, res, "path");
+    const userCacheData = req.body.user_cache_data;
+    let universal_override = false;
+    let masterCache: _ICachingModel | null = null
 
-    const allSources = await _GetAllSources(req, res);
+    if (!userCacheData || Object.keys(userCacheData).length == 0) {
+        universal_override = true;
+    }
+    const t_masterCache = await CachingModel.find({is_master: true})
+    if (t_masterCache) {
+        // @ts-ignore
+        masterCache = t_masterCache[0] as _ICachingModel;
+    }
 
-    const weaponData = await _GetCardsOfType(req, res, BaseWeaponCardModel);
-    const armorData = await ArmorModel.find({});
-    const shieldData = await ShieldModel.find({});
+    // --- CARDS ---
+    let classCards: any = {data: {}}
+    let affinityCards: any = {data: {}}
+    let pathCards: any = {data: {}}
+    let raceCards = []
+    let subraceCards = []
+    let raceRoleCards = []
+    let developmentCards = []
+    let conditionCards: Array<_IConditionCard> = []
+    let weaponData: any = [];
 
-    const consumableData = await ConsumableModel.find({});
+    if (universal_override || doesUserNeedNewestBatch("cards", userCacheData, masterCache)) {
+        classCards = await _GetAllCardsOfCriteria(req, res, "class");
+        affinityCards = await _GetAllCardsOfCriteria(req, res, "affinity");
+        pathCards = await _GetAllCardsOfCriteria(req, res, "path");
 
-    const fatelineData = await GetFatelineData(req, res);
+        weaponData = (await _GetCardsOfType(req, res, BaseWeaponCardModel)).data as any;
 
-    const raceCards = (await _GetAllCardsOfCriteria(req, res, "race", true)).data as any
-    const subraceCards = (await _GetAllCardsOfCriteria(req, res, "subrace", true)).data as any
-    const raceRoleCards = (await _GetAllCardsOfCriteria(req, res, "race_role", true)).data as any
+        raceCards = (await _GetAllCardsOfCriteria(req, res, "race", true)).data as any
+        subraceCards = (await _GetAllCardsOfCriteria(req, res, "subrace", true)).data as any
+        raceRoleCards = (await _GetAllCardsOfCriteria(req, res, "race_role", true)).data as any
 
-    const developmentCards = (await _GetAllCardsOfCriteria(req, res, "development", true)).data as any
+        developmentCards = (await _GetAllCardsOfCriteria(req, res, "development", true)).data as any
 
-    const raceMetadata = await RaceModel.find({});
-    const raceAbilities = (await _GetAllAbilitiesForCriteria(req, res, "race")).data;
-    const subraceAbilities = (await _GetAllAbilitiesForCriteria(req, res, "subrace")).data;
-    const raceRoleAbilities = (await _GetAllAbilitiesForCriteria(req, res, "race_role")).data;
+        conditionCards = await ConditionCardModel.find({});
+    }
 
-    const developmentAbilities = (await _GetAllAbilitiesForCriteria(req, res, "development")).data;
 
-    const conditionCards = await ConditionCardModel.find({});
 
-    const downtime = await DowntimeActivityModel.find({});
+    // --- ABILITIES ---
 
-    const conditions = await ConditionModel.find({});
+    let raceAbilities: any = {}
+    let subraceAbilities: any = {}
+    let raceRoleAbilities: any = {}
+    let developmentAbilities: any = {}
+    let classAbilities: any = {data: {}}
+    let affinityAbilities: any = {data: {}}
+    let pathAbilities: any = {data: {}}
 
-    const mounts = await MountBaseModel.find({});
+    if (universal_override || doesUserNeedNewestBatch("abilities", userCacheData, masterCache)) {
+        console.log("got here")
+        raceAbilities = (await _GetAllAbilitiesForCriteria(req, res, "race")).data;
+        subraceAbilities = (await _GetAllAbilitiesForCriteria(req, res, "subrace")).data;
+        raceRoleAbilities = (await _GetAllAbilitiesForCriteria(req, res, "race_role")).data;
+
+        developmentAbilities = (await _GetAllAbilitiesForCriteria(req, res, "development")).data;
+
+        classAbilities = await _GetAllAbilitiesForCriteria(req, res, "class");
+        affinityAbilities = await _GetAllAbilitiesForCriteria(req, res, "affinity");
+        pathAbilities = await _GetAllAbilitiesForCriteria(req, res, "path");
+    }
+
+
+
+    // --- OTHER ---
+    let raceMetadata: any = {}
+
+    if (universal_override || doesUserNeedNewestBatch("races", userCacheData, masterCache)) {
+        raceMetadata = await RaceModel.find({});
+    }
+
+    let allSources: Array<_ISourceSchema> = []
+
+    if (universal_override || doesUserNeedNewestBatch("sources", userCacheData, masterCache)) {
+        allSources = (await _GetAllSources(req, res)).data as Array<_ISourceSchema>;
+    }
+
+
+    let armorData: any = [];
+    let shieldData: any = [];
+    let consumableData: any = [];
+    let fatelineData: any = [];
+    let downtime: any = [];
+    let conditions: any = [];
+    let mounts: any = [];
+
+    if (universal_override || doesUserNeedNewestBatch("armors", userCacheData, masterCache)) {
+        armorData = await ArmorModel.find({});
+    }
+
+    if (universal_override || doesUserNeedNewestBatch("shields", userCacheData, masterCache)) {
+        shieldData = await ShieldModel.find({});
+    }
+
+    if (universal_override || doesUserNeedNewestBatch("consumables", userCacheData, masterCache)) {
+        consumableData = await ConsumableModel.find({});
+    }
+
+    if (universal_override || doesUserNeedNewestBatch("fatelines", userCacheData, masterCache)) {
+        fatelineData = await GetFatelineData(req, res);
+    }
+
+    if (universal_override || doesUserNeedNewestBatch("downtime_activities", userCacheData, masterCache)) {
+        downtime = await DowntimeActivityModel.find({});
+    }
+
+    if (universal_override || doesUserNeedNewestBatch("conditions", userCacheData, masterCache)) {
+        conditions = await ConditionModel.find({});
+    }
+
+    if (universal_override || doesUserNeedNewestBatch("mounts", userCacheData, masterCache)) {
+        mounts = await MountBaseModel.find({});
+    }
 
     const minionRoles = await MinionRoleModel.find({});
     const allMinions = await MinionModel_New.find({});
@@ -77,6 +172,7 @@ router.get("/getAllPreloadedContent", async(req: Request, res: Response) => {
     )
 
     res.status(200).json({
+        updatedCache: masterCache,
         class: {
             cards: classCards.data,
             abilities: classAbilities.data,
@@ -90,8 +186,8 @@ router.get("/getAllPreloadedContent", async(req: Request, res: Response) => {
             cards: pathCards.data,
             abilities: pathAbilities.data,
         },
-        sources: allSources.data,
-        weaponData: weaponData.data,
+        sources: allSources,
+        weaponData: weaponData,
         armorData: armorData,
         shieldData: shieldData,
         consumableData: consumableData,
