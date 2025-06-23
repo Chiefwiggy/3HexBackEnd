@@ -37,7 +37,7 @@ export const GetAbilitiesForChar = new ValidQueryBuilder()
                 if (!abilities) {
                     res.status(500).send("Could not find abilities.");
                 } else {
-                    const {affinities, path} = _CalcAffinities(char);
+                    const {affinities, path} = await _CalcAffinities(char);
                     res.status(200).json(abilities.filter(ability => {
                         return ability.prerequisites.reduce((pv, cv) => {
                             if (!pv) return false;

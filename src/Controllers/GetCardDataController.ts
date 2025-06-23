@@ -20,6 +20,7 @@ import CommanderCardModel from "../Models/Cards/CommanderCardModel";
 import {_UPrerequisiteType} from "../Enums/CardEnums";
 import SourceModel, {_ISourceSchema} from "../Models/SourceModel";
 import ConditionCardModel from "../Models/Cards/ConditionCardModel";
+import AbilityModel, {_IAbilityModel} from "../Models/AbilityModel";
 
 export const GetAllSpellBases = async(req: Request, res: Response) => {
     const finalData = await _GetCardsOfType(req, res, BaseSpellCardModel);
@@ -237,7 +238,7 @@ const _GetAllSpellsPossibleForUser = async(user: _IUserModel, characterId: strin
     const char: _ICharacterData | null = await CharacterModel.findById(characterId);
     if (char) {
         const allCards = await _GetAllSpellsHelper();
-        const {path} = _CalcAffinities(char);
+        const {path} = await _CalcAffinities(char);
 
 
         // if (char.knownSources.length > 0 || char.temporarySources.length > 0) {
@@ -279,9 +280,9 @@ const _GetAllSpellsPossibleForUser = async(user: _IUserModel, characterId: strin
             })
 
             return {
-                bases: _PossibleFilter(newBases, char),
-                targets: _PossibleFilter(allCards.targets, char),
-                modifiers: _PossibleFilter(newMods, char)
+                bases: await _PossibleFilter(newBases, char),
+                targets: await _PossibleFilter(allCards.targets, char),
+                modifiers: await _PossibleFilter(newMods, char)
             }
         // }
         // else {
@@ -326,9 +327,9 @@ const _GetAllWeaponsPossibleForUser = async(user: _IUserModel, characterId: stri
                 return !(mod.cardSubtype == "order" && mod.prerequisites.length == 1 && mod.prerequisites[0].prerequisiteType == "nodefault") || sourceIds.includes(mod._id.toString())
             })
         return {
-            bases:  _PossibleFilter(newWeapons, char),
-            forms:  _PossibleFilter(allCards.forms, char),
-            skills:  _PossibleFilter(newSkills, char)
+            bases:  await _PossibleFilter(newWeapons, char),
+            forms:  await _PossibleFilter(allCards.forms, char),
+            skills:  await _PossibleFilter(newSkills, char)
         }
     } else {
         return {
@@ -344,7 +345,7 @@ const _GetAllCommanderCardsPossibleForUser = async(user: _IUserModel, characterI
     const char: _ICharacterData | null = await CharacterModel.findById(characterId);
     if (char) {
         const allCards = await CommanderCardModel.find({});
-        return _PossibleFilter(allCards, char);
+        return await _PossibleFilter(allCards, char);
     } else {
         return [];
     }
@@ -358,8 +359,8 @@ const _GetAllCardsPossibleForUser = async(user: _IUserModel, characterId: string
     }
 }
 
-const _PossibleFilter = (cardList: Array<_IAbstractCardData>, character: _ICharacterData, excludeNoDefault=false) => {
-    const {affinities, path} = _CalcAffinities(character);
+const _PossibleFilter = async(cardList: Array<_IAbstractCardData>, character: _ICharacterData, excludeNoDefault=false) => {
+    const {affinities, path} = await _CalcAffinities(character);
     return cardList.filter((card) => {
         return card.prerequisites.reduce((pv, cv) => {
             if (!pv) return false;
@@ -417,7 +418,7 @@ const _PossibleFilter = (cardList: Array<_IAbstractCardData>, character: _IChara
     })
 }
 
-export const _CalcAffinities = (character: _ICharacterData) => {
+export const _CalcAffinities = async(character: _ICharacterData) => {
     const affinities: _IAffinities = {
         nimble: 0,
         infantry: 0,
@@ -448,6 +449,24 @@ export const _CalcAffinities = (character: _ICharacterData) => {
             affinities[key as keyof _IAffinities] += value;
         })
     }
+    if (character.developmentIds && character.developmentIds.length > 0) {
+        for (const devId of character.developmentIds) {
+            const ability: _IAbilityModel | null = await AbilityModel.findById(devId);
+            if (ability?.unlocks && Object.keys(ability.unlocks).length > 0) {
+                const uList = Object.keys(ability.unlocks)
+                    .filter(key => key.endsWith("Affinity"))
+                    .map(key => key.replace(/Affinity$/, ""));
+
+                if (uList.length > 0) {
+                    const affinityKey = uList[0] as keyof _IAffinities;
+                    if (affinities[affinityKey] !== undefined) {
+                        affinities[affinityKey] += 1;
+                    }
+                }
+            }
+        }
+    }
+
     const path = {
         warrior: affinities.nimble + affinities.infantry + affinities.guardian,
         arcanist: affinities.focus + affinities.creation + affinities.alteration,
