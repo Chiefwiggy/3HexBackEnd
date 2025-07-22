@@ -7,6 +7,7 @@ export interface _IConsumable {
     itemName: string,
     itemType: string,
     craftingType: string,
+    alchemistOnly: boolean,
     tetherCost: number,
     description: Array<string>,
     xVals: Array<{
@@ -30,6 +31,7 @@ const ConsumableSchema = new mongoose.Schema<_IConsumable>({
     itemType: {type: String, required: true, enum: EConsumableType},
     craftingType: {type: String, enum: EConsumableCraftingType},
     tetherCost: {type: Number, required: false},
+    alchemistOnly: {type: Boolean, default: false},
     description: {type: [String], required: true},
     xVals: [
         {

@@ -44,7 +44,7 @@ export const UpdateCacheBackEnd = new ValidQueryBuilder()
 
 export const UpdateCacheInternal = async(table_names: Array<string>, new_entry_expected: boolean = false, master_cache_ref: any = null) => {
     let masterCache = null
-    if (!master_cache_ref) {
+    if (master_cache_ref ?? false) {
         masterCache = master_cache_ref
     } else {
         masterCache = await CachingModel.findOne({is_master: true})
