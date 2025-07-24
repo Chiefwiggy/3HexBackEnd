@@ -8,7 +8,8 @@ export interface _ICondition {
     conditionType: string
     conditionCountdownType: string,
     description: Array<string>,
-    stackBonusDescription: string,
+    heighteningDescription: string,
+    heighteningStackCount: number,
     inverseConditionId: string,
     xVals: Array<{
         basePower: number,
@@ -23,7 +24,8 @@ const ConditionSchema = new mongoose.Schema<_ICondition>({
     conditionType: {type: String, required: true, enum: EConditionType},
     conditionCountdownType: {type: String, required: true, enum: EConditionCountdownType},
     description: {type: [String], required: true},
-    stackBonusDescription: {type: String, required: true},
+    heighteningDescription: {type: String, required: true},
+    heighteningStackCount: {type: Number, required: true},
     inverseConditionId: String,
     xVals: [
         {
