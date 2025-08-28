@@ -14,10 +14,15 @@ interface _IDataModifiers {
 }
 
 export interface _ITechnikCardData extends _IAbstractCardData {
+    surgeCostMod?: _IDataModifiers
+    durationMod?: _IDataModifiers,
+
 
 }
 
-const AbstractTechnikCardSchema = new Schema({}, {discriminatorKey: 'kind'})
+const AbstractTechnikCardSchema = new Schema({
+
+}, {discriminatorKey: 'kind'})
 AbstractTechnikCardSchema.add(AbstractCardSchema)
 
 export default AbstractTechnikCardSchema
