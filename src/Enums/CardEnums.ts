@@ -1,6 +1,6 @@
 export const EArcanotype = ["elemental", "divine", "mystical", "axum", "primal", "eonic", "animus", "esoteric"]
 
-export const EEmblemType = ["default", "info", "warning", "tether", "stamina", "requirement", "priority", "power", "health", "buff", "debuff", "money", "die", "soul_charge", "order", "enchantment", "rift_object"]
+export const EEmblemType = ["default", "info", "warning", "tether", "stamina", "requirement", "priority", "power", "health", "buff", "debuff", "money", "die", "soul_charge", "order", "enchantment", "rift_object", "else", "technik"]
 
 export const EPrerequisiteTypes = ["attribute", "affinity", "class", "path", "nodefault", "race", "subrace", "fateline", "race_role", "minion_role", "level", "development"]
 
@@ -15,8 +15,10 @@ export const EWeaponSubtypes = ["base", "form", "skill", "order"]
 
 export const ECommanderSubtypes = ["commander"]
 
+export const EHackSubtypes = ["io", "function", "protocol", "util", "else"]
+
 export const EConditionSubtypes = ["buff", "debuff"]
-export const ECardSubtypes = [...ESpellSubtypes, ...EWeaponSubtypes, ...ECommanderSubtypes, ...EConditionSubtypes]
+export const ECardSubtypes = [...ESpellSubtypes, ...EWeaponSubtypes, ...ECommanderSubtypes, ...EConditionSubtypes, ...EHackSubtypes]
 
 export const EWeaponClass = ["light", "standard", "heavy", ""]
 export const EWeaponType = ["axe", "blade", "bomb", "bow", "club", "polearm", "wand", "spear", "unarmed", "shield", "special"]

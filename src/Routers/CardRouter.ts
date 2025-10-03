@@ -1,6 +1,7 @@
 import {Router} from 'express'
 import SpellCardsRouter from "./SpellCards/SpellCardsRouter";
 import WeaponCardsRouter from "./WeaponCards/WeaponCardsRouter";
+import HackCardsRouter from "./TechnikCards/HackCardsRouter";
 import {
     GetAllCardsForAffinity, GetAllCardsForPath,
     GetAllCardsForClass,
@@ -23,6 +24,7 @@ router.use('/spells', SpellCardsRouter);
 router.use('/weapons', WeaponCardsRouter);
 router.use('/commander', CommanderCardRouter)
 router.use('/conditions', ConditionCardRouter);
+router.use('/hacks', HackCardsRouter);
 
 export default router;
 

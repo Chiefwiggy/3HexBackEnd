@@ -155,3 +155,55 @@ export const AddPreparedSpell = new ValidQueryBuilder()
         }
     })
     .exec();
+
+export const AddPreparedHack = new ValidQueryBuilder()
+    .addPerm("registered")
+    .success( async(req: Request, res: Response, user: _IUserModel) => {
+    try {
+            const char = await CharacterModel.findById(req.params["characterId"])
+            if (char) {
+                const {hackFunctionId, hackIOId, hackProtocolId, hackCardsIds} = req.body;
+                if (!hackFunctionId || !hackIOId || !hackProtocolId || !hackCardsIds) {
+                    res.status(401).send("Invalid body.");
+                    return;
+                }
+                const data = {hackFunctionId, hackIOId, hackProtocolId, hackCardsIds}
+
+                if (char.createdHacks.filter(entry => {
+                    if (entry.hackFunctionId != data.hackFunctionId) {
+                        return false;
+                    }
+                    if (entry.hackIOId != data.hackIOId) {
+                        return false;
+                    }
+                    if (entry.hackProtocolId != data.hackProtocolId) {
+                        return false;
+                    }
+                    if (entry.hackCardsIds.length !== data.hackCardsIds.length) {
+                        return false;
+                    }
+                    entry.hackCardsIds.forEach(e => {
+                       if (!data.hackCardsIds.includes(e)) {
+                           return false;
+                       }
+                    });
+                    return true;
+                }).length != 0) {
+                    res.status(208).send("Element already exists.");
+                    return;
+                }
+
+                char.createdHacks.push(req.body);
+                char.save();
+                res.status(201).json({
+                    message: "Successfully updated.",
+                    char
+                })
+            } else {
+                res.status(404).send("Could not find character.");
+            }
+        } catch(e) {
+            res.status(500).json(e);
+        }
+    })
+    .exec();

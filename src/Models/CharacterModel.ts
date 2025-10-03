@@ -112,6 +112,14 @@ export interface _ICalculatedWeapon {
         weaponCardsIds: Array<string>
 }
 
+export interface _ICalculatedHack {
+    customName?: string,
+    hackFunctionId: string,
+    hackIOId: string,
+    hackProtocolId: string,
+    hackCardsIds: Array<string>
+}
+
 export interface _IEnchantmentData {
     baseId: string,
     enchantmentLevel: number,
@@ -240,8 +248,10 @@ export interface _ICharacterData extends Document {
     preparedCommanderCards: Array<string>,
     createdSpells: Array<_ICalculatedSpell>,
     createdWeapons: Array<_ICalculatedWeapon>,
+    createdHacks: Array<_ICalculatedHack>,
     currentSpell: _ICalculatedSpell,
     currentWeapon: _ICalculatedWeapon,
+    currentHack: _ICalculatedHack,
     currentOffhandWeapon: _ICalculatedWeapon,
     counterWeapon: _ICalculatedWeapon,
     currentArmor: _IKnownArmorStruct,
@@ -413,6 +423,26 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
             weaponCardsIds: [String]
         }
     ],
+    createdHacks: [
+        {
+            customName: {type: String, required: false},
+            hackFunctionId: {type: String, required: true},
+            hackIOId: {type: String, required: true},
+            hackProtocolId: {type: String, required: true},
+            hackCardsIds: [String]
+        }
+    ],
+    currentHack: {
+        type: {
+            customName: {type: String, required: false},
+            hackFunctionId: {type: String, required: true},
+            hackIOId: {type: String, required: true},
+            hackProtocolId: {type: String, required: true},
+            hackCardsIds: [String]
+        },
+        required: false,
+        default: null
+    },
     currentSpell: {
         type: {
             customName: {type: String, required: false},

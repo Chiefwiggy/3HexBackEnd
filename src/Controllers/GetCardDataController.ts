@@ -21,6 +21,11 @@ import {_UPrerequisiteType} from "../Enums/CardEnums";
 import SourceModel, {_ISourceSchema} from "../Models/SourceModel";
 import ConditionCardModel from "../Models/Cards/ConditionCardModel";
 import AbilityModel, {_IAbilityModel} from "../Models/AbilityModel";
+import BaseTechnikCardModel, {_IBaseTechnikCardData} from "../Models/Cards/BaseTechnikCardModel";
+import IOTechnikCardModel, {_IIOTechnikCardData} from "../Models/Cards/IOTechnikCardModel";
+import ModifierTechnikCardModel from "../Models/Cards/ModifierTechnikCardModel";
+import {_ITechnikCardData} from "../Models/Cards/AbstractTechnikCardSchema";
+import ProtocolTechnikCardModel, {_IProtocolTechnikCardData} from "../Models/Cards/ProtocolTechnikCardModel";
 
 export const GetAllSpellBases = async(req: Request, res: Response) => {
     const finalData = await _GetCardsOfType(req, res, BaseSpellCardModel);
@@ -49,6 +54,26 @@ export const GetAllWeaponForms = async(req :Request, res: Response) => {
 
 export const GetAllWeaponSkills = async(req: Request, res: Response) => {
     const finalData = await _GetCardsOfType(req, res, SkillWeaponCardModel);
+    res.status(finalData.status).json(finalData.data);
+}
+
+export const GetAllHackBases = async(req: Request, res: Response) => {
+    const finalData = await _GetCardsOfType(req, res, BaseTechnikCardModel);
+    res.status(finalData.status).json(finalData.data);
+}
+
+export const GetAllHackIO = async(req: Request, res: Response) => {
+    const finalData = await _GetCardsOfType(req, res, IOTechnikCardModel);
+    res.status(finalData.status).json(finalData.data);
+}
+
+export const GetAllHackProtocols = async(req: Request, res: Response) => {
+    const finalData = await _GetCardsOfType(req, res, ProtocolTechnikCardModel);
+    res.status(finalData.status).json(finalData.data);
+}
+
+export const GetAllHackModifiers = async(req: Request, res: Response) => {
+    const finalData = await _GetCardsOfType(req, res, ModifierTechnikCardModel);
     res.status(finalData.status).json(finalData.data);
 }
 
@@ -97,6 +122,14 @@ export const GetAllSpells = async(req: Request, res: Response) => {
     }
 }
 
+export const GetAllHacks = async(req: Request, res: Response) => {
+    try {
+        res.status(200).json(_GetAllHacksHelper());
+    } catch (err) {
+        res.status(404).send("Couldn't find anything...");
+    }
+}
+
 const _GetAllSpellsHelper = async() => {
     const bases: (_IBaseSpellCardData & mongoose.Document)[] | null = await BaseSpellCardModel.find({});
     const targets: (_ITargetSpellCardData & mongoose.Document)[] | null = await TargetSpellCardModel.find({});
@@ -104,6 +137,19 @@ const _GetAllSpellsHelper = async() => {
     return {
         bases,
         targets,
+        modifiers
+    }
+}
+
+const _GetAllHacksHelper = async() => {
+    const bases: (_IBaseTechnikCardData & mongoose.Document)[] | null = await BaseTechnikCardModel.find({});
+    const io: (_IIOTechnikCardData & mongoose.Document)[] | null = await IOTechnikCardModel.find({});
+    const modifiers: (_ITechnikCardData & mongoose.Document)[] | null = await ModifierTechnikCardModel.find({});
+    const protocols: (_IProtocolTechnikCardData & mongoose.Document)[] | null = await ProtocolTechnikCardModel.find({});
+    return {
+        bases,
+        io,
+        protocols,
         modifiers
     }
 }
@@ -131,6 +177,13 @@ export const GetAllSpellsPossibleForUser = new ValidQueryBuilder()
     .addPerm('registered')
     .success(async(req: Request, res: Response, user: _IUserModel) => {
         res.status(200).json(await _GetAllSpellsPossibleForUser(user, req.params["characterId"]));
+    })
+    .exec();
+
+export const GetAllHacksPossibleForUser = new ValidQueryBuilder()
+    .addPerm('registered')
+    .success(async(req: Request, res: Response, user: _IUserModel) => {
+        res.status(200).json(await _GetAllHacksPossibleForUser(user, req.params["characterId"]));
     })
     .exec();
 
@@ -193,9 +246,10 @@ export const _GetAllCardsOfCriteria = async(req: Request, res: Response, criteri
     try {
         const allSpells = await _GetAllSpellsHelper();
         const allWeapons = await _GetAllWeaponsHelper();
+        const allHacks = await _GetAllHacksHelper();
         const allCommanderCards = await CommanderCardModel.find({});
 
-        const allCards = [...allSpells.bases, ...allSpells.targets, ...allSpells.modifiers, ...allWeapons.bases, ...allWeapons.forms, ...allWeapons.skills, ...allCommanderCards];
+        const allCards = [...allSpells.bases, ...allSpells.targets, ...allSpells.modifiers, ...allWeapons.bases, ...allWeapons.forms, ...allWeapons.skills, ...allCommanderCards, ...allHacks.bases, ...allHacks.io, ...allHacks.protocols, ...allHacks.modifiers];
 
         const finalCards: { [key: string]: any[] } = {};
 
@@ -230,6 +284,21 @@ export const _GetAllCardsOfCriteria = async(req: Request, res: Response, criteri
         return {
             status: 500,
             data: e
+        }
+    }
+}
+
+const _GetAllHacksPossibleForUser = async(user: _IUserModel, characterId: string) => {
+    const char: _ICharacterData | null = await CharacterModel.findById(characterId);
+    if (char) {
+        const allCards = await _GetAllHacksHelper();
+        const {bases, io, protocols, modifiers} = allCards;
+
+        return {
+            bases: await _PossibleFilter(bases, char),
+            io: await _PossibleFilter(io, char),
+            protocols: await _PossibleFilter(protocols, char),
+            modifiers: await _PossibleFilter(modifiers, char)
         }
     }
 }
@@ -355,6 +424,7 @@ const _GetAllCardsPossibleForUser = async(user: _IUserModel, characterId: string
     return {
         spells: await _GetAllSpellsPossibleForUser(user, characterId),
         weapons: await _GetAllWeaponsPossibleForUser(user, characterId),
+        hacks: await _GetAllHacksPossibleForUser(user, characterId),
         commanderCards: await _GetAllCommanderCardsPossibleForUser(user, characterId)
     }
 }
@@ -487,6 +557,15 @@ export const GetAllSpellsPreparedForCharacter = new ValidQueryBuilder()
         const spellData = await _GetAllSpellsHelper();
         const allSpells = [...spellData.bases, ...spellData.modifiers, ...spellData.targets]
         await _GetPreparedCardsFromList(req, res, allSpells, "knownBaseSpells")
+    })
+    .exec();
+
+export const GetAllHacksPreparedForCharacter = new ValidQueryBuilder()
+    .addPerm('registered')
+    .success(async(req: Request, res: Response, user: _IUserModel) => {
+        const {bases, io, protocols, modifiers} = await _GetAllHacksHelper();
+        const allHacks = [...bases, ...io, ...protocols, ...modifiers]
+        await _GetPreparedCardsFromList(req, res, allHacks, "knownBaseHacks")
     })
     .exec();
 

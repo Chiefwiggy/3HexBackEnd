@@ -1,11 +1,17 @@
 import express, {Request, Response} from 'express';
-import {AddPreparedSpell, AddPreparedWeapon, GetAllWeaponsPrepared} from "../../Controllers/PrepController";
+import {
+    AddPreparedHack,
+    AddPreparedSpell,
+    AddPreparedWeapon,
+    GetAllWeaponsPrepared
+} from "../../Controllers/PrepController";
 
 const router = express.Router();
 
 router.post("/:characterId/weapon/add", AddPreparedWeapon)
 router.delete("/:characterId/weapon/remove", () => {})
 router.post("/:characterId/spell/add", AddPreparedSpell)
+router.post("/:characterId/hack/add", AddPreparedHack)
 router.delete("/:characterId/spell/remove", () => {})
 
 router.get("/:characterId/weapon/getAll", GetAllWeaponsPrepared);

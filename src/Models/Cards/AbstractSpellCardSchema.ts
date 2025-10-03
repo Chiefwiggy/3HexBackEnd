@@ -17,8 +17,6 @@ interface _IDataModifiers {
 export interface _ISpellCardData extends _IAbstractCardData {
     castTimeMod?: _IDataModifiers,
     durationMod?: _IDataModifiers,
-    tetherCostMod?: _IDataModifiers,
-    moneyCostMod?: _IDataModifiers,
     energyCostMod?: _IDataModifiers,
     baseSpellSetMod?: _IDataModifiers,
     spellSetMod?: _IDataModifiers,
