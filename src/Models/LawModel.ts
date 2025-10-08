@@ -10,12 +10,13 @@ export interface _ILawSchema extends mongoose.Document {
 }
 
 const LawSchema = new mongoose.Schema<_ILawSchema>({
-    lawName: {type: String, required: true, unique: true},
-    lawDescription: {type: [String], required: true},
-    tetherCost: {type: Number, required: true},
-    castTime: String,
-    materialComponents: [String]
-})
+        lawName: {type: String, required: true, unique: true},
+        lawDescription: {type: [String], required: true},
+        tetherCost: {type: Number, required: true},
+        castTime: String,
+        materialComponents: [String]
+    }
+)
 
 const LawModel = mongoose.model("laws", LawSchema);
 

@@ -2,6 +2,7 @@ import express, {Router} from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import mongoose from 'mongoose'
+import {S3Client} from "@aws-sdk/client-s3"
 import CharacterRouter from "./Routers/CharacterRouter";
 import CardRouter from "./Routers/CardRouter";
 import AuthRouter from "./Routers/AuthRouter";
@@ -20,6 +21,8 @@ import DowntimeRouter from "./Routers/DowntimeRouter";
 import ConditionRouter from "./Routers/ConditionRouter";
 import RaceRouter from "./Routers/RaceRouter";
 import CachingRouter from "./Routers/CachingRouter";
+import CDNRouter from "./Routers/CDNRouter";
+import ImageLibraryRouter from "./Routers/ImageLibraryRouter";
 
 const PORT: number = Number(process.env.PORT) || 3001;
 
@@ -37,6 +40,14 @@ mongoose.connect(process.env.MONGO_URL ?? "").catch((err) => {
 
 const router = Router();
 
+export const s3 = new S3Client({
+    region: process.env.AWS_REGION!,
+    credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
+    }
+})
+
 router.use("/characters", CharacterRouter);
 router.use('/cards', CardRouter);
 router.use('/auth', AuthRouter);
@@ -53,7 +64,8 @@ router.use("/races", RaceRouter);
 router.use("/downtime", DowntimeRouter)
 router.use("/conditions", ConditionRouter);
 router.use("/cache", CachingRouter)
-
+router.use("/cdn", CDNRouter);
+router.use("/imagelib", ImageLibraryRouter)
 
 app.use('/.netlify/functions/index', router);
 

@@ -263,6 +263,7 @@ export interface _ICharacterData extends Document {
     knownBaseSpells: Array<string>,
     knownSources: Array<_IPreparedSource>,
     temporarySources: Array<_IPreparedSource>,
+    characterImageKey: string,
     skillPoints: _ISkills,
     minionsOwned: Array<{
         minionId: string,
@@ -596,6 +597,7 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
         }],
         default: []
     },
+    characterImageKey: String,
     isDead: {type: Boolean, required: false, default: false},
     creatorName: {type: String, required: true, default: "Unknown"},
     developmentIds: [String],
