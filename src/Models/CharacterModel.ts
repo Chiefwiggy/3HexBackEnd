@@ -273,6 +273,7 @@ export interface _ICharacterData extends Document {
     minionData: Array<_IMinionSpecificData>,
     isDead: boolean,
     creatorName: string,
+    campaignIds: Array<string>,
     settings: {
         dieColorId: string,
         showAttributeDescriptions: boolean
@@ -598,6 +599,11 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
         default: []
     },
     characterImageKey: String,
+    campaignIds: {
+        type: [String],
+        required: true,
+        default: []
+    },
     isDead: {type: Boolean, required: false, default: false},
     creatorName: {type: String, required: true, default: "Unknown"},
     developmentIds: [String],
