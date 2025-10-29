@@ -23,6 +23,8 @@ import RaceRouter from "./Routers/RaceRouter";
 import CachingRouter from "./Routers/CachingRouter";
 import CDNRouter from "./Routers/CDNRouter";
 import ImageLibraryRouter from "./Routers/ImageLibraryRouter";
+import DatachipRouter from "./Routers/DatachipRouter";
+import ChipsetRouter from "./Routers/ChipsetRouter";
 
 const PORT: number = Number(process.env.PORT) || 3001;
 
@@ -66,6 +68,7 @@ router.use("/conditions", ConditionRouter);
 router.use("/cache", CachingRouter)
 router.use("/cdn", CDNRouter);
 router.use("/imagelib", ImageLibraryRouter)
+router.use("/chipset", ChipsetRouter)
 
 app.use('/.netlify/functions/index', router);
 

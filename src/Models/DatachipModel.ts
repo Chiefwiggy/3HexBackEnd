@@ -1,5 +1,10 @@
 import mongoose from "mongoose"
-import {_UPrerequisiteType, EPrerequisiteTypes, ESaveTypes} from "../Enums/CardEnums";
+import {_UPrerequisiteType, EHackSubtypes, EPrerequisiteTypes, ESaveTypes} from "../Enums/CardEnums";
+
+export interface _IDatachipHackIdInterface {
+    hackId: string,
+    cardType: string
+}
 
 export interface _IDatachipSchema {
     datachipName: string
@@ -13,7 +18,7 @@ export interface _IDatachipSchema {
         skill: string,
         level: number
     }>,
-    builtinHackIds: Array<string>,
+    builtinHackIds: Array<_IDatachipHackIdInterface>,
 
     visibility: string
 }
@@ -25,7 +30,16 @@ const DatachipSchema = new mongoose.Schema<_IDatachipSchema>( {
     secondaryTechnikScaling: {type: Number, required: true, default: 0.0},
     primaryTechnikStat: {type: String, required: true, default: "knowledge", enum: ESaveTypes},
     secondaryTechnikStat: {type: String, required: true, default: "presence", enum: ESaveTypes},
-    builtinHackIds: {type: [String], required: true, default: []},
+    builtinHackIds: [
+        {
+            hackId: {type: String, required: true},
+            cardType: {
+                type: String,
+                required: true,
+                enum: EHackSubtypes
+            }
+        }
+    ],
     prerequisites: [
         {
             prerequisiteType: {

@@ -17,6 +17,8 @@ export const ECommanderSubtypes = ["commander"]
 
 export const EHackSubtypes = ["io", "function", "protocol", "util", "else"]
 
+export const EHackChannelTypes = ["machina", "eden", "biomantle", "lattice", "lexica"]
+
 export const EConditionSubtypes = ["buff", "debuff"]
 export const ECardSubtypes = [...ESpellSubtypes, ...EWeaponSubtypes, ...ECommanderSubtypes, ...EConditionSubtypes, ...EHackSubtypes]
 

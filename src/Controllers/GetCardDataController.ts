@@ -295,10 +295,10 @@ const _GetAllHacksPossibleForUser = async(user: _IUserModel, characterId: string
         const {bases, io, protocols, modifiers} = allCards;
 
         return {
-            bases: await _PossibleFilter(bases, char),
-            io: await _PossibleFilter(io, char),
-            protocols: await _PossibleFilter(protocols, char),
-            modifiers: await _PossibleFilter(modifiers, char)
+            bases: await _PossibleFilter(bases, char, true),
+            io: await _PossibleFilter(io, char, true),
+            protocols: await _PossibleFilter(protocols, char, true),
+            modifiers: await _PossibleFilter(modifiers, char, true)
         }
     }
 }

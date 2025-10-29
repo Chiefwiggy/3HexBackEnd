@@ -142,9 +142,11 @@ const _AddCard = async(req: Request, res: Response, type: string, subtype: strin
     try {
         const result = new model({...req.body, cardType: type, cardSubtype: subtype})
         await result.save();
+        const _cid = result._id;
         await UpdateCacheInternal([`cards`], false)
         res.status(201).json({
             status: "success",
+            _id: _cid,
             data: {...result}
         })
     } catch (err) {
