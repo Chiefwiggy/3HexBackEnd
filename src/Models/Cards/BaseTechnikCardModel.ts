@@ -13,7 +13,8 @@ export interface _IBaseTechnikCardData extends _ITechnikCardData, Document {
     staminaCost: number,
     damageType: string,
     damageSubtype: string,
-    functionalName: string
+    functionalName: string,
+    baseSurge: number
 }
 
 const BaseTechnikCardSchema = new Schema<_IBaseTechnikCardData>({
@@ -35,7 +36,8 @@ const BaseTechnikCardSchema = new Schema<_IBaseTechnikCardData>({
         required: true,
         default: "none"
     },
-    functionalName: {type: String, required: true}
+    functionalName: {type: String, required: true},
+    baseSurge: {type: Number, required: true, default: 0}
 })
 
 BaseTechnikCardSchema.add(AbstractTechnikCardSchema);
