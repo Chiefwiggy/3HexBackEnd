@@ -26,6 +26,7 @@ import IOTechnikCardModel, {_IIOTechnikCardData} from "../Models/Cards/IOTechnik
 import ModifierTechnikCardModel from "../Models/Cards/ModifierTechnikCardModel";
 import {_ITechnikCardData} from "../Models/Cards/AbstractTechnikCardSchema";
 import ProtocolTechnikCardModel, {_IProtocolTechnikCardData} from "../Models/Cards/ProtocolTechnikCardModel";
+import PackageModel, {_IPackageSchema} from "../Models/PackageModel";
 
 export const GetAllSpellBases = async(req: Request, res: Response) => {
     const finalData = await _GetCardsOfType(req, res, BaseSpellCardModel);
@@ -294,11 +295,44 @@ const _GetAllHacksPossibleForUser = async(user: _IUserModel, characterId: string
         const allCards = await _GetAllHacksHelper();
         const {bases, io, protocols, modifiers} = allCards;
 
+        const packageCardIds = (await Promise.all(char.knownPackages.map(async(packageId) => {
+            const packageData: _IPackageSchema | null = await PackageModel.findById(packageId)
+            if (packageData) {
+                return packageData.builtinHackIds
+            }
+        }))).flat().map(e => e?.hackId);
+
+
+        const filterHack = (hack: _ITechnikCardData) => {
+            const prereq = hack.prerequisites?.[0];
+
+            const isNoDefault = prereq?.prerequisiteType === "nodefault";
+            const isIncludedInPackage = packageCardIds.some(
+                (id) => id!.toString() === hack._id.toString()
+            );
+
+            console.log(hack._id, isNoDefault, isIncludedInPackage);
+
+            if (isNoDefault && !isIncludedInPackage) return false;
+            return true;
+        }
+
+        const newBases = bases.filter(filterHack);
+        const newIO = io.filter(filterHack);
+        const newProtocols = protocols.filter(filterHack);
+        const newModifiers = modifiers.filter(filterHack);
+
+
+
+
+
+
+
         return {
-            bases: await _PossibleFilter(bases, char, true),
-            io: await _PossibleFilter(io, char, true),
-            protocols: await _PossibleFilter(protocols, char, true),
-            modifiers: await _PossibleFilter(modifiers, char, true)
+            bases: await _PossibleFilter(newBases, char),
+            io: await _PossibleFilter(newIO, char),
+            protocols: await _PossibleFilter(newProtocols, char),
+            modifiers: await _PossibleFilter(newModifiers, char)
         }
     }
 }

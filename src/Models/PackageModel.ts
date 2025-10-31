@@ -1,8 +1,8 @@
-import mongoose from "mongoose";
+import mongoose, {Document} from "mongoose";
 import {_IDatachipHackIdInterface} from "./DatachipModel";
 import {_UPrerequisiteType, EHackSubtypes, EPrerequisiteTypes} from "../Enums/CardEnums";
 
-export interface _IPackageSchema {
+export interface _IPackageSchema extends Document {
     packageName: string,
     memorySlots: number,
     builtinHackIds: Array<_IDatachipHackIdInterface>

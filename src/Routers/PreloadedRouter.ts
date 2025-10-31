@@ -23,6 +23,10 @@ import {Document} from "mongoose"
 import RaceModel from "../Models/RaceModel";
 import CachingModel, {_ICachingModel} from "../Models/CachingModel";
 import SourceModel, {_ISourceSchema} from "../Models/SourceModel";
+import {_IDatachipSchema} from "../Models/DatachipModel";
+import {_GetAllDatachips} from "../Controllers/DatachipController";
+import {_IPackageSchema} from "../Models/PackageModel";
+import {_GetAllPackages} from "../Controllers/PackageController";
 
 const router = Router();
 
@@ -170,6 +174,16 @@ router.post("/getAllPreloadedContent", async(req: Request, res: Response) => {
         })
     )
 
+    let allDatachips :Array<_IDatachipSchema> = [];
+    if (universal_override || doesUserNeedNewestBatch("datachips", userCacheData, masterCache)) {
+        allDatachips = (await _GetAllDatachips(req, res)).data as Array<_IDatachipSchema>;
+    }
+
+    let allPackages: Array<_IPackageSchema> = []
+    if (universal_override || doesUserNeedNewestBatch("packages", userCacheData, masterCache)) {
+        allPackages = (await _GetAllPackages(req, res)).data as Array<_IPackageSchema>;
+    }
+
     res.status(200).json({
         updatedCache: masterCache,
         class: {
@@ -186,6 +200,8 @@ router.post("/getAllPreloadedContent", async(req: Request, res: Response) => {
             abilities: pathAbilities.data,
         },
         sources: allSources,
+        datachips: allDatachips,
+        packages: allPackages,
         weaponData: weaponData,
         armorData: armorData,
         shieldData: shieldData,

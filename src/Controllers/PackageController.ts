@@ -67,6 +67,7 @@ export const _PopulatePackageCards = async (packageData: _IPackageSchema) => {
         })
     )
     return {
+        _id: packageData._id,
         packageName: packageData.packageName,
         builtinHacks: cardMap,
         visibility: packageData.visibility,

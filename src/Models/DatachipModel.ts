@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+import mongoose, {Document} from "mongoose"
 import {_UPrerequisiteType, EHackSubtypes, EPrerequisiteTypes, ESaveTypes} from "../Enums/CardEnums";
 
 export interface _IDatachipHackIdInterface {
@@ -6,7 +6,7 @@ export interface _IDatachipHackIdInterface {
     cardType: string
 }
 
-export interface _IDatachipSchema {
+export interface _IDatachipSchema extends Document {
     datachipName: string
     baseTechnikCapacity: number,
     primaryTechnikScaling: number,

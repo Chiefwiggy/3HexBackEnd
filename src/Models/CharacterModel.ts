@@ -1,6 +1,8 @@
 import mongoose, {Schema} from "mongoose";
 import {EEmblemType, ESkill} from "../Enums/CardEnums";
 import {EFatelines, ERaceRole} from "../Enums/CharacterEnums";
+import {_IDatachipSchema} from "./DatachipModel";
+import {_IPackageSchema} from "./PackageModel";
 
 
 export const IModifiable = {
@@ -28,6 +30,8 @@ export const IPreparedSource = {
     sourceId: { type: String, required: true },
     attunementLevel: {type: Number, required: true, default: 0}
 }
+
+
 
 export const IAttributeBar = {
     current: {type: Number, default: 0},
@@ -263,6 +267,8 @@ export interface _ICharacterData extends Document {
     knownBaseSpells: Array<string>,
     knownSources: Array<_IPreparedSource>,
     temporarySources: Array<_IPreparedSource>,
+    knownDatachips: Array<String>,
+    knownPackages: Array<String>,
     characterImageKey: string,
     skillPoints: _ISkills,
     minionsOwned: Array<{
@@ -533,6 +539,8 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
     knownBaseSpells: [String],
     knownSources: [IPreparedSource],
     temporarySources: [IPreparedSource],
+    knownDatachips: [String],
+    knownPackages: [String],
     knownWeapons: [{
         baseId: {type: String, required: true},
         enchantmentLevel: {type: Number, required: true, default: 0},

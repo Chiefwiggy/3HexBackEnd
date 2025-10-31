@@ -68,6 +68,7 @@ export const _PopulateDatachipCards = async (datachip: _IDatachipSchema) => {
         })
     )
     return {
+        _id: datachip._id,
         datachipName: datachip.datachipName,
         baseTechnikCapacity: datachip.baseTechnikCapacity,
         primaryTechnikScaling: datachip.primaryTechnikScaling,
