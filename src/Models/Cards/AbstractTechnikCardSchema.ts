@@ -26,6 +26,7 @@ export interface _ITechnikCardData extends _IAbstractCardData {
     hackSetMod?: _IDataModifiers,
     channelRequirements?: Array<_IChannelData>,
     overrideSaveType?: string,
+    accessLevelMod?: _IDataModifiers,
 }
 
 const AbstractTechnikCardSchema = new Schema({
@@ -39,6 +40,7 @@ const AbstractTechnikCardSchema = new Schema({
             channelStrength: {type: Number, required: true, default: 1}
         }
     ],
+    accessLevelMod: IDataModifiers,
     overrideSaveType: String
 }, {discriminatorKey: 'kind'})
 AbstractTechnikCardSchema.add(AbstractCardSchema)

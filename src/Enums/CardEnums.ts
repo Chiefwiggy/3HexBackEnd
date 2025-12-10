@@ -17,7 +17,7 @@ export const ECommanderSubtypes = ["commander"]
 
 export const EHackSubtypes = ["io", "function", "protocol", "util", "else"]
 
-export const EHackChannelTypes = ["machina", "eden", "biomantle", "lattice", "lexica"]
+export const EHackChannelTypes = ["machina", "eden", "biomantle", "network", "daemon" ]
 
 
 export const EConditionSubtypes = ["buff", "debuff", "special"]
