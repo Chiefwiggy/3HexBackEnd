@@ -66,6 +66,12 @@ export interface _IAttributes {
     endurance: _IModifiable
 }
 
+export interface _ICurrencyData {
+    currencyStore: string,
+    currencyAmount: number,
+    currencyType: string
+}
+
 export interface _IAffinities {
     nimble: number,
     infantry: number,
@@ -82,9 +88,9 @@ export interface _IAffinities {
     rune: number,
     sourcecraft: number,
     research: number,
-    machinery: number,
+    transmutation: number,
     abjuration: number,
-    biohacking: number
+    infusion: number
 }
 
 export interface _ISkills {
@@ -284,6 +290,7 @@ export interface _ICharacterData extends Document {
         dieColorId: string,
         showAttributeDescriptions: boolean
     },
+    currencyValues: Array<_ICurrencyData>,
     developmentIds: Array<string>,
     __times_accessed: number,
 
@@ -312,9 +319,9 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
                 rune: { type: Number, required: false, default: 0 },
                 sourcecraft: { type: Number, required: false, default: 0 },
                 research: { type: Number, required: false, default: 0 },
-                machinery: { type: Number, required: false, default: 0 },
+                transmutation: { type: Number, required: false, default: 0 },
                 abjuration: { type: Number, required: false, default: 0 },
-                biohacking: { type: Number, required: false, default: 0 }
+                infusion: { type: Number, required: false, default: 0 }
             },
             classExpertises: [
                 {
@@ -357,9 +364,9 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
                 rune: { type: Number, required: false, default: 0 },
                 sourcecraft: { type: Number, required: false, default: 0 },
                 research: { type: Number, required: false, default: 0 },
-                machinery: { type: Number, required: false, default: 0 },
+                transmutation: { type: Number, required: false, default: 0 },
                 abjuration: { type: Number, required: false, default: 0 },
-                biohacking: { type: Number, required: false, default: 0 }
+                infusion: { type: Number, required: false, default: 0 }
             },
             isReversed: {type: Boolean, required: true, default: false}
         },
@@ -614,6 +621,13 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
     },
     isDead: {type: Boolean, required: false, default: false},
     creatorName: {type: String, required: true, default: "Unknown"},
+    currencyValues: [
+        {
+            currencyStore: {type: String, required: true, default: "pockets"},
+            currencyType: {type: String, required: true, default: "unum"},
+            currencyAmount: {type: Number, required: true, default: 0}
+        }
+    ],
     developmentIds: [String],
     settings: {
         dieColorId: {type: String, required: true, default: "DD_STANDARD"},

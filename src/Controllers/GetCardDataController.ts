@@ -311,7 +311,6 @@ const _GetAllHacksPossibleForUser = async(user: _IUserModel, characterId: string
                 (id) => id!.toString() === hack._id.toString()
             );
 
-            console.log(hack._id, isNoDefault, isIncludedInPackage);
 
             if (isNoDefault && !isIncludedInPackage) return false;
             return true;
@@ -539,9 +538,9 @@ export const _CalcAffinities = async(character: _ICharacterData) => {
         rune: 0,
         sourcecraft: 0,
         research: 0,
-        machinery: 0,
+        transmutation: 0,
         abjuration: 0,
-        biohacking: 0
+        infusion: 0
     }
     character.classes.forEach((char) => {
         Object.entries(char.affinities).forEach(([key, value]) => {
@@ -577,7 +576,7 @@ export const _CalcAffinities = async(character: _ICharacterData) => {
         commander: affinities.leadership + affinities.supply + affinities.summoning,
         navigator: affinities.swift + affinities.riding + affinities.adaptation,
         scholar: affinities.rune + affinities.research + affinities.sourcecraft,
-        hacker: affinities.abjuration + affinities.machinery + affinities.biohacking
+        hacker: affinities.abjuration + affinities.transmutation + affinities.infusion
     }
     return {
         affinities,
