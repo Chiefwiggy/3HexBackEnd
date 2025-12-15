@@ -17,7 +17,8 @@ export interface _ISourceSchema extends Document {
     sourceTiers: Array<_ITierData>,
     visibility: string,
     onlyTemporary: boolean,
-    neverTemporary: boolean
+    neverTemporary: boolean,
+    campaignIds: Array<string>
 }
 
 const SourceSchema = new mongoose.Schema<_ISourceSchema>({
@@ -37,7 +38,12 @@ const SourceSchema = new mongoose.Schema<_ISourceSchema>({
     ],
     visibility: {type: String, required: true, default: "all", enum: ["all", "restricted", "admin"]},
     onlyTemporary: {type: Boolean, default: false, required: true},
-    neverTemporary: {type: Boolean, default: false, required: true}
+    neverTemporary: {type: Boolean, default: false, required: true},
+    campaignIds: {
+        type: [String],
+        required: true,
+        default: []
+    },
 });
 
 const SourceModel = mongoose.model('sources', SourceSchema);
