@@ -11,6 +11,7 @@ import BaseTechnikCardModel from "../Models/Cards/BaseTechnikCardModel";
 import IOTechnikCardModel from "../Models/Cards/IOTechnikCardModel";
 import ProtocolTechnikCardModel from "../Models/Cards/ProtocolTechnikCardModel";
 import ModifierTechnikCardModel from "../Models/Cards/ModifierTechnikCardModel";
+import {UpdateCacheInternal} from "./CacheController";
 
 export const EditBaseSpell = async(req: Request, res: Response) => {
     return _EditCard(req, res, BaseSpellCardModel);
@@ -63,6 +64,8 @@ const _EditCard = async (req: Request, res: Response, Model: mongoose.Model<any>
             { $set: req.body, $inc: { __v: 1 } },
             { new: true, runValidators: true }
         );
+
+        await UpdateCacheInternal(["cards"])
 
         let message = { message: "Card successfully updated" };
 
