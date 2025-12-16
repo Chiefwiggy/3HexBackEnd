@@ -12,5 +12,6 @@ router.post('/add', AddTargetSpell);
 router.post('/summon/add', AddSummonTargetSpell)
 
 router.put('/update/:id', EditTargetSpell);
+router.put("/summon/update/:id", EditTargetSpell);
 
 export default router;

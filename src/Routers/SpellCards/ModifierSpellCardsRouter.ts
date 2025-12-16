@@ -11,5 +11,6 @@ router.post('/add', AddModifierSpell);
 router.post("/edict/add", AddEdictSpell);
 
 router.put('/update/:id', EditModifierSpell);
+router.put("/edict/update/:id", EditModifierSpell);
 
 export default router;
