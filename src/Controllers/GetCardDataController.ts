@@ -131,6 +131,48 @@ export const GetAllHacks = async(req: Request, res: Response) => {
     }
 }
 
+export const _GetAllCardsHelper = async() => {
+    const [spellsObj, hacksObj, weaponsObj] = await Promise.all([
+        _GetAllSpellsHelper(),
+        _GetAllHacksHelper(),
+        _GetAllWeaponsHelper()
+    ]);
+
+    const allCC = await CommanderCardModel.find({});
+
+    const final = [
+        ...Object.values(spellsObj).flat(),
+        ...Object.values(hacksObj).flat(),
+        ...Object.values(weaponsObj).flat(),
+        ...allCC
+    ];
+    return final
+}
+
+
+
+export const GetAllCards = async(req: Request, res: Response) => {
+    try {
+        res.status(200).json(_GetAllCardsHelper());
+    } catch (err) {
+        res.status(404).send("Couldn't find anything...");
+    }
+}
+
+export const GetCardById = async(req: Request, res: Response) => {
+    try {
+        const allCards = await _GetAllCardsHelper();
+        const myCard = allCards.find(e => e._id == req.params.cardId)
+        if (myCard) {
+            res.status(200).json(myCard)
+        } else {
+            res.status(404).send(`Card with id ${req.params.cardId} not found...`)
+        }
+    } catch (err) {
+        res.status(404).send("Couldn't find anything...");
+    }
+}
+
 const _GetAllSpellsHelper = async() => {
     const bases: (_IBaseSpellCardData & mongoose.Document)[] | null = await BaseSpellCardModel.find({});
     const targets: (_ITargetSpellCardData & mongoose.Document)[] | null = await TargetSpellCardModel.find({});

@@ -6,14 +6,16 @@ import {
     GetAllCardsForAffinity, GetAllCardsForPath,
     GetAllCardsForClass,
     GetAllCardsForClasses,
-    GetAllCardsPossibleForUser
+    GetAllCardsPossibleForUser,
+    GetAllCards, GetCardById
 } from "../Controllers/GetCardDataController";
 import CommanderCardRouter from "./CommanderCardRouter";
 import ConditionCardRouter from "./ConditionCardRouter";
 
 const router = Router();
 
-router.get('/getAll', () => {})
+router.get('/getAll', GetAllCards)
+router.get('/get/:cardId', GetCardById)
 router.get("/getPossible/:characterId", GetAllCardsPossibleForUser);
 router.get("/get/class/all", GetAllCardsForClasses)
 router.get("/get/class/:className", GetAllCardsForClass)

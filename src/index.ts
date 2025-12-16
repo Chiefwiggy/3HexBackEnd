@@ -25,6 +25,7 @@ import CDNRouter from "./Routers/CDNRouter";
 import ImageLibraryRouter from "./Routers/ImageLibraryRouter";
 import DatachipRouter from "./Routers/DatachipRouter";
 import ChipsetRouter from "./Routers/ChipsetRouter";
+import CardRequestRouter from "./Routers/CardRequestRouter";
 
 const PORT: number = Number(process.env.PORT) || 3001;
 
@@ -69,6 +70,7 @@ router.use("/cache", CachingRouter)
 router.use("/cdn", CDNRouter);
 router.use("/imagelib", ImageLibraryRouter)
 router.use("/chipset", ChipsetRouter)
+router.use("/card_requests", CardRequestRouter);
 
 app.use('/.netlify/functions/index', router);
 
