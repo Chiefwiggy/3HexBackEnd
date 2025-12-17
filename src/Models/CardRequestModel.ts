@@ -5,6 +5,7 @@ export interface _ICardRequestSchema extends Document {
     request_type: string,
     json_to_update: string,
     update_uri: string,
+    update_id: string,
     status: string
 }
 
@@ -13,6 +14,7 @@ const CardRequestSchema = new Schema<_ICardRequestSchema>({
     request_type: {type: String, required: true},
     json_to_update: {type: String, required: true},
     update_uri: {type: String, required: true},
+    update_id: {type: String, required: false},
     status: {type: String, required: true, default: "pending"}
 })
 

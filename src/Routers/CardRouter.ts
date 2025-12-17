@@ -7,7 +7,7 @@ import {
     GetAllCardsForClass,
     GetAllCardsForClasses,
     GetAllCardsPossibleForUser,
-    GetAllCards, GetCardById
+    GetAllCards, GetCardById, GetCardOrAbilityById
 } from "../Controllers/GetCardDataController";
 import CommanderCardRouter from "./CommanderCardRouter";
 import ConditionCardRouter from "./ConditionCardRouter";
@@ -16,6 +16,7 @@ const router = Router();
 
 router.get('/getAll', GetAllCards)
 router.get('/get/:cardId', GetCardById)
+router.get('/getPlus/:cardId', GetCardOrAbilityById)
 router.get("/getPossible/:characterId", GetAllCardsPossibleForUser);
 router.get("/get/class/all", GetAllCardsForClasses)
 router.get("/get/class/:className", GetAllCardsForClass)

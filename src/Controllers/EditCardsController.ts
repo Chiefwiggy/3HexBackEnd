@@ -13,6 +13,7 @@ import ProtocolTechnikCardModel from "../Models/Cards/ProtocolTechnikCardModel";
 import ModifierTechnikCardModel from "../Models/Cards/ModifierTechnikCardModel";
 import CommanderCardModel from "../Models/Cards/CommanderCardModel"
 import {UpdateCacheInternal} from "./CacheController";
+import AbilityModel from "../Models/AbilityModel";
 
 export const EditBaseSpell = async(req: Request, res: Response) => {
     return _EditCard(req, res, BaseSpellCardModel);
@@ -58,7 +59,11 @@ export const EditCommanderCard = async(req: Request, res: Response) => {
     return _EditCard(req, res, CommanderCardModel);
 }
 
-const _EditCard = async (req: Request, res: Response, Model: mongoose.Model<any>) => {
+export const EditAbility = async(req: Request, res: Response) => {
+    return _EditCard(req, res, AbilityModel, ["abilities"]);
+}
+
+const _EditCard = async (req: Request, res: Response, Model: mongoose.Model<any>, cacheOverride = ["cards"]) => {
     try {
         const existingSpell = await Model.findOne({_id: req.params.id})
         if (!existingSpell) {
@@ -70,7 +75,7 @@ const _EditCard = async (req: Request, res: Response, Model: mongoose.Model<any>
             { new: true, runValidators: true }
         );
 
-        await UpdateCacheInternal(["cards"])
+        await UpdateCacheInternal(cacheOverride)
 
         let message = { message: "Card successfully updated" };
 
