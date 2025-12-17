@@ -2,7 +2,7 @@
 
 import {Router} from 'express';
 import {AddCommanderCard, GetAllCommanderCards} from "../Controllers/CommanderCardController";
-import {EditCommanderCard} from "../../Controllers/EditCardsController";
+import {EditCommanderCard} from "../Controllers/EditCardsController";
 const router = Router();
 
 router.get("/getAll", GetAllCommanderCards)
