@@ -11,6 +11,7 @@ import BaseTechnikCardModel from "../Models/Cards/BaseTechnikCardModel";
 import IOTechnikCardModel from "../Models/Cards/IOTechnikCardModel";
 import ProtocolTechnikCardModel from "../Models/Cards/ProtocolTechnikCardModel";
 import ModifierTechnikCardModel from "../Models/Cards/ModifierTechnikCardModel";
+import CommanderCardModel from "../Models/Cards/CommanderCardModel"
 import {UpdateCacheInternal} from "./CacheController";
 
 export const EditBaseSpell = async(req: Request, res: Response) => {
@@ -51,6 +52,10 @@ export const EditProtocolHack = async(req: Request, res: Response) => {
 
 export const EditModifierHack = async(req: Request, res: Response) => {
     return _EditCard(req, res, ModifierTechnikCardModel);
+}
+
+export const EditCommanderCard = async(req: Request, res: Response) => {
+    return _EditCard(req, res, CommanderCardModel);
 }
 
 const _EditCard = async (req: Request, res: Response, Model: mongoose.Model<any>) => {
