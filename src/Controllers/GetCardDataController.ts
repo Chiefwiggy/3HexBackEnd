@@ -212,6 +212,34 @@ const _GetAllHacksHelper = async() => {
     }
 }
 
+const _GetAllSourceTypeCards = async() => {
+    const bases: (_IBaseSpellCardData & mongoose.Document)[] | null = await BaseSpellCardModel.find({
+        prerequisites: []
+    });
+    const edicts: (_ISpellCardData & mongoose.Document)[] | null = await ModifierSpellCardModel.find({
+        cardSubtype: "edict",
+        prerequisites: {
+            $elemMatch: {
+                prerequisiteType: "nodefault"
+            }
+        }
+    });
+    const orders = await SkillWeaponCardModel.find({
+        cardSubtype: "order",
+        prerequisites: {
+            $elemMatch: {
+                prerequisiteType: "nodefault"
+            }
+        }
+    });
+
+    return {
+        bases,
+        edicts,
+        orders
+    }
+}
+
 export const GetAllWeaponCards = async(req: Request, res: Response) => {
     try {
         res.status(200).json(_GetAllWeaponsHelper());
@@ -219,6 +247,16 @@ export const GetAllWeaponCards = async(req: Request, res: Response) => {
         res.status(404).send("Couldn't find anything");
     }
 }
+
+export const GetAllSourceCards = new ValidQueryBuilder()
+    .success(async(req: Request, res: Response, user: _IUserModel) => {
+        try {
+            res.status(200).json(await _GetAllSourceTypeCards());
+        } catch  (err) {
+            res.status(500).send("Can't find anything...")
+        }
+    })
+    .exec();
 
 const _GetAllWeaponsHelper = async() => {
     const bases = await BaseWeaponCardModel.find({});

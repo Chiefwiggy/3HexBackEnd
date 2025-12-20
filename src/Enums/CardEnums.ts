@@ -1,6 +1,6 @@
 export const EArcanotype = ["elemental", "divine", "mystical", "axum", "primal", "eonic", "animus", "esoteric"]
 
-export const EEmblemType = ["default", "info", "warning", "tether", "stamina", "requirement", "priority", "power", "health", "buff", "debuff", "money", "die", "soul_charge", "order", "enchantment", "rift_object", "else", "technik", "surge"]
+export const EEmblemType = ["default", "info", "choice", "warning", "tether", "stamina", "requirement", "priority", "power", "health", "buff", "debuff", "money", "die", "soul_charge", "order", "enchantment", "rift_object", "else", "technik", "surge"]
 
 export const EPrerequisiteTypes = ["attribute", "affinity", "class", "path", "nodefault", "race", "subrace", "fateline", "race_role", "minion_role", "level", "development"]
 
