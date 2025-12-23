@@ -1,5 +1,5 @@
 import mongoose, {Schema} from "mongoose";
-import {EEmblemType, ESkill} from "../Enums/CardEnums";
+import {EDamageSubtypes, EEmblemType, ESkill} from "../Enums/CardEnums";
 import {EFatelines, ERaceRole} from "../Enums/CharacterEnums";
 import {_IDatachipSchema} from "./DatachipModel";
 import {_IPackageSchema} from "./PackageModel";
@@ -226,6 +226,7 @@ export interface _ICharacterData extends Document {
         raceRoles: Array<string>,
         pointsSpentOn: Array<string>
         subraceId: string,
+        customVulnerability: string
     },
     specialId: string,
     attributeBars: {
@@ -377,6 +378,7 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
         raceRoles: {type: [String], required: true, default: []},
         pointsSpentOn: {type: [String], required: true, default: []},
         subraceId: {type: String, required: false},
+        customVulnerability: {type: String, required: true, default: "slash", enum: EDamageSubtypes}
     },
     specialId: String,
     attributeBars: {

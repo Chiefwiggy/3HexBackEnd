@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import {EDamageSubtypes} from "../Enums/CardEnums";
 
 
 export interface _IRaceData extends Document {
@@ -9,7 +10,10 @@ export interface _IRaceData extends Document {
         subraceName: string,
         subraceId: string,
         subraceDescription: string,
-        cdnImageLink: string
+        cdnImageLink: string,
+        innateResistances: Array<string>,
+        innateVulnerabilities: Array<string>,
+        subraceRoles: Array<string>
     }>
     availableRoles: Array<string>
 }
@@ -23,7 +27,11 @@ const RaceSchema = new mongoose.Schema<_IRaceData>({
             subraceName: {type: String, required: true},
             subraceId: {type: String, required: true},
             subraceDescription: String,
-            cdnImageLink: String
+            cdnImageLink: String,
+            innateResistances: {type: [String], required: true, enum: EDamageSubtypes},
+            innateVulnerabilities: {type: [String], required: true, enum: EDamageSubtypes},
+            innateImmunities: {type: [String], required: false, enum: EDamageSubtypes},
+            subraceRoles: {type: [String], required: true, default: []}
         }
     ],
     availableRoles: {
