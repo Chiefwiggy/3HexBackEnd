@@ -633,9 +633,9 @@ export const _CalcAffinities = async(character: _ICharacterData) => {
         rune: 0,
         sourcecraft: 0,
         research: 0,
-        transmutation: 0,
-        abjuration: 0,
-        infusion: 0
+        transduction: 0,
+        daemoncraft: 0,
+        proxy: 0
     }
     character.classes.forEach((char) => {
         Object.entries(char.affinities).forEach(([key, value]) => {
@@ -671,7 +671,7 @@ export const _CalcAffinities = async(character: _ICharacterData) => {
         commander: affinities.leadership + affinities.supply + affinities.summoning,
         navigator: affinities.swift + affinities.riding + affinities.adaptation,
         scholar: affinities.rune + affinities.research + affinities.sourcecraft,
-        hacker: affinities.abjuration + affinities.transmutation + affinities.infusion
+        hacker: affinities.daemoncraft + affinities.transduction + affinities.proxy
     }
     return {
         affinities,

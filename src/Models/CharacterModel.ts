@@ -88,9 +88,9 @@ export interface _IAffinities {
     rune: number,
     sourcecraft: number,
     research: number,
-    transmutation: number,
-    abjuration: number,
-    infusion: number
+    transduction: number,
+    daemoncraft: number,
+    proxy: number
 }
 
 export interface _ISkills {
@@ -320,9 +320,9 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
                 rune: { type: Number, required: false, default: 0 },
                 sourcecraft: { type: Number, required: false, default: 0 },
                 research: { type: Number, required: false, default: 0 },
-                transmutation: { type: Number, required: false, default: 0 },
-                abjuration: { type: Number, required: false, default: 0 },
-                infusion: { type: Number, required: false, default: 0 }
+                transduction: { type: Number, required: false, default: 0 },
+                daemoncraft: { type: Number, required: false, default: 0 },
+                proxy: { type: Number, required: false, default: 0 }
             },
             classExpertises: [
                 {
@@ -365,9 +365,9 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
                 rune: { type: Number, required: false, default: 0 },
                 sourcecraft: { type: Number, required: false, default: 0 },
                 research: { type: Number, required: false, default: 0 },
-                transmutation: { type: Number, required: false, default: 0 },
-                abjuration: { type: Number, required: false, default: 0 },
-                infusion: { type: Number, required: false, default: 0 }
+                transduction: { type: Number, required: false, default: 0 },
+                daemoncraft: { type: Number, required: false, default: 0 },
+                proxy: { type: Number, required: false, default: 0 }
             },
             isReversed: {type: Boolean, required: true, default: false}
         },
