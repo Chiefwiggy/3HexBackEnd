@@ -103,6 +103,7 @@ const AbstractCardSchema = new Schema({
     potencyMod: IDataModifiers,
     staminaCostMod: IDataModifiers,
     tetherCostMod: IDataModifiers,
+    technikCostMod: IDataModifiers,
     specialLogicTags: [String],
     moneyCostMod: IDataModifiers
 }, {discriminatorKey: 'kind'});
