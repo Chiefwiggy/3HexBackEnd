@@ -4,7 +4,7 @@ import {_UPrerequisiteType, EHackSubtypes, EPrerequisiteTypes} from "../Enums/Ca
 
 export interface _IPackageSchema extends Document {
     packageName: string,
-    memorySlots: number,
+    packageSlots: number,
     builtinHackIds: Array<_IDatachipHackIdInterface>
     prerequisites: Array<{
         prerequisiteType: _UPrerequisiteType
@@ -16,7 +16,7 @@ export interface _IPackageSchema extends Document {
 
 const PackageSchema = new mongoose.Schema<_IPackageSchema>({
     packageName: {type: String, required: true, unique: true},
-    memorySlots: {type: Number, required: true, default: 1},
+    packageSlots: {type: Number, required: true, default: 1},
     builtinHackIds: [
         {
             hackId: {type: String, required: true},

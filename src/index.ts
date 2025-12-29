@@ -26,6 +26,7 @@ import ImageLibraryRouter from "./Routers/ImageLibraryRouter";
 import DatachipRouter from "./Routers/DatachipRouter";
 import ChipsetRouter from "./Routers/ChipsetRouter";
 import CardRequestRouter from "./Routers/CardRequestRouter";
+import GadgetRouter from "./Routers/GadgetRouter";
 
 const PORT: number = Number(process.env.PORT) || 3001;
 
@@ -71,6 +72,7 @@ router.use("/cdn", CDNRouter);
 router.use("/imagelib", ImageLibraryRouter)
 router.use("/chipset", ChipsetRouter)
 router.use("/card_requests", CardRequestRouter);
+router.use("/gadgets", GadgetRouter);
 
 app.use('/.netlify/functions/index', router);
 

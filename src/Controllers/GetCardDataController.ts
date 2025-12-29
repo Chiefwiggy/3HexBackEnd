@@ -27,6 +27,7 @@ import ModifierTechnikCardModel from "../Models/Cards/ModifierTechnikCardModel";
 import {_ITechnikCardData} from "../Models/Cards/AbstractTechnikCardSchema";
 import ProtocolTechnikCardModel, {_IProtocolTechnikCardData} from "../Models/Cards/ProtocolTechnikCardModel";
 import PackageModel, {_IPackageSchema} from "../Models/PackageModel";
+import {_IGadgetModel} from "../Models/GadgetModel";
 
 export const GetAllSpellBases = async(req: Request, res: Response) => {
     const finalData = await _GetCardsOfType(req, res, BaseSpellCardModel);
@@ -557,7 +558,7 @@ const _GetAllCardsPossibleForUser = async(user: _IUserModel, characterId: string
     }
 }
 
-const _PossibleFilter = async(cardList: Array<_IAbstractCardData>, character: _ICharacterData, excludeNoDefault=false) => {
+export const _PossibleFilter = async(cardList: Array<_IAbstractCardData|_IGadgetModel>, character: _ICharacterData, excludeNoDefault=false) => {
     const {affinities, path} = await _CalcAffinities(character);
     return cardList.filter((card) => {
         return card.prerequisites.reduce((pv, cv) => {

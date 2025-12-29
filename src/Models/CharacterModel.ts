@@ -276,6 +276,10 @@ export interface _ICharacterData extends Document {
     temporarySources: Array<_IPreparedSource>,
     knownDatachips: Array<String>,
     knownPackages: Array<String>,
+    knownGadgets: Array<{
+        gadgetId: string,
+        isGadgetActive: boolean
+    }>,
     characterImageKey: string,
     skillPoints: _ISkills,
     minionsOwned: Array<{
@@ -550,6 +554,12 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
     temporarySources: [IPreparedSource],
     knownDatachips: [String],
     knownPackages: [String],
+    knownGadgets: [
+        {
+            gadgetId: {type: String},
+            isGadgetActive: {type: Boolean, default: true}
+        }
+    ],
     knownWeapons: [{
         baseId: {type: String, required: true},
         enchantmentLevel: {type: Number, required: true, default: 0},

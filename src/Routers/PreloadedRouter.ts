@@ -27,6 +27,7 @@ import {_IDatachipSchema} from "../Models/DatachipModel";
 import {_GetAllDatachips} from "../Controllers/DatachipController";
 import {_IPackageSchema} from "../Models/PackageModel";
 import {_GetAllPackages} from "../Controllers/PackageController";
+import GadgetModel from "../Models/GadgetModel";
 
 const router = Router();
 
@@ -109,6 +110,13 @@ router.post("/getAllPreloadedContent", async(req: Request, res: Response) => {
         classAbilities = await _GetAllAbilitiesForCriteria(req, res, "class");
         affinityAbilities = await _GetAllAbilitiesForCriteria(req, res, "affinity");
         pathAbilities = await _GetAllAbilitiesForCriteria(req, res, "path");
+    }
+
+    // --- GADGETS ---
+    let gadgetData: any = []
+
+    if (universal_override || doesUserNeedNewestBatch("gadgets", userCacheData, masterCache)) {
+        gadgetData = await GadgetModel.find({});
     }
 
 
@@ -225,7 +233,8 @@ router.post("/getAllPreloadedContent", async(req: Request, res: Response) => {
         development: {
             abilities: developmentAbilities,
             cards: developmentCards
-        }
+        },
+        gadgetData
     })
 
 

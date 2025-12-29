@@ -72,6 +72,6 @@ export const _PopulatePackageCards = async (packageData: _IPackageSchema) => {
         builtinHacks: cardMap,
         visibility: packageData.visibility,
         prerequisites: packageData.prerequisites,
-        memorySlots: packageData.memorySlots
+        packageSlots: packageData.packageSlots
     }
 }

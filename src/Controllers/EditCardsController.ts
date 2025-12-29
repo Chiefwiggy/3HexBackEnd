@@ -63,7 +63,7 @@ export const EditAbility = async(req: Request, res: Response) => {
     return _EditCard(req, res, AbilityModel, ["abilities"]);
 }
 
-const _EditCard = async (req: Request, res: Response, Model: mongoose.Model<any>, cacheOverride = ["cards"]) => {
+export const _EditCard = async (req: Request, res: Response, Model: mongoose.Model<any>, cacheOverride = ["cards"]) => {
     try {
         const existingSpell = await Model.findOne({_id: req.params.id})
         if (!existingSpell) {
