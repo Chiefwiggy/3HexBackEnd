@@ -223,7 +223,6 @@ export interface _ICharacterData extends Document {
     },
     race: {
         raceId: string,
-        raceRoles: Array<string>,
         pointsSpentOn: Array<string>
         subraceId: string,
         customVulnerability: string
@@ -379,7 +378,6 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
     },
     race: {
         raceId: {type: String, required: true, default: "_"},
-        raceRoles: {type: [String], required: true, default: []},
         pointsSpentOn: {type: [String], required: true, default: []},
         subraceId: {type: String, required: false},
         customVulnerability: {type: String, required: true, default: "slash", enum: EDamageSubtypes}

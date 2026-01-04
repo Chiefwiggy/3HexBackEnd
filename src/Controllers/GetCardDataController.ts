@@ -28,6 +28,7 @@ import {_ITechnikCardData} from "../Models/Cards/AbstractTechnikCardSchema";
 import ProtocolTechnikCardModel, {_IProtocolTechnikCardData} from "../Models/Cards/ProtocolTechnikCardModel";
 import PackageModel, {_IPackageSchema} from "../Models/PackageModel";
 import {_IGadgetModel} from "../Models/GadgetModel";
+import RaceModel from "../Models/RaceModel";
 
 export const GetAllSpellBases = async(req: Request, res: Response) => {
     const finalData = await _GetCardsOfType(req, res, BaseSpellCardModel);
@@ -560,6 +561,13 @@ const _GetAllCardsPossibleForUser = async(user: _IUserModel, characterId: string
 
 export const _PossibleFilter = async(cardList: Array<_IAbstractCardData|_IGadgetModel>, character: _ICharacterData, excludeNoDefault=false) => {
     const {affinities, path} = await _CalcAffinities(character);
+    const raceData = await RaceModel.findOne({raceId: character.race.raceId});
+    let raceRoles: Array<string> = []
+    let subraceData: any = {subraceRoles: []}
+    if (raceData) {
+        subraceData = raceData.availableSubraces.find(e => e.subraceId == character.race.subraceId);
+        raceRoles = [...raceData.availableRoles, ...subraceData.subraceRoles]
+    }
     return cardList.filter((card) => {
         return card.prerequisites.reduce((pv, cv) => {
             if (!pv) return false;
@@ -591,20 +599,20 @@ export const _PossibleFilter = async(cardList: Array<_IAbstractCardData|_IGadget
                     if (cv.level == 1) {
                         return character.race.raceId === cv.skill;
                     } else {
-                        return character.race.pointsSpentOn.includes(card._id)
+                        return character.race.raceId === cv.skill && character.race.pointsSpentOn.includes(card._id)
                     }
                 case "race_role":
                     if (cv.level == 1) {
-                        return character.race.raceRoles.includes(cv.skill);
+                        return raceRoles.includes(cv.skill);
                     }
                     else {
-                        return character.race.pointsSpentOn.includes(card._id)
+                        return raceRoles.includes(cv.skill) && character.race.pointsSpentOn.includes(card._id)
                     }
                 case "subrace":
                     if (cv.level == 1) {
                         return character.race.subraceId === cv.skill;
                     } else {
-                        return character.race.pointsSpentOn.includes(card._id)
+                        return character.race.subraceId === cv.skill && character.race.pointsSpentOn.includes(card._id)
                     }
                     case "level":
                         return character.characterLevel >= cv.level;

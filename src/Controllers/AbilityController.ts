@@ -7,6 +7,7 @@ import AbilityRouter from "../Routers/AbilityRouter";
 import {_CalcAffinities} from "./GetCardDataController";
 import {_UPrerequisiteType} from "../Enums/CardEnums";
 import {UpdateCacheInternal} from "./CacheController";
+import RaceModel from "../Models/RaceModel";
 
 
 export const AddAbility = new ValidQueryBuilder()
@@ -36,6 +37,14 @@ export const GetAbilitiesForChar = new ValidQueryBuilder()
                 res.status(404).send("Could not find character.")
             } else {
                 const abilities: Array<_IAbilityModel> | null = await AbilityModel.find({});
+                const raceData = await RaceModel.findOne({raceId: char.race.raceId});
+                let raceRoles: Array<string> = []
+                let subraceData: any = {subraceRoles: []}
+                if (raceData) {
+                    subraceData = raceData.availableSubraces.find(e => e.subraceId == char.race.subraceId);
+                    raceRoles = [...raceData.availableRoles, ...subraceData.subraceRoles]
+                }
+
                 if (!abilities) {
                     res.status(500).send("Could not find abilities.");
                 } else {
@@ -69,20 +78,21 @@ export const GetAbilitiesForChar = new ValidQueryBuilder()
                                     if (cv.level == 1) {
                                         return char.race.raceId === cv.skill;
                                     } else {
-                                        return char.race.pointsSpentOn.includes(ability._id)
+                                        return char.race.raceId === cv.skill && char.race.pointsSpentOn.includes(ability._id)
                                     }
                                 case "race_role":
+
                                     if (cv.level == 1) {
-                                        return char.race.raceRoles.includes(cv.skill);
+                                        return raceRoles.includes(cv.skill);
                                     }
                                     else {
-                                        return char.race.pointsSpentOn.includes(ability._id)
+                                        return raceRoles.includes(cv.skill) && char.race.pointsSpentOn.includes(ability._id)
                                     }
                                 case "subrace":
                                     if (cv.level == 1) {
                                         return char.race.subraceId === cv.skill;
                                     } else {
-                                        return char.race.pointsSpentOn.includes(ability._id)
+                                        return char.race.subraceId === cv.skill && char.race.pointsSpentOn.includes(ability._id)
                                     }
                                 case "level":
                                     return char.characterLevel >= cv.level;
