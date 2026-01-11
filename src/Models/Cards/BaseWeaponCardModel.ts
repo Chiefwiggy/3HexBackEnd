@@ -44,7 +44,8 @@ export interface _IBaseWeaponCardData extends _IWeaponCardData {
     tetherCost: _IScalingData<number>,
     staminaCost: _IScalingData<number>,
     skillRequirement: _IScalingData<number>,
-    weaponTags: Array<string>
+    weaponTags: Array<string>,
+    canScale: boolean
 }
 
 export const IScalingData = (T: StringConstructor | NumberConstructor | BooleanConstructor | Object, defaultData: string | number | boolean | Object) => {
@@ -117,7 +118,8 @@ const BaseWeaponCardSchema = new Schema<_IBaseWeaponCardData>({
     tetherCost: IScalingData(Number, 0),
     staminaCost: IScalingData(Number, 0),
     skillRequirement: IScalingData(Number, 0),
-    weaponTags: {type: [String], required: true, default: []}
+    weaponTags: {type: [String], required: true, default: []},
+    canScale: {type: Boolean, required: true, default: true}
 })
 BaseWeaponCardSchema.add(AbstractWeaponCardSchema)
 
