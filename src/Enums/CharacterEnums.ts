@@ -19,4 +19,4 @@ export const EMinionRole = ["brute", "tank", "soldier", "ranged", "magic", "supp
 
 export const ERaceRole = ["standard", "flying", "bulky"];
 
-export const EFatelines = ["fool", "magician", "high_priestess", "empress", "emperor", "hierophant", "lovers", "chariot", "strength", "hermit", "fortune", "justice", "hanged_man", "death", "temperance", "devil", "tower", "star", "moon", "sun", "judgement", "world"]
+export const EFatelines = ["fool", "magician", "high_priestess", "empress", "emperor", "hierophant", "lovers", "chariot", "strength", "hermit", "fortune", "justice", "hanged_man", "death", "temperance", "devil", "tower", "star", "moon", "sun", "judgement", "world", "automaton"]
