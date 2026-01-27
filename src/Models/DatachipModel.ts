@@ -7,7 +7,8 @@ export interface _IDatachipHackIdInterface {
 }
 
 export interface _IDatachipSchema extends Document {
-    datachipName: string
+    datachipName: string,
+    chipTier: number,
     baseTechnikCapacity: number,
     primaryTechnikScaling: number,
     secondaryTechnikScaling: number,
@@ -24,7 +25,8 @@ export interface _IDatachipSchema extends Document {
 }
 
 const DatachipSchema = new mongoose.Schema<_IDatachipSchema>( {
-    datachipName: {type: String, required: true, unique: true},
+    datachipName: {type: String, required: true},
+    chipTier: {type: Number, required: true, default: 1},
     baseTechnikCapacity: {type: Number, required: true, default: 30},
     primaryTechnikScaling: {type: Number, required: true, default: 1.0},
     secondaryTechnikScaling: {type: Number, required: true, default: 0.0},
@@ -54,6 +56,11 @@ const DatachipSchema = new mongoose.Schema<_IDatachipSchema>( {
     ],
     visibility: {type: String, required: true, default: "all", enum: ["all", "restricted", "admin"]}
 })
+
+DatachipSchema.index(
+    {datachipName: 1, chipTier: 1},
+    {unique: true}
+)
 
 const DatachipModel = mongoose.model("datachips", DatachipSchema);
 

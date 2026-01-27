@@ -78,5 +78,6 @@ export const _PopulateDatachipCards = async (datachip: _IDatachipSchema) => {
         prerequisites: datachip.prerequisites,
         builtinHacks: cardMap,
         visibility: datachip.visibility,
+        chipTier: datachip.chipTier
     }
 }
