@@ -101,7 +101,7 @@ export const GetAbilitiesForChar = new ValidQueryBuilder()
                                 case "development":
                                     return char.developmentIds.includes(ability._id)
                                 case "misc":
-                                    return char.miscUnlockTags.find(e => e.categoryId === cv.skill)?.unlockIds.includes(ability._id)
+                                    return !!char.miscUnlockTags.find(e => e.categoryId === cv.skill)?.unlockIds.includes(ability._id)
                                 default:
                                     return pv;
                             }

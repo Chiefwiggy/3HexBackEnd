@@ -672,7 +672,7 @@ export const _PossibleFilter = async(cardList: Array<_IAbstractCardData|_IGadget
                     case "development":
                         return character.developmentIds.includes(card._id)
                 case "misc":
-                    return character.miscUnlockTags.find(e => e.categoryId === cv.skill)?.unlockIds.includes(card._id)
+                    return !!character.miscUnlockTags.find(e => e.categoryId === cv.skill)?.unlockIds.includes(card._id)
                 default:
                     return pv;
             }
