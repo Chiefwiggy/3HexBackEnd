@@ -70,6 +70,7 @@ router.post("/getAllPreloadedContent", async(req: Request, res: Response) => {
     let developmentCards = []
     let conditionCards: Array<_IConditionCard> = []
     let weaponData: any = [];
+    let otherSpecializationCards: any = []
 
     if (universal_override || doesUserNeedNewestBatch("cards", userCacheData, masterCache)) {
         classCards = await _GetAllCardsOfCriteria(req, res, "class");
@@ -85,6 +86,9 @@ router.post("/getAllPreloadedContent", async(req: Request, res: Response) => {
         developmentCards = (await _GetAllCardsOfCriteria(req, res, "development", true)).data as any
 
         conditionCards = await ConditionCardModel.find({});
+
+        otherSpecializationCards = (await _GetAllCardsOfCriteria(req, res, "misc", true)).data as any
+
     }
 
 
@@ -98,6 +102,7 @@ router.post("/getAllPreloadedContent", async(req: Request, res: Response) => {
     let classAbilities: any = {data: {}}
     let affinityAbilities: any = {data: {}}
     let pathAbilities: any = {data: {}}
+    let otherSpecializationAbilities: any = {}
 
     if (universal_override || doesUserNeedNewestBatch("abilities", userCacheData, masterCache)) {
         console.log("got here")
@@ -110,6 +115,8 @@ router.post("/getAllPreloadedContent", async(req: Request, res: Response) => {
         classAbilities = await _GetAllAbilitiesForCriteria(req, res, "class");
         affinityAbilities = await _GetAllAbilitiesForCriteria(req, res, "affinity");
         pathAbilities = await _GetAllAbilitiesForCriteria(req, res, "path");
+
+        otherSpecializationAbilities = (await _GetAllAbilitiesForCriteria(req, res, "misc")).data
     }
 
     // --- GADGETS ---
@@ -133,7 +140,6 @@ router.post("/getAllPreloadedContent", async(req: Request, res: Response) => {
     if (universal_override || doesUserNeedNewestBatch("sources", userCacheData, masterCache)) {
         allSources = (await _GetAllSources(req, res)).data as Array<_ISourceSchema>;
     }
-
 
     let armorData: any = [];
     let shieldData: any = [];
@@ -233,6 +239,10 @@ router.post("/getAllPreloadedContent", async(req: Request, res: Response) => {
         development: {
             abilities: developmentAbilities,
             cards: developmentCards
+        },
+        otherSpecializations: {
+            abilities: otherSpecializationAbilities,
+            cards: otherSpecializationCards
         },
         gadgetData
     })

@@ -242,6 +242,47 @@ const _GetAllSourceTypeCards = async() => {
     }
 }
 
+const _GetAllDatachipCards = async() => {
+    const functions = await BaseTechnikCardModel.find({
+        prerequisites: {
+            $elemMatch: {
+                prerequisiteType: "nodefault"
+            }
+        }
+    });
+
+    const io = await IOTechnikCardModel.find({
+        prerequisites: {
+            $elemMatch: {
+                prerequisiteType: "nodefault"
+            }
+        }
+    })
+
+    const protocols = await ProtocolTechnikCardModel.find({
+        prerequisites: {
+            $elemMatch: {
+                prerequisiteType: "nodefault"
+            }
+        }
+    })
+
+    const utils = await ModifierTechnikCardModel.find({
+        prerequisites: {
+            $elemMatch: {
+                prerequisiteType: "nodefault"
+            }
+        }
+    })
+
+    return {
+        functions,
+        io,
+        protocols,
+        utils
+    }
+}
+
 export const GetAllWeaponCards = async(req: Request, res: Response) => {
     try {
         res.status(200).json(_GetAllWeaponsHelper());
@@ -254,6 +295,16 @@ export const GetAllSourceCards = new ValidQueryBuilder()
     .success(async(req: Request, res: Response, user: _IUserModel) => {
         try {
             res.status(200).json(await _GetAllSourceTypeCards());
+        } catch  (err) {
+            res.status(500).send("Can't find anything...")
+        }
+    })
+    .exec();
+
+export const GetAllDatachipCards = new ValidQueryBuilder()
+    .success(async(req: Request, res: Response, user: _IUserModel) => {
+        try {
+            res.status(200).json(await _GetAllDatachipCards());
         } catch  (err) {
             res.status(500).send("Can't find anything...")
         }
@@ -579,22 +630,24 @@ export const _PossibleFilter = async(cardList: Array<_IAbstractCardData|_IGadget
                     // console.log(affinities[cv.skill as keyof _IAffinities])
                     return affinities[cv.skill as keyof _IAffinities] >= cv.level;
                 case "class":
-                    const clz = character.classes.find(cc => cc.className.split(" ").join("_").toLowerCase() == cv.skill.toLowerCase())
-                    if (clz) {
-                        if (cv.level == 1) {
-                            return true;
-                        } else {
-                            return clz.isPromoted;
-                        }
+                    if (cv.level == 1) {
+                        return !!character.classList.find(cc => cc.split(" ").join("_").toLowerCase() == cv.skill.toLowerCase())
+                    } else {
+                        return !!character.classList.find(cc => cc.split(" ").join("_").toLowerCase() == cv.skill.toLowerCase().concat("_promoted"))
                     }
-                    return false;
                 case "path":
                     // console.log(path[cv.skill as "arcane" | "warrior" | "support" | "hacker"], cv.level)
-                    return path[cv.skill as "arcanist" | "warrior" | "commander" | "navigator" | "scholar" | "hacker"] >= cv.level;
+                    return path[cv.skill as "arcanist" | "warrior" | "general" | "navigator" | "scholar" | "summoner" | "cipher" | "engineer"] >= cv.level;
                 case "nodefault":
                     return excludeNoDefault ? false : pv;
                 case "fateline":
-                    return character.fateline ? (character.fateline.fatelineId === cv.skill && (cv.level === -1) === character.fateline.isReversed) : false
+                    return character.fatelineIds ?
+                        (
+                            character.fatelineIds.includes(`${cv.skill}${cv.level == -1 ? "_reversed" : ""}`)
+                            &&
+                            character.fatelineUnlockIds.includes(card._id)
+                        )
+                        : false
                 case "race":
                     if (cv.level == 1) {
                         return character.race.raceId === cv.skill;
@@ -618,6 +671,8 @@ export const _PossibleFilter = async(cardList: Array<_IAbstractCardData|_IGadget
                         return character.characterLevel >= cv.level;
                     case "development":
                         return character.developmentIds.includes(card._id)
+                case "misc":
+                    return character.miscUnlockTags.find(e => e.categoryId === cv.skill)?.unlockIds.includes(card._id)
                 default:
                     return pv;
             }
@@ -626,36 +681,17 @@ export const _PossibleFilter = async(cardList: Array<_IAbstractCardData|_IGadget
 }
 
 export const _CalcAffinities = async(character: _ICharacterData) => {
-    const affinities: _IAffinities = {
-        nimble: 0,
-        infantry: 0,
-        guardian: 0,
-        focus: 0,
-        creation: 0,
-        alteration: 0,
-        leadership: 0,
-        supply: 0,
-        summoning: 0,
-        swift: 0,
-        riding: 0,
-        adaptation: 0,
-        rune: 0,
-        sourcecraft: 0,
-        research: 0,
-        transduction: 0,
-        daemoncraft: 0,
-        proxy: 0
-    }
-    character.classes.forEach((char) => {
-        Object.entries(char.affinities).forEach(([key, value]) => {
-            affinities[key as keyof _IAffinities] += value;
-        })
-    })
-    if (character.fateline) {
-        Object.entries(character.fateline.affinities).forEach(([key, value]) => {
-            affinities[key as keyof _IAffinities] += value;
-        })
-    }
+    const affinities: _IAffinities = character.affinities
+    // character.classes.forEach((char) => {
+    //     Object.entries(char.affinities).forEach(([key, value]) => {
+    //         affinities[key as keyof _IAffinities] += value;
+    //     })
+    // })
+    // if (character.fateline) {
+    //     Object.entries(character.fateline.affinities).forEach(([key, value]) => {
+    //         affinities[key as keyof _IAffinities] += value;
+    //     })
+    // }
     if (character.developmentIds && character.developmentIds.length > 0) {
         for (const devId of character.developmentIds) {
             const ability: _IAbilityModel | null = await AbilityModel.findById(devId);
@@ -675,12 +711,14 @@ export const _CalcAffinities = async(character: _ICharacterData) => {
     }
 
     const path = {
-        warrior: affinities.nimble + affinities.infantry + affinities.guardian,
-        arcanist: affinities.focus + affinities.creation + affinities.alteration,
-        commander: affinities.leadership + affinities.supply + affinities.summoning,
+        warrior: affinities.finesse + affinities.infantry + affinities.guardian,
+        arcanist: affinities.evocation + affinities.creation + affinities.alteration,
+        general: affinities.command + affinities.supply + affinities.mentorship,
         navigator: affinities.swift + affinities.riding + affinities.adaptation,
         scholar: affinities.rune + affinities.research + affinities.sourcecraft,
-        hacker: affinities.daemoncraft + affinities.transduction + affinities.proxy
+        summoner: affinities.animancy + affinities.conjuration + affinities.orchestration,
+        cipher: affinities.proxy + affinities.firewall + affinities.virus,
+        engineer: affinities.transduction + affinities.machinery + affinities.crafting
     }
     return {
         affinities,

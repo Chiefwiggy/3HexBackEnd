@@ -73,24 +73,30 @@ export interface _ICurrencyData {
 }
 
 export interface _IAffinities {
-    nimble: number,
+    finesse: number,
     infantry: number,
     guardian: number,
-    focus: number,
+    evocation: number,
     creation: number,
     alteration: number,
-    leadership: number,
+    command: number,
     supply: number,
-    summoning: number,
+    mentorship: number,
     swift: number,
     riding: number,
     adaptation: number,
     rune: number,
     sourcecraft: number,
     research: number,
+    animancy: number,
+    conjuration: number,
+    orchestration: number,
+    proxy: number,
+    firewall: number,
+    virus: number,
     transduction: number,
-    daemoncraft: number,
-    proxy: number
+    machinery: number,
+    crafting: number
 }
 
 export interface _ISkills {
@@ -207,9 +213,16 @@ export interface _ICharacterData extends Document {
     characterName: string,
     characterLevel: number,
     isMainCharacter: boolean,
+    classList: Array<string>,
+    affinities: _IAffinities,
+    fatelineIds: Array<string>,
+    fatelineUnlockIds: Array<string>,
+    miscUnlockTags: Array<{
+        categoryId: string,
+        unlockIds: Array<string>
+    }>,
     classes: Array<{
         className: string,
-        affinities: _IAffinities,
         classExpertises: Array<string>,
         classTier: number,
         isPromoted: boolean
@@ -218,7 +231,6 @@ export interface _ICharacterData extends Document {
     fateline: {
         fatelineName: string,
         fatelineId: string,
-        affinities: _IAffinities,
         isReversed: boolean
     },
     race: {
@@ -304,29 +316,44 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
     characterName: { type: String, required: true, unique: true},
     characterLevel: { type: Number, required: true },
     isMainCharacter: {type: Boolean, required: true, default: false},
+    classList: {type: [String], required: true},
+    affinities: {
+        finesse: {type: Number, required: false, default: 0},
+        infantry: {type: Number, required: false, default: 0},
+        guardian: {type: Number, required: false, default: 0},
+        evocation: {type: Number, required: false, default: 0},
+        creation: {type: Number, required: false, default: 0},
+        alteration: {type: Number, required: false, default: 0},
+        command: {type: Number, required: false, default: 0},
+        supply: {type: Number, required: false, default: 0},
+        mentorship: {type: Number, required: false, default: 0},
+        swift: {type: Number, required: false, default: 0},
+        riding: {type: Number, required: false, default: 0},
+        adaptation: {type: Number, required: false, default: 0},
+        rune: {type: Number, required: false, default: 0},
+        sourcecraft: {type: Number, required: false, default: 0},
+        research: {type: Number, required: false, default: 0},
+        animancy: {type: Number, required: false, default: 0},
+        conjuration: {type: Number, required: false, default: 0},
+        orchestration: {type: Number, required: false, default: 0},
+        proxy: {type: Number, required: false, default: 0},
+        firewall: {type: Number, required: false, default: 0},
+        virus: {type: Number, required: false, default: 0},
+        transduction: {type: Number, required: false, default: 0},
+        machinery: {type: Number, required: false, default: 0},
+        crafting: {type: Number, required: false, default: 0}
+    },
+    fatelineIds: {type: [String], required: true, default: []},
+    fatelineUnlockIds: {type: [String], required: true, default: []},
+    miscUnlockTags: [
+        {
+            categoryId: {type: String, required: true},
+            unlockIds: {type: [String], required: true, default: []}
+        }
+    ],
     classes: [
         {
             className: { type: String, required: true },
-            affinities: {
-                nimble: { type: Number, required: false, default: 0 },
-                infantry: { type: Number, required: false, default: 0 },
-                guardian: { type: Number, required: false, default: 0 },
-                focus: { type: Number, required: false, default: 0 },
-                creation: { type: Number, required: false, default: 0 },
-                alteration: { type: Number, required: false, default: 0 },
-                leadership: { type: Number, required: false, default: 0 },
-                supply: { type: Number, required: false, default: 0 },
-                summoning: { type: Number, required: false, default: 0 },
-                swift: { type: Number, required: false, default: 0 },
-                riding: { type: Number, required: false, default: 0 },
-                adaptation: { type: Number, required: false, default: 0 },
-                rune: { type: Number, required: false, default: 0 },
-                sourcecraft: { type: Number, required: false, default: 0 },
-                research: { type: Number, required: false, default: 0 },
-                transduction: { type: Number, required: false, default: 0 },
-                daemoncraft: { type: Number, required: false, default: 0 },
-                proxy: { type: Number, required: false, default: 0 }
-            },
             classExpertises: [
                 {
                     type: String,
@@ -352,26 +379,6 @@ const CharacterSchema = new mongoose.Schema<_ICharacterData>({
         type: {
             fatelineName: {type: String, required: true, default: "The Fool"},
             fatelineId: {type: String, required: true, enum: EFatelines, default: "fool"},
-            affinities: {
-                nimble: { type: Number, required: false, default: 0 },
-                infantry: { type: Number, required: false, default: 0 },
-                guardian: { type: Number, required: false, default: 0 },
-                focus: { type: Number, required: false, default: 0 },
-                creation: { type: Number, required: false, default: 0 },
-                alteration: { type: Number, required: false, default: 0 },
-                leadership: { type: Number, required: false, default: 0 },
-                supply: { type: Number, required: false, default: 0 },
-                summoning: { type: Number, required: false, default: 0 },
-                swift: { type: Number, required: false, default: 0 },
-                riding: { type: Number, required: false, default: 0 },
-                adaptation: { type: Number, required: false, default: 0 },
-                rune: { type: Number, required: false, default: 0 },
-                sourcecraft: { type: Number, required: false, default: 0 },
-                research: { type: Number, required: false, default: 0 },
-                transduction: { type: Number, required: false, default: 0 },
-                daemoncraft: { type: Number, required: false, default: 0 },
-                proxy: { type: Number, required: false, default: 0 }
-            },
             isReversed: {type: Boolean, required: true, default: false}
         },
         required: false

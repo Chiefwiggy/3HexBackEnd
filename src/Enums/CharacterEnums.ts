@@ -2,15 +2,17 @@
 
 export const EChoiceType = ["affinity", "path"];
 
-export const EAffinity = ["nimble", "infantry", "guardian", "focus", "creation", "alteration", "leadership", "supply", "summoning", "swift", "riding", "adaptation", "rune", "sourcecraft", "research", "proxy", "daemoncraft", "transduction", "any"]
+export const EAffinity = ["finesse", "infantry", "guardian", "focus", "creation", "alteration", "command", "supply", "mentorship", "swift", "riding", "adaptation", "rune", "sourcecraft", "research", "animancy", "conjuration", "orchestration", "proxy", "firewall", "virus", "transduction", "machinery", "crafting", "any"]
 
 export const EPath = [
     "warrior",
     "arcanist",
-    "commander",
+    "general",
     "navigator",
     "scholar",
-    "hacker"
+    "summoner",
+    "cipher",
+    "engineer"
 ]
 
 export const EChoiceLabel = [...EAffinity, ...EPath]

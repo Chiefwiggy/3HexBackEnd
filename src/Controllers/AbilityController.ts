@@ -60,20 +60,22 @@ export const GetAbilitiesForChar = new ValidQueryBuilder()
                                     // console.log(affinities[cv.skill as keyof _IAffinities])
                                     return affinities[cv.skill as keyof _IAffinities] >= cv.level;
                                 case "class":
-                                    const clz = char.classes.find(cc => cc.className.toLowerCase() == cv.skill.toLowerCase())
-                                    if (clz) {
-                                        if (cv.level == 1) {
-                                            return true;
-                                        } else {
-                                            return clz.isPromoted;
-                                        }
+                                    if (cv.level == 1) {
+                                        return !!char.classList.find(cc => cc.split(" ").join("_").toLowerCase() == cv.skill.toLowerCase())
+                                    } else {
+                                        return !!char.classList.find(cc => cc.split(" ").join("_").toLowerCase() == cv.skill.toLowerCase().concat("_promoted"))
                                     }
-                                    return false;
                                 case "path":
                                     // console.log(path[cv.skill as "arcane" | "warrior" | "support" | "hacker"], cv.level)
-                                    return path[cv.skill as "arcanist" | "warrior" | "commander" | "navigator" | "scholar" | "hacker"] >= cv.level;
+                                    return path[cv.skill as "arcanist" | "warrior" | "general" | "navigator" | "scholar" | "summoner" | "cipher" | "engineer"] >= cv.level;
                                 case "fateline":
-                                    return char.fateline ? (char.fateline.fatelineId === cv.skill && (cv.level === -1) === char.fateline.isReversed) : false
+                                    return char.fatelineIds ?
+                                        (
+                                                char.fatelineIds.includes(`${cv.skill}${cv.level == -1 ? "_reversed" : ""}`)
+                                                &&
+                                                char.fatelineUnlockIds.includes(ability._id)
+                                        )
+                                        : false
                                 case "race":
                                     if (cv.level == 1) {
                                         return char.race.raceId === cv.skill;
@@ -98,6 +100,8 @@ export const GetAbilitiesForChar = new ValidQueryBuilder()
                                     return char.characterLevel >= cv.level;
                                 case "development":
                                     return char.developmentIds.includes(ability._id)
+                                case "misc":
+                                    return char.miscUnlockTags.find(e => e.categoryId === cv.skill)?.unlockIds.includes(ability._id)
                                 default:
                                     return pv;
                             }

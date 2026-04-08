@@ -7,7 +7,7 @@ import {
     GetAllCardsForClass,
     GetAllCardsForClasses,
     GetAllCardsPossibleForUser,
-    GetAllCards, GetCardById, GetCardOrAbilityById, GetAllSourceCards
+    GetAllCards, GetCardById, GetCardOrAbilityById, GetAllSourceCards, GetAllDatachipCards
 } from "../Controllers/GetCardDataController";
 import CommanderCardRouter from "./CommanderCardRouter";
 import ConditionCardRouter from "./ConditionCardRouter";
@@ -23,6 +23,7 @@ router.get("/get/class/:className", GetAllCardsForClass)
 router.get("/get/affinity/all", GetAllCardsForAffinity);
 router.get('/get/path/all', GetAllCardsForPath);
 router.get("/get/sourceCards", GetAllSourceCards);
+router.get("/get/datachipCards", GetAllDatachipCards)
 router.get('/get/:cardId', GetCardById)
 
 router.use('/spells', SpellCardsRouter);
