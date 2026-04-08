@@ -67,7 +67,7 @@ export const GetAbilitiesForChar = new ValidQueryBuilder()
                                     }
                                 case "path":
                                     // console.log(path[cv.skill as "arcane" | "warrior" | "support" | "hacker"], cv.level)
-                                    return path[cv.skill as "arcanist" | "warrior" | "general" | "navigator" | "scholar" | "summoner" | "cipher" | "engineer"] >= cv.level;
+                                    return path[cv.skill as "arcanist" | "warrior" | "captain" | "navigator" | "scholar" | "summoner" | "cipher" | "engineer"] >= cv.level;
                                 case "fateline":
                                     return char.fatelineIds ?
                                         (

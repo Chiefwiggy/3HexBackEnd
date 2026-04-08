@@ -637,7 +637,7 @@ export const _PossibleFilter = async(cardList: Array<_IAbstractCardData|_IGadget
                     }
                 case "path":
                     // console.log(path[cv.skill as "arcane" | "warrior" | "support" | "hacker"], cv.level)
-                    return path[cv.skill as "arcanist" | "warrior" | "general" | "navigator" | "scholar" | "summoner" | "cipher" | "engineer"] >= cv.level;
+                    return path[cv.skill as "arcanist" | "warrior" | "captain" | "navigator" | "scholar" | "summoner" | "cipher" | "engineer"] >= cv.level;
                 case "nodefault":
                     return excludeNoDefault ? false : pv;
                 case "fateline":
@@ -713,7 +713,7 @@ export const _CalcAffinities = async(character: _ICharacterData) => {
     const path = {
         warrior: affinities.finesse + affinities.infantry + affinities.guardian,
         arcanist: affinities.evocation + affinities.creation + affinities.alteration,
-        general: affinities.command + affinities.supply + affinities.mentorship,
+        captain: affinities.command + affinities.supply + affinities.mentorship,
         navigator: affinities.swift + affinities.riding + affinities.adaptation,
         scholar: affinities.rune + affinities.research + affinities.sourcecraft,
         summoner: affinities.animancy + affinities.conjuration + affinities.orchestration,

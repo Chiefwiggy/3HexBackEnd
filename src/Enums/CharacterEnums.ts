@@ -7,7 +7,7 @@ export const EAffinity = ["finesse", "infantry", "guardian", "focus", "creation"
 export const EPath = [
     "warrior",
     "arcanist",
-    "general",
+    "captain",
     "navigator",
     "scholar",
     "summoner",
